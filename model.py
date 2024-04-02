@@ -18,7 +18,7 @@ class User(db.Model):
                       nullable=False)
     password = db.Column(db.String,
                          nullable=False)
-    name = db.Column(db.String)
+    username = db.Column(db.String)
     theme = db.Column(db.String)
 
     def __repr__(self):
@@ -56,7 +56,7 @@ class Event(db.Model):
         return f"<Event event_id={self.event_id} title={self.title}>"
     
 
-class Recur_Event(db.Model):
+class RecurEvent(db.Model):
     """A recurring event."""
 
     __tablename__ = "recur_events"
@@ -180,7 +180,7 @@ class Tasklist(db.Model):
         return f"<Tasklist tasklist_id={self.tasklist_id} title={self.title}>"
     
 
-class Recur_Tasklist(db.Model):
+class RecurTasklist(db.Model):
     """A recurring tasklist."""
 
     __tablename__ = "recur_tasklists"
@@ -235,7 +235,7 @@ class Task(db.Model):
         return f"<Task task_id={self.task_id} title={self.title}>"
     
 
-class Recur_Task(db.Model):
+class RecurTask(db.Model):
     """A task for a recurring tasklist."""
 
     __tablename__ = "recur_tasks"
@@ -258,3 +258,20 @@ class Recur_Task(db.Model):
 
     def __repr__(self):
         return f"<Recurring Task recur_task_id={self.recur_task_id} title={self.title}>"
+    
+
+def connect_to_db(flask_app, db_uri="postgresql:///productivity", echo=True):
+    flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
+    flask_app.config["SQLALCHEMY_ECHO"] = echo
+    flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.app = flask_app
+    db.init_app(flask_app)
+
+    print("Connected to the db!")
+
+
+if __name__ == "__main__":
+    from server import app
+
+    connect_to_db(app, echo=False)
