@@ -21,6 +21,8 @@ class User(db.Model):
     username = db.Column(db.String)
     theme = db.Column(db.String)
 
+    events = db.relationship("Event", back_populates="user")
+
     def __repr__(self):
         return f"<User user_id={self.user_id} email={self.email}>"
     
@@ -51,6 +53,8 @@ class Event(db.Model):
     icon = db.Column(db.String)
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
+
+    user = db.relationship("User", back_populates="events")
 
     def __repr__(self):
         return f"<Event event_id={self.event_id} title={self.title}>"
@@ -166,6 +170,7 @@ class Tasklist(db.Model):
     # Data for FullCalendar API
     title = db.Column(db.String)
     all_day = db.Column(db.Boolean)
+    start = db.Column(db.String)
     url = db.Column(db.String)
     display = db.Column(db.String)
     background_color = db.Column(db.String)
@@ -193,6 +198,7 @@ class RecurTasklist(db.Model):
     # Data for FullCalendar API
     title = db.Column(db.String)
     all_day = db.Column(db.Boolean)
+    start = db.Column(db.String)
     url = db.Column(db.String)
     display = db.Column(db.String)
     background_color = db.Column(db.String)
