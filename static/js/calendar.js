@@ -1,3 +1,4 @@
+// Renders the calendar
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar');
   const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -13,3 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
       })
     calendar.render();
 });
+
+// Renders daily schedule
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('dailySchedule');
+    const dailySchedule = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'timeGridDay',
+      })
+      // Add user events to calendar
+      fetch('/api/add-event')
+        .then((response) => response.json())
+        .then((responseData) => {
+          for (const data of responseData) {
+            dailySchedule.addEvent(data);
+          }
+        })
+    dailySchedule.render();
+  });

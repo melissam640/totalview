@@ -20,6 +20,7 @@ def show_homepage():
 @app.route("/create-account", methods=["POST"])
 def create_account():
     """Creates a new account."""
+    username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
 
@@ -29,10 +30,11 @@ def create_account():
         flash("Account with this email already exists.")
         return redirect("/")
     else:
-        user = crud.create_user(email, password, None, None)
+        user = crud.create_user(email, password, username, None)
         db.session.add(user)
         db.session.commit()
-        return redirect("/dashboard")
+        flash("Account created!")
+        return redirect("/")
 
 @app.route("/login", methods=["POST"])
 def log_in():
@@ -43,7 +45,7 @@ def log_in():
     user = crud.check_credentials(email, password)
 
     if user:
-        session["current_user"] = user.user_id
+        session["user_id"] = user.user_id
         return redirect("/dashboard")
     
     flash("Email or password incorrect, please try again.")
@@ -53,7 +55,9 @@ def log_in():
 def show_user_dashboard():
     """Create user dashboard."""
     
-    return render_template("dashboard.html")
+    user = crud.get_user_by_id(session["user_id"])
+    
+    return render_template("dashboard.html", username=user.username)
 
 @app.route("/add-new")
 def show_add_item_options():
@@ -94,10 +98,20 @@ def create_new_event():
     title = request.args.get("title")
     start = request.args.get("start")
     end = request.args.get("end")
+    # Icon TBD
+    # Icon color TBD
 
-    event = crud.create_event(title, False, start, end, "", "", "/", "auto",
-                 None, None, "black", None, None,
-                 False, None)
+    url = "/delete"
+    display = "auto"
+    background_color = "blue"
+    border_color = "black"
+    text_color = "black"
+    completed = False
+    user=crud.get_user_by_id(session["user_id"])
+
+    event = crud.create_event(title, False, start, end, "", "", url, display,
+                 background_color, border_color, text_color, None, None,
+                 completed, user)
     
     db.session.add(event)
     db.session.commit()

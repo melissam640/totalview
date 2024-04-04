@@ -4,8 +4,13 @@
 
 {% block body %}
   <a href="/">HOME</a>  
-  <h1>Dashboard</h1>
+  <h1>Dashboard for {{ username }}</h1>
   <a href="/add-new">ADD NEW EVENT</a>
-  <a href="/delete">DELETE EVENT</a>
-  <div id="calendar"></div>
+  <a href="/delete">EDIT EVENT</a>
+  <a href="/account">ACCOUNT</a><br><br>
+  <div>
+    <div id="calendar" style="width: 33%; float: left"></div>
+  <div id="dailySchedule" style="width: 33%"></div>
+  <div id="tasks" style="width: 33%; float: right">Space for Daily Tasks</div>
+  </div>
 {% endblock %}

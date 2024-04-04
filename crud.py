@@ -11,6 +11,13 @@ def create_user(email, password, username, theme):
     return user
 
 
+def get_user_by_id(id):
+    """Gets user object by id."""
+
+    user = User.query.get(id)
+
+    return user
+
 def check_credentials(email, password):
     """Checks user's credentials."""
 
@@ -18,6 +25,8 @@ def check_credentials(email, password):
     
     if user:
         if user.email!=email or user.password!=password:
+            return None
+        else:
             return user
     else:
         return None
