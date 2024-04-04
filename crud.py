@@ -11,6 +11,19 @@ def create_user(email, password, username, theme):
     return user
 
 
+def check_credentials(email, password):
+    """Checks user's credentials."""
+
+    user = User.query.filter_by(email=email).first()
+    
+    if user ==[]:
+        return False, None
+    elif user.email!=email and user.password!=password:
+        return False, None
+    else:
+        return True, user
+
+
 def create_event(title, all_day, start, end, start_str, end_str, url, display,
                  background_color, border_color, text_color, icon, icon_color,
                  completed, user):

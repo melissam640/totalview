@@ -17,6 +17,21 @@ def show_homepage():
 
     return render_template("homepage.html")
 
+@app.route("/login", methods=["POST"])
+def log_in():
+    """Login a user."""
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    valid, user = crud.check_credentials(email, password)
+
+    if valid:
+        session["current_user"] = user.user_id
+        return redirect("/dashboard")
+    else:
+        flash("Email or password incorrect, please try again.")
+        return redirect("/")
+
 @app.route("/dashboard")
 def show_user_dashboard():
     """Create user dashboard."""

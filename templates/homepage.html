@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block body %}
-Homepage
-(add login and create account option)
+  <h1>Homepage</h1>
+  <h2>Login</h2>
+  <form action="/login" method="POST">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <input type="submit" value="Login"><br><br>
+  </form>
+  <h2>Create Account</h2>
+  <form action="/create-account">
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+    <input type="submit" value="Create Account"><br><br>
+  </form>
 {% endblock %}
