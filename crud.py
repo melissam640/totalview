@@ -16,12 +16,22 @@ def check_credentials(email, password):
 
     user = User.query.filter_by(email=email).first()
     
-    if user ==[]:
-        return False, None
-    elif user.email!=email and user.password!=password:
-        return False, None
+    if user:
+        if user.email!=email or user.password!=password:
+            return user
     else:
-        return True, user
+        return None
+    
+
+def check_email_exists(email):
+    """Checks if user's email was already used to create an account."""
+
+    user = User.query.filter_by(email=email).first()
+    
+    if user:
+        return True
+    else:
+        return False
 
 
 def create_event(title, all_day, start, end, start_str, end_str, url, display,

@@ -17,20 +17,37 @@ def show_homepage():
 
     return render_template("homepage.html")
 
+@app.route("/create-account", methods=["POST"])
+def create_account():
+    """Creates a new account."""
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    email_exists = crud.check_email_exists(email)
+
+    if email_exists:
+        flash("Account with this email already exists.")
+        return redirect("/")
+    else:
+        user = crud.create_user(email, password, None, None)
+        db.session.add(user)
+        db.session.commit()
+        return redirect("/dashboard")
+
 @app.route("/login", methods=["POST"])
 def log_in():
     """Login a user."""
     email = request.form.get("email")
     password = request.form.get("password")
 
-    valid, user = crud.check_credentials(email, password)
+    user = crud.check_credentials(email, password)
 
-    if valid:
+    if user:
         session["current_user"] = user.user_id
         return redirect("/dashboard")
-    else:
-        flash("Email or password incorrect, please try again.")
-        return redirect("/")
+    
+    flash("Email or password incorrect, please try again.")
+    return redirect("/")
 
 @app.route("/dashboard")
 def show_user_dashboard():
