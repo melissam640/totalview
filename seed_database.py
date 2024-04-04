@@ -18,14 +18,14 @@ user = crud.create_user("testuser1@test.com", "testpassword1", "test_user_1", "l
 model.db.session.add(user)
 
 # Test events
-event1 = crud.create_event("Event Title", False, "date object", "date object",
-                          "2024-05-01T14:30:00", "2024-05-01T15:30:00", "/placeholderurl", "auto",
-                          "white", "white", "black", None, None, False, user)
+event1 = crud.create_event("Event Title", False, "2024-04-05T14:30:00", "2024-04-05T15:30:00",
+                          "", "", "/", "auto",
+                          "green", "white", "black", None, None, False, user)
 model.db.session.add(event1)
 
-event2 = crud.create_event("Second Event", True, "date object", "date object",
-                          "2024-10-01", "2024-11-01", "/placeholderurl", "auto",
-                          "white", "white", "blue", None, None, False, user)
+event2 = crud.create_event("Second Event", True, "2024-04-10", "2024-04-11",
+                          "April 10th", "April 11th", "/", "auto",
+                          "yellow", "white", "blue", None, None, False, user)
 model.db.session.add(event2)
 
 # # Test recurring event

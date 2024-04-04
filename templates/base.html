@@ -5,9 +5,11 @@
     <title>
       {% block title %}{% endblock %}
     </title>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     {% block head %}{% endblock %}
   </head>
   <body>
     {% block body %}{% endblock %}
+    <script src="/static/js/calendar.js"></script>
   </body>
 </html>

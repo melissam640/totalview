@@ -200,16 +200,13 @@ def create_recur_task(title, display, background_color, border_color,
     return recur_task
 
 
-def get_events():
-    """Get events."""
+def delete_event(event_title):
+    """Deletes an event."""
 
-    test_event = Event.query.get(1)
-    event = {}
+    event = Event.query.filter(Event.title==event_title).first()
 
-    for field, value in test_event.items():
-        event[field] = value
-
-    return event
+    db.session.delete(event)
+    db.session.commit()
 
 if __name__ == '__main__':
     from server import app
