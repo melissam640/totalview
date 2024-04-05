@@ -22,6 +22,10 @@ class User(db.Model):
     theme = db.Column(db.String)
 
     events = db.relationship("Event", back_populates="user")
+    recur_events = db.relationship("RecurEvent", back_populates="user")
+    routines = db.relationship("Routine", back_populates="user")
+    tasklists = db.relationship("Tasklist", back_populates="user")
+    recur_tasklists = db.relationship("RecurTasklist", back_populates="user")
 
     def __repr__(self):
         return f"<User user_id={self.user_id} email={self.email}>"
@@ -42,8 +46,8 @@ class Event(db.Model):
     all_day = db.Column(db.Boolean)
     start = db.Column(db.String)
     end = db.Column(db.String)
-    start_str = db.Column(db.String)
-    end_str = db.Column(db.String)
+    start_str = db.Column(db.String) # Might not need
+    end_str = db.Column(db.String) # Might not need
     url = db.Column(db.String)
     display = db.Column(db.String)
     background_color = db.Column(db.String)
@@ -90,6 +94,8 @@ class RecurEvent(db.Model):
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
+    user = db.relationship("User", back_populates="recur_events")
+
     def __repr__(self):
         return f"<Recurring Event recur_event_id={self.recur_event_id} title={self.title}>"
     
@@ -122,6 +128,8 @@ class Routine(db.Model):
     icon = db.Column(db.String)
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
+
+    user = db.relationship("User", back_populates="routines")
 
     def __repr__(self):
         return f"<Routine routine_id={self.routine_id} title={self.title}>"
@@ -181,6 +189,8 @@ class Tasklist(db.Model):
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
+    user = db.relationship("User", back_populates="tasklists")
+
     def __repr__(self):
         return f"<Tasklist tasklist_id={self.tasklist_id} title={self.title}>"
     
@@ -211,6 +221,8 @@ class RecurTasklist(db.Model):
     icon = db.Column(db.String)
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
+
+    user = db.relationship("User", back_populates="recur_tasklists")
 
     def __repr__(self):
         return f"<Recurring Tasklist recur_tasklist_id={self.recur_tasklist_id} title={self.title}>"

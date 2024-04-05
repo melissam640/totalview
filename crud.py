@@ -11,10 +11,10 @@ def create_user(email, password, username, theme):
     return user
 
 
-def get_user_by_id(id):
+def get_user_by_id(user_id):
     """Gets user object by id."""
 
-    user = User.query.get(id)
+    user = User.query.get(user_id)
 
     return user
 
@@ -72,7 +72,7 @@ def create_event(title, all_day, start, end, start_str, end_str, url, display,
 def create_recur_event(title, all_day, start, end, start_str, end_str, url,
                        display, background_color, border_color, text_color,
                        days_of_week, start_recur, end_recur, icon, icon_color,
-                       completed):
+                       completed, user):
     """Create and return a new recurring event."""
 
     recur_event = RecurEvent(
@@ -92,7 +92,8 @@ def create_recur_event(title, all_day, start, end, start_str, end_str, url,
                 end_recur=end_recur,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                user=user
                 )
 
     return recur_event
@@ -100,7 +101,7 @@ def create_recur_event(title, all_day, start, end, start_str, end_str, url,
 
 def create_routine(title, start, end, start_str, end_str, url, display,
                    background_color, border_color, text_color, days_of_week,
-                   start_recur, end_recur, icon, icon_color, completed):
+                   start_recur, end_recur, icon, icon_color, completed, user):
     """Create and return a new routine."""
 
     routine = Routine(
@@ -119,7 +120,8 @@ def create_routine(title, start, end, start_str, end_str, url, display,
                 end_recur=end_recur,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                user=user
                 )
 
     return routine
@@ -150,7 +152,7 @@ def create_action(title, start, end, start_str, end_str, url, display,
 
 
 def create_tasklist(title, all_day, start, url, display, background_color,
-                    border_color, text_color, icon, icon_color, completed):
+                    border_color, text_color, icon, icon_color, completed, user):
     """Create and return a new tasklist."""
 
     tasklist = Tasklist(
@@ -164,7 +166,8 @@ def create_tasklist(title, all_day, start, url, display, background_color,
                 text_color=text_color,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                user=user
                 )
 
     return tasklist
@@ -173,7 +176,7 @@ def create_tasklist(title, all_day, start, url, display, background_color,
 def create_recur_tasklist(title, all_day, start, url, display,
                           background_color, border_color, text_color,
                           days_of_week, start_recur, end_recur, icon,
-                          icon_color, completed):
+                          icon_color, completed, user):
     """Create and return a new recurring tasklist."""
 
     recur_tasklist = RecurTasklist(
@@ -190,7 +193,8 @@ def create_recur_tasklist(title, all_day, start, url, display,
                 end_recur=end_recur,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                user=user
                 )
 
     return recur_tasklist

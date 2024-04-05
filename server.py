@@ -119,6 +119,41 @@ def create_new_event():
     return redirect("/dashboard")
 
 
+@app.route("/create-routine")
+def create_new_routine():
+    """Creates a new routine."""
+    title = request.args.get("title")
+    start = request.args.get("start")
+    end = request.args.get("end")
+
+    return redirect("/dashboard")
+
+
+@app.route("/create-tasklist")
+def create_new_tasklist():
+    """Creates a new tasklist."""
+    title = request.args.get("title")
+    start = request.args.get("date")
+    
+    all_day = True
+    url = "/delete"
+    display = "auto"
+    background_color = "blue"
+    border_color = "black"
+    text_color = "black"
+    completed = False
+    user=crud.get_user_by_id(session["user_id"])
+
+    tasklist = crud.create_tasklist(title, all_day, start, url, display,
+                 background_color, border_color, text_color, None, None,
+                 completed, user)
+    
+    db.session.add(tasklist)
+    db.session.commit()
+
+    return redirect("/dashboard")
+
+
 @app.route("/delete-event")
 def delete_event():
     """Deletes an event."""
