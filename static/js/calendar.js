@@ -32,4 +32,22 @@ document.addEventListener('DOMContentLoaded', function() {
     dailySchedule.render();
   });
 
-  
+document.querySelector('#addtask0').addEventListener('click', () => {
+    document.querySelector('#task1').style.display = 'block';
+    document.querySelector('#addtask1').style.display = 'block';
+});
+
+document.querySelector('#addtask1').addEventListener('click', () => {
+    document.querySelector('#task2').style.display = 'block';
+    document.querySelector('#addtask2').style.display = 'block';
+});
+
+document.querySelector('#addtask2').addEventListener('click', () => {
+    document.querySelector('#task3').style.display = 'block';
+    document.querySelector('#addtask3').style.display = 'block';
+});
+
+document.querySelector('#addtask3').addEventListener('click', () => {
+    document.querySelector('#task4').style.display = 'block';
+    document.querySelector('#addtask4').style.display = 'block';
+});

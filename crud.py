@@ -201,7 +201,7 @@ def create_recur_tasklist(title, all_day, start, url, display,
 
 
 def create_task(title, display, background_color, border_color, text_color,
-                icon, icon_color, completed):
+                icon, icon_color, completed, tasklist):
     """Create and return a new task."""
 
     task = Task(
@@ -212,7 +212,8 @@ def create_task(title, display, background_color, border_color, text_color,
                 text_color=text_color,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                tasklist=tasklist
                 )
 
     return task

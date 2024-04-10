@@ -130,6 +130,7 @@ class Routine(db.Model):
     completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="routines")
+    actions = db.relationship("Action", back_populates="routine")
 
     def __repr__(self):
         return f"<Routine routine_id={self.routine_id} title={self.title}>"
@@ -161,6 +162,8 @@ class Action(db.Model):
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
+    routine = db.relationship("Routine", back_populates="actions")
+
     def __repr__(self):
         return f"<Action action_id={self.action_id} title={self.title}>"
     
@@ -190,6 +193,7 @@ class Tasklist(db.Model):
     completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="tasklists")
+    tasks = db.relationship("Task", back_populates="tasklist")
 
     def __repr__(self):
         return f"<Tasklist tasklist_id={self.tasklist_id} title={self.title}>"
@@ -223,6 +227,7 @@ class RecurTasklist(db.Model):
     completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="recur_tasklists")
+    recur_tasks = db.relationship("RecurTask", back_populates="recur_tasklist")
 
     def __repr__(self):
         return f"<Recurring Tasklist recur_tasklist_id={self.recur_tasklist_id} title={self.title}>"
@@ -249,6 +254,8 @@ class Task(db.Model):
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
+    tasklist = db.relationship("Tasklist", back_populates="tasks")
+
     def __repr__(self):
         return f"<Task task_id={self.task_id} title={self.title}>"
     
@@ -273,6 +280,8 @@ class RecurTask(db.Model):
     icon = db.Column(db.String)
     icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
+
+    recur_tasklist = db.relationship("RecurTasklist", back_populates="recur_tasks")
 
     def __repr__(self):
         return f"<Recurring Task recur_task_id={self.recur_task_id} title={self.title}>"

@@ -59,12 +59,6 @@ def show_user_dashboard():
     
     return render_template("dashboard.html", username=user.username)
 
-@app.route("/add-new")
-def show_add_item_options():
-    """Create page with options to add new event."""
-    
-    return render_template("add-new.html")
-
 @app.route("/delete")
 def show_delete_option():
     """Create page with the option to delete an event."""
@@ -150,6 +144,21 @@ def create_new_tasklist():
     
     db.session.add(tasklist)
     db.session.commit()
+
+    for i in range(5):
+        task_title = request.args.get(f"task{1}")
+        
+        display = "auto"
+        background_color = "blue"
+        border_color = "black"
+        text_color = "black"
+        completed = False
+        
+        task = crud.create_task(task_title, display, background_color, border_color,
+                                text_color, None, None, completed, tasklist)
+        
+        db.session.add(task)
+        db.session.commit()
 
     return redirect("/dashboard")
 

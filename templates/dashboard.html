@@ -13,7 +13,11 @@
     <a href="/account">ACCOUNT</a><br>
   </div>
   <div id="dailySchedule" style="width: 40%"></div>
-  <div id="tasks" style="width: 40%; float: right">Space for Daily Tasks</div>
+  <div id="tasks" style="width: 40%; float: right">
+    {% for tasklist in ["tasklist1", "tasklist2", "tasklist3"] %}
+      <p>tasklist</p>
+    {% endfor %}
+  </div>
   </div>
   <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -89,6 +93,16 @@
             <p>YYYY-MM-DD</p>
             <label for="date">Date:</label>
             <input type="text" id="date" name="date"><br>
+            <p>Tasks:</p>
+            <input type="text" id="task0" name="task0">
+            <button type="button" id="addtask0">+</button>
+            <input type="text" id="task1" name="task1" style="display:none">
+            <button type="button" id="addtask1" style="display:none">+</button>
+            <input type="text" id="task2" name="task2" style="display:none">
+            <button type="button" id="addtask2" style="display:none">+</button>
+            <input type="text" id="task3" name="task3" style="display:none">
+            <button type="button" id="addtask3" style="display:none">+</button>
+            <input type="text" id="task4" name="task4" style="display:none"><br>
             <input type="submit" value="Create">
           </form>
         </div>
