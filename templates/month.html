@@ -17,20 +17,8 @@
       <a href="/account">ACCOUNT</a><br>
       </div>
       <div class="col">
-        <h3>Today</h3>
-        {% for event in todays_events %}
-          <p>{{ event.title }}</p>
-        {% endfor %}
+        <div id="calendar" ></div>
       </div>
-      <div class="col">
-        <h3>Tasks</h3>
-        {% for tasklist in todays_tasklists %}
-          <p>{{ tasklist.title }}</p>
-          {% for task in tasklist.tasks %}
-            <p>{{ task }}</p>
-          {% endfor %}
-        {% endfor %}
-      </div>  
     </div>
   </div>
   <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">

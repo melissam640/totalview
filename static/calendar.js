@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar');
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
+    themeSystem: 'bootstrap5'
     })
     // Add user events to calendar
     fetch('/api/add-event')
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('dailySchedule');
     const dailySchedule = new FullCalendar.Calendar(calendarEl, {
       initialView: 'timeGridDay',
+      aspectRatio: .8,
+      themeSystem: 'bootstrap5'
       })
       // Add user events to calendar
       fetch('/api/add-event')

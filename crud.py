@@ -245,6 +245,29 @@ def delete_event(event_title):
     db.session.delete(event)
     db.session.commit()
 
+
+def get_todays_tasklists():
+    """Gets tasklists assigned to today."""
+
+    # TODO: Hard coding the date for now, will change later
+    todays_date = "2024-04-10"
+
+    tasklists = Tasklist.query.filter(Tasklist.start==todays_date).all()
+
+    return tasklists
+
+
+def get_todays_events():
+    """Gets events assigned to today."""
+
+    # TODO: Hard coding the date for now, will change later
+    todays_date = "2024-04-10"
+
+    events = Event.query.filter(Event.start==todays_date).all()
+
+    return events
+
+
 if __name__ == '__main__':
     from server import app
     connect_to_db(app)
