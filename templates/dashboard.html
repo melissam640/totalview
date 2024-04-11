@@ -19,7 +19,20 @@
       <div class="col">
         <h3>Today</h3>
         {% for event in todays_events %}
-          <p>{{ event.title }}</p>
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ event.event_id }}" aria-expanded="true" aria-controls="collapse{{ event.event_id }}">
+                  {{ event.title }}
+                </button>
+              </h2>
+              <div id="collapse{{ event.event_id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  Event Info
+                </div>
+              </div>
+            </div>
+          </div>
         {% endfor %}
       </div>
       <div class="col">
