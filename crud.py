@@ -18,6 +18,7 @@ def get_user_by_id(user_id):
 
     return user
 
+
 def check_credentials(email, password):
     """Checks user's credentials."""
 
