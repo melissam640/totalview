@@ -28,20 +28,4 @@ event2 = crud.create_event("Second Event", True, "2024-04-10", "2024-04-11",
                           "yellow", "white", "blue", None, None, False, user)
 model.db.session.add(event2)
 
-# # Test recurring event
-# recur_event = crud.create_recur_event()
-# model.db.session.add(recur_event)
-
-# # Test routine
-# routine = crud.create_routine()
-# model.db.session.add(routine)
-
-# # Test tasklist
-# tasklist = crud.create_tasklist()
-# model.db.session.add(tasklist)
-
-# # Test recurring tasklist
-# recur_tasklist = crud.create_recur_tasklist()
-# model.db.session.add(recur_tasklist)
-
 model.db.session.commit()

@@ -54,8 +54,8 @@ def create_event(title, all_day, start, end, start_str, end_str, url, display,
                 all_day=all_day,
                 start=start,
                 end=end,
-                start_str=start_str,
-                end_str=end_str,
+                start_str=start_str, # Delete
+                end_str=end_str, # Delete
                 url=url,
                 display=display,
                 background_color=background_color,
@@ -67,6 +67,9 @@ def create_event(title, all_day, start, end, start_str, end_str, url, display,
                 user=user
                 )
 
+    db.session.add(event)
+    db.session.commit()
+    
     return event
 
 
@@ -81,8 +84,8 @@ def create_recur_event(title, all_day, start, end, start_str, end_str, url,
                 all_day=all_day,
                 start=start,
                 end=end,
-                start_str=start_str,
-                end_str=end_str,
+                start_str=start_str, # Delete
+                end_str=end_str, # Delete
                 url=url,
                 display=display,
                 background_color=background_color,
@@ -97,6 +100,9 @@ def create_recur_event(title, all_day, start, end, start_str, end_str, url,
                 user=user
                 )
 
+    db.session.add(recur_event)
+    db.session.commit()
+    
     return recur_event
 
 
@@ -125,6 +131,9 @@ def create_routine(title, start, end, start_str, end_str, url, display,
                 user=user
                 )
 
+    db.session.add(routine)
+    db.session.commit()
+    
     return routine
 
 
@@ -149,6 +158,9 @@ def create_action(title, start, end, start_str, end_str, url, display,
                 completed=completed
                 )
 
+    db.session.add(action)
+    db.session.commit()
+    
     return action
 
 
@@ -171,6 +183,9 @@ def create_tasklist(title, all_day, start, url, display, background_color,
                 user=user
                 )
 
+    db.session.add(tasklist)
+    db.session.commit()
+    
     return tasklist
 
 
@@ -198,6 +213,9 @@ def create_recur_tasklist(title, all_day, start, url, display,
                 user=user
                 )
 
+    db.session.add(recur_tasklist)
+    db.session.commit()
+    
     return recur_tasklist
 
 
@@ -217,6 +235,9 @@ def create_task(title, display, background_color, border_color, text_color,
                 tasklist=tasklist
                 )
 
+    db.session.add(task)
+    db.session.commit()
+    
     return task
 
 
@@ -235,6 +256,9 @@ def create_recur_task(title, display, background_color, border_color,
                 completed=completed
                 )
 
+    db.session.add(recur_task)
+    db.session.commit()
+    
     return recur_task
 
 
@@ -267,6 +291,12 @@ def get_todays_events():
     events = Event.query.filter(Event.start==todays_date).all()
 
     return events
+
+
+def get_date_str(date, time):
+    """Converts user date and time input into a parsable string."""
+
+    return date + "T" + time
 
 
 if __name__ == '__main__':

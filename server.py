@@ -4,7 +4,7 @@ from flask import (Flask, render_template, jsonify, request, flash, session,
                    redirect)
 from jinja2 import StrictUndefined
 
-from model import connect_to_db, db, Event
+from model import connect_to_db, db, Event, RecurEvent, Routine, Tasklist, RecurTasklist
 import crud
 
 app = Flask(__name__)
@@ -81,9 +81,10 @@ def show_delete_option():
 def add_event():
     """Adds a user-created event to the calendar."""
 
-    events = []
+    items = []
+    
     for event in Event.query.all():
-        events.append({
+        items.append({
             "title": event.title,
             "allDay": event.all_day,
             "start": event.start,
@@ -95,18 +96,47 @@ def add_event():
             "textColor": event.text_color
         })
 
-    return jsonify(events)
+    for recur_event in RecurEvent.query.all():
+        items.append({
+            "title": recur_event.title,
+            "allDay": recur_event.all_day,
+            "start": recur_event.start,
+            "end": recur_event.end,
+            "url": recur_event.url,
+            "display": recur_event.display,
+            "backgroundColor": recur_event.background_color,
+            "borderColor": recur_event.border_color,
+            "textColor": recur_event.text_color,
+            "daysOfWeek": recur_event.days_of_week,
+            "startRecur": recur_event.start_recur,
+            "endRecur": recur_event.end_recur
+        })
+
+    return jsonify(items)
 
 
 @app.route("/create-event")
 def create_new_event():
     """Creates a new event."""
-    title = request.args.get("title")
-    start = request.args.get("start")
-    end = request.args.get("end")
-    # Icon TBD
-    # Icon color TBD
+    
+    # Get user input for event
+    title = request.args.get("event-title")
+    start_date = request.args.get("start-date")
+    start_time = request.args.get("start-time")
+    end_date = request.args.get("end-date")
+    end_time = request.args.get("end-time")
+    all_day = request.args.get("all-day")
+    repeat = request.args.get("repeat-option")
+    # TODO: Get user input for recurring events
+    days_of_week = request.args.getlist("days-of-week")
+    start_recur = request.args.get("event-repeat-start")
+    end_recur = request.args.get("event-repeat-end")
 
+    # Convert dates/times into strings
+    start = crud.get_date_str(start_date, start_time)
+    end = crud.get_date_str(end_date, end_time)
+
+    # Initalize user and default display
     url = "/delete"
     display = "auto"
     background_color = "blue"
@@ -115,63 +145,14 @@ def create_new_event():
     completed = False
     user=crud.get_user_by_id(session["user_id"])
 
-    event = crud.create_event(title, False, start, end, "", "", url, display,
+    if repeat is None:
+        crud.create_event(title, all_day, start, end, "", "", url, display,
                  background_color, border_color, text_color, None, None,
                  completed, user)
-    
-    db.session.add(event)
-    db.session.commit()
-
-    return redirect("/dashboard")
-
-
-@app.route("/create-routine")
-def create_new_routine():
-    """Creates a new routine."""
-    title = request.args.get("title")
-    start = request.args.get("start")
-    end = request.args.get("end")
-
-    return redirect("/dashboard")
-
-
-@app.route("/create-tasklist")
-def create_new_tasklist():
-    """Creates a new tasklist."""
-    title = request.args.get("title")
-    start = request.args.get("date")
-    
-    all_day = True
-    url = "/delete"
-    display = "auto"
-    background_color = "blue"
-    border_color = "black"
-    text_color = "black"
-    completed = False
-    user=crud.get_user_by_id(session["user_id"])
-
-    tasklist = crud.create_tasklist(title, all_day, start, url, display,
-                 background_color, border_color, text_color, None, None,
+    else:
+        crud.create_recur_event(title, all_day, start, end, "", "", url, display,
+                 background_color, border_color, text_color, days_of_week, start_recur, end_recur, None, None,
                  completed, user)
-    
-    db.session.add(tasklist)
-    db.session.commit()
-
-    # TODO: 
-    for i in range(5):
-        task_title = request.args.get(f"task{1}")
-        
-        display = "auto"
-        background_color = "blue"
-        border_color = "black"
-        text_color = "black"
-        completed = False
-        
-        task = crud.create_task(task_title, display, background_color, border_color,
-                                text_color, None, None, completed, tasklist)
-        
-        db.session.add(task)
-        db.session.commit()
 
     return redirect("/dashboard")
 
@@ -179,10 +160,10 @@ def create_new_tasklist():
 @app.route("/delete-event")
 def delete_event():
     """Deletes an event."""
-    
+
     title = request.args.get("delete")
     crud.delete_event(title)
-    
+
     return redirect("/dashboard")
 
 

@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       <div class="col-2" id="navigation">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-item-modal">
         NEW
       </button><br>
       <a href="/dashboard">DASHBOARD</a><br>
@@ -63,100 +63,119 @@
       </div>  
     </div>
   </div>
-  <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  
+  <!-- Add new item modal -->
+  <div class="modal fade" id="new-item-modal" aria-hidden="true" aria-labelledby="new-item-modal-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+          <h1 class="modal-title fs-5" id="new-item-modal-label">Schedule New Item</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Event</button>
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal">Routine</button>
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle4" data-bs-toggle="modal">Tasklist</button>
-        </div>
-        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-target="#new-event-modal" data-bs-toggle="modal">Event</button>
+          <button class="btn btn-primary" data-bs-target="#new-routine-modal" data-bs-toggle="modal">Routine</button>
+          <button class="btn btn-primary" data-bs-target="#new-tasklist-modal" data-bs-toggle="modal">Tasklist</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  
+  <!-- Add new Event modal -->
+  <div class="modal fade" id="new-event-modal" aria-hidden="true" aria-labelledby="new-event-modal-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+        
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">New Event</h1>
+          <h1 class="modal-title fs-5" id="new-event-modal-label">New Event</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
           <div class="container">
             <form action="/create-event">
-                <div class="form-floating mb-3">
-                  <input type="text" class="form-control" id="event-title" name="title" placeholder="New Event">
-                  <label for="event-title">Event Title</label>
-                </div>
+              
+              <!-- Input for event title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="event-title" name="event-title" placeholder="New Event">
+                <label for="event-title">Event Title</label>
+              </div>
+
+              <!-- Input for event start and end date/time -->
               <div class="row">
                 <div class="col">
                   <label for="start-date">Start:</label><br>
-                  <input type="date" id="start-date" name="start-date"><br>
-                  <input type="time" id="start-time" name="start-time">
+                  <input type="date" id="event-start-date" name="start-date"><br>
+                  <input type="time" id="event-start-time" name="start-time">
                 </div>
                 <div class="col">
                   <label for="end-date">End:</label><br>
-                  <input type="date" id="end-date" name="end-date"><br>
-                  <input type="time" id="end-time" name="end-time">
+                  <input type="date" id="event-end-date" name="end-date"><br>
+                  <input type="time" id="event-end-time" name="end-time">
                 </div>
               </div><br>
+
+              <!-- Toggle all day option -->
               <div class="row">
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                  <label class="form-check-label" for="flexSwitchCheckDefault">All Day</label>
+                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day">
+                  <label class="form-check-label" for="all-day-switch">All Day</label>
                 </div>
               </div><br>
+
+              <!-- Specify repeating options -->
               <div class="row">
                 <p>Repeats</p>
-                <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
-                  <label class="btn btn-outline-primary" for="btnradio3">None</label>
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio4">Day</label>
-                  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btnradio5">Week</label>
+                <div class="btn-group" role="group" aria-label="repeat none day or week" name="repeat-option">
+                  <input type="radio" class="btn-check" name="none" id="repeat-none" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+
+                  <input type="radio" class="btn-check" name="day" id="repeat-day" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+
+                  <input type="radio" class="btn-check" name="week" id="repeat-week" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
                 </div>
               </div><br>
+
+              <!-- Specify repeat date range -->
               <div class="row">
                 <div class="col">
                   <label for="start-date">Start:</label>
-                  <input type="date" id="start-date" name="start-date"><br>  
+                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
                 </div>
                 <div class="col">
                   <label for="end-date">End:</label>
-                  <input type="date" id="end-date" name="end-date"><br>    
+                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
                 </div>
               </div><br>
+              
+              <!-- TODO: Specify days for weekly repeating event -->
               <div class="row">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck1">Sun</label>
+                  <input type="checkbox" class="btn-check" id="sunday" autocomplete="off" value="0" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
             
-                  <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck2">Mon</label>
+                  <input type="checkbox" class="btn-check" id="monday" autocomplete="off" value="1" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="monday">Mon</label>
             
-                  <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck3">Tue</label>
+                  <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off" value="2" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
 
-                  <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck4">Wed</label>
+                  <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off" value="3" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
             
-                  <input type="checkbox" class="btn-check" id="btncheck5" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck5">Thu</label>
+                  <input type="checkbox" class="btn-check" id="thursday" autocomplete="off" value="4" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
             
-                  <input type="checkbox" class="btn-check" id="btncheck6" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck6">Fri</label>
+                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off" value="5" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="friday">Fri</label>
 
-                  <input type="checkbox" class="btn-check" id="btncheck7" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="btncheck7">Sat</label>
+                  <input type="checkbox" class="btn-check" id="saturday" autocomplete="off" value="6" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
                 </div>
               </div><br>
+              
               <div class="row">
                 <input type="submit" value="Create">  
               </div>
@@ -164,57 +183,217 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3" tabindex="-1">
+  
+  <!-- Add new routine modal -->
+  <div class="modal fade" id="new-routine-modal" aria-hidden="true" aria-labelledby="new-routine-modal-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+        
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel3">New Routine</h1>
+          <h1 class="modal-title fs-5" id="new-routine-modal-label">New Routine</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
-          <h5>Add Routine</h5>
+          <div class="container">
+            <form action="/create-routine">
+              
+              <!-- Input for routine title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="routine-title" name="routine-title" placeholder="New Routine">
+                <label for="routine-title">Routine Title</label>
+              </div>
+
+              <!-- Input for routine start and end date/time -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label><br>
+                  <input type="date" id="routine-start-date" name="start-date"><br>
+                  <input type="time" id="routine-start-time" name="start-time">
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label><br>
+                  <input type="date" id="routine-end-date" name="end-date"><br>
+                  <input type="time" id="routine-end-time" name="end-time">
+                </div>
+              </div><br>
+
+              <!-- Specify repeating options -->
+              <div class="row">
+                <p>Repeats</p>
+                <div class="btn-group" role="group" aria-label="repeat none day or week">
+                  <input type="radio" class="btn-check" name="none" id="repeat-none" autocomplete="off" checked>
+                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+
+                  <input type="radio" class="btn-check" name="day" id="repeat-day" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+
+                  <input type="radio" class="btn-check" name="week" id="repeat-week" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
+                </div>
+              </div><br>
+
+              <!-- Specify repeat date range -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label>
+                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label>
+                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
+                </div>
+              </div><br>
+
+              <!-- Specify days for weekly repeating event -->
+              <div class="row">
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <input type="checkbox" class="btn-check" id="sunday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
+            
+                  <input type="checkbox" class="btn-check" id="monday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="monday">Mon</label>
+            
+                  <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
+
+                  <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
+            
+                  <input type="checkbox" class="btn-check" id="thursday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
+            
+                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="friday">Fri</label>
+
+                  <input type="checkbox" class="btn-check" id="saturday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
+                </div>
+              </div><br>
+
+              <div class="row">
+                <input type="submit" value="Create">  
+              </div>
+            </form>
+          </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel4" tabindex="-1">
+  
+  <!-- Add new tasklist modal -->
+  <div class="modal fade" id="new-tasklist-modal" aria-hidden="true" aria-labelledby="new-tasklist-modal-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+        
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalToggleLabel4">New Tasklist</h1>
+          <h1 class="modal-title fs-5" id="new-tasklist-modal-label">New Tasklist</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        
         <div class="modal-body">
-          <h5>Add Tasklist</h5>
-          <form action="/create-tasklist">
-            <label for="title">Tasklist Title:</label>
-            <input type="text" id="title" name="title"><br>
-            <p>YYYY-MM-DD</p>
-            <label for="date">Date:</label>
-            <input type="text" id="date" name="date"><br>
-            <p>Tasks:</p>
-            <input type="text" id="task0" name="task0">
-            <button type="button" id="addtask0">+</button>
-            <input type="text" id="task1" name="task1" style="display:none">
-            <button type="button" id="addtask1" style="display:none">+</button>
-            <input type="text" id="task2" name="task2" style="display:none">
-            <button type="button" id="addtask2" style="display:none">+</button>
-            <input type="text" id="task3" name="task3" style="display:none">
-            <button type="button" id="addtask3" style="display:none">+</button>
-            <input type="text" id="task4" name="task4" style="display:none"><br>
-            <input type="submit" value="Create">
-          </form>
+          <div class="container">
+            <form action="/create-tasklist">
+
+              <!-- Input for tasklist title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="tasklist-title" name="tasklist-title" placeholder="New Tasklist">
+                <label for="tasklist-title">Tasklist Title</label>
+              </div>
+
+              <!-- Input for routine start and end date/time -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label><br>
+                  <input type="date" id="routine-start-date" name="start-date">
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label><br>
+                  <input type="date" id="routine-end-date" name="end-date">
+                </div>
+              </div><br>
+
+              <!-- Specify repeating options -->
+              <div class="row">
+                <p>Repeats</p>
+                <div class="btn-group" role="group" aria-label="repeat none day or week">
+                  <input type="radio" class="btn-check" name="none" id="repeat-none" autocomplete="off" checked>
+                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+
+                  <input type="radio" class="btn-check" name="day" id="repeat-day" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+
+                  <input type="radio" class="btn-check" name="week" id="repeat-week" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
+                </div>
+              </div><br>
+
+              <!-- Specify repeat date range -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label>
+                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label>
+                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
+                </div>
+              </div><br>
+
+              <!-- Specify days for weekly repeating event -->
+              <div class="row">
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <input type="checkbox" class="btn-check" id="sunday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
+            
+                  <input type="checkbox" class="btn-check" id="monday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="monday">Mon</label>
+            
+                  <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
+
+                  <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
+            
+                  <input type="checkbox" class="btn-check" id="thursday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
+            
+                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="friday">Fri</label>
+
+                  <input type="checkbox" class="btn-check" id="saturday" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
+                </div>
+              </div><br>
+            
+              <!-- TODO: Add changing number of tasks -->
+              <p>Tasks:</p>
+              <input type="text" id="task0" name="task0">
+              <button type="button" id="addtask0">+</button>
+              <input type="text" id="task1" name="task1" style="display:none">
+              <button type="button" id="addtask1" style="display:none">+</button>
+              <input type="text" id="task2" name="task2" style="display:none">
+              <button type="button" id="addtask2" style="display:none">+</button>
+              <input type="text" id="task3" name="task3" style="display:none">
+              <button type="button" id="addtask3" style="display:none">+</button>
+              <input type="text" id="task4" name="task4" style="display:none"><br>
+            
+            <div class="row">
+                <input type="submit" value="Create">  
+              </div>
+            </form>
+          </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
