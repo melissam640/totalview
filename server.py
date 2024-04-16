@@ -58,10 +58,12 @@ def show_user_dashboard():
     user = crud.get_user_by_id(session["user_id"])
     todays_tasklists = crud.get_todays_tasklists()
     todays_events = crud.get_todays_events()
+    todays_routines = crud.get_todays_routines()
     
     return render_template("dashboard.html", username=user.username,
                            todays_tasklists=todays_tasklists,
-                           todays_events=todays_events)
+                           todays_events=todays_events,
+                           todays_routines=todays_routines)
 
 @app.route("/month")
 def show_monthly_schedule():
@@ -95,21 +97,50 @@ def add_event():
             "borderColor": event.border_color,
             "textColor": event.text_color
         })
-
+    
     for recur_event in RecurEvent.query.all():
+        
+        # Convert days of week from string to list if it's not None
+        if recur_event.days_of_week:
+            days_of_week = recur_event.days_of_week.split(" ")
+        else:
+            days_of_week = recur_event.days_of_week
+        
         items.append({
             "title": recur_event.title,
             "allDay": recur_event.all_day,
-            "start": recur_event.start,
-            "end": recur_event.end,
+            "startTime": recur_event.start,
+            "endTime": recur_event.end,
             "url": recur_event.url,
             "display": recur_event.display,
             "backgroundColor": recur_event.background_color,
             "borderColor": recur_event.border_color,
             "textColor": recur_event.text_color,
-            "daysOfWeek": recur_event.days_of_week,
+            "daysOfWeek": days_of_week,
             "startRecur": recur_event.start_recur,
             "endRecur": recur_event.end_recur
+        })
+
+    for routine in Routine.query.all():
+        
+        # Convert days of week from string to list if it's not None
+        if routine.days_of_week:
+            days_of_week = routine.days_of_week.split(" ")
+        else:
+            days_of_week = routine.days_of_week
+        
+        items.append({
+            "title": routine.title,
+            "startTime": routine.start,
+            "endTime": routine.end,
+            "url": routine.url,
+            "display": routine.display,
+            "backgroundColor": routine.background_color,
+            "borderColor": routine.border_color,
+            "textColor": routine.text_color,
+            "daysOfWeek": days_of_week,
+            "startRecur": routine.start_recur,
+            "endRecur": routine.end_recur
         })
 
     return jsonify(items)
@@ -127,16 +158,11 @@ def create_new_event():
     end_time = request.args.get("end-time")
     all_day = request.args.get("all-day")
     repeat = request.args.get("repeat-option")
-    # TODO: Get user input for recurring events
     days_of_week = request.args.getlist("days-of-week")
     start_recur = request.args.get("event-repeat-start")
     end_recur = request.args.get("event-repeat-end")
 
-    # Convert dates/times into strings
-    start = crud.get_date_str(start_date, start_time)
-    end = crud.get_date_str(end_date, end_time)
-
-    # Initalize user and default display
+    # Initalize user and default display settings
     url = "/delete"
     display = "auto"
     background_color = "blue"
@@ -144,13 +170,27 @@ def create_new_event():
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])
+    
+    if repeat == "none": # Create a one-time event
 
-    if repeat is None:
+        start = crud.get_date_str(start_date, start_time)
+        end = crud.get_date_str(end_date, end_time)
+        
         crud.create_event(title, all_day, start, end, "", "", url, display,
                  background_color, border_color, text_color, None, None,
                  completed, user)
-    else:
-        crud.create_recur_event(title, all_day, start, end, "", "", url, display,
+    
+    if repeat == "day": # Create a recurring event with days_of_week set to None
+
+        crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
+                 background_color, border_color, text_color, None, start_recur, end_recur, None, None,
+                 completed, user)
+    
+    else: # Create a recurring event with days_of_week specified
+
+        days_of_week = " ".join(days_of_week)
+        
+        crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
                  background_color, border_color, text_color, days_of_week, start_recur, end_recur, None, None,
                  completed, user)
 

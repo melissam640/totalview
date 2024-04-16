@@ -18,14 +18,37 @@ user = crud.create_user("testuser1@test.com", "testpassword1", "test_user_1", "l
 model.db.session.add(user)
 
 # Test events
-event1 = crud.create_event("Event Title", False, "2024-04-05T14:30:00", "2024-04-05T15:30:00",
-                          "", "", "/", "auto",
-                          "green", "white", "black", None, None, False, user)
+
+# One-time set time event
+event1 = crud.create_event("Event 1", False, "2024-04-15T14:30:00", 
+                           "2024-04-15T15:30:00", "", "", "/delete", "auto",
+                           "green", "green", "black", None, None, False, user)
 model.db.session.add(event1)
 
-event2 = crud.create_event("Second Event", True, "2024-04-10", "2024-04-11",
-                          "April 10th", "April 11th", "/", "auto",
-                          "yellow", "white", "blue", None, None, False, user)
+# One-time all day event
+event2 = crud.create_event("Event 2", True, "2024-04-16", "2024-04-16", "", "",
+                           "/delete", "auto", "green", "green", "white", None,
+                           None, False, user)
 model.db.session.add(event2)
+
+# Repeating daily set time event
+event3 = crud.create_recur_event("Recur Event 3", False, "14:30:00", "15:30:00",
+                          "", "", "/delete", "auto", "green", "green", "black",
+                          None, "2024-04-17", "2024-04-20", None, None, False,
+                          user)
+model.db.session.add(event3)
+
+# Repeating weekly set time event
+event4 = crud.create_recur_event("Recur Event 4", False, "14:30:00", "15:30:00",
+                          "", "", "/delete", "auto", "green", "green", "black",
+                          "2 4", "2024-04-23", "2024-05-03", None, None, False,
+                          user)
+model.db.session.add(event4)
+
+# Routine
+routine = crud.create_routine("Routine", "", "", "", "", "/delete", "auto",
+                              "red", "red", "white", "2 4", "2024-04-09",
+                              "2024-04-12", None, None, False, user)
+model.db.session.add(routine)
 
 model.db.session.commit()

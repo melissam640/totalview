@@ -275,7 +275,7 @@ def get_todays_tasklists():
     """Gets tasklists assigned to today."""
 
     # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-10"
+    todays_date = "2024-04-16"
 
     tasklists = Tasklist.query.filter(Tasklist.start==todays_date).all()
 
@@ -286,11 +286,22 @@ def get_todays_events():
     """Gets events assigned to today."""
 
     # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-10"
+    todays_date = "2024-04-16"
 
     events = Event.query.filter(Event.start==todays_date).all()
 
     return events
+
+
+def get_todays_routines():
+    """Gets routines assigned to today."""
+
+    # TODO: Hard coding the date for now, will change later
+    todays_date = "2024-04-09"
+
+    routines = Routine.query.filter(Routine.start_recur==todays_date).all()
+
+    return routines
 
 
 def get_date_str(date, time):
