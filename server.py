@@ -57,12 +57,16 @@ def show_user_dashboard():
     
     user = crud.get_user_by_id(session["user_id"])
     todays_tasklists = crud.get_todays_tasklists()
+    todays_recur_tasklists = crud.get_todays_recur_tasklists()
     todays_events = crud.get_todays_events()
+    todays_recur_events = crud.get_todays_recur_events()
     todays_routines = crud.get_todays_routines()
     
     return render_template("dashboard.html", username=user.username,
                            todays_tasklists=todays_tasklists,
+                           todays_recur_tasklists=todays_recur_tasklists,
                            todays_events=todays_events,
+                           todays_recur_events=todays_recur_events,
                            todays_routines=todays_routines)
 
 @app.route("/month")
@@ -78,6 +82,14 @@ def show_delete_option():
     """Create page with the option to delete an event."""
     
     return render_template("delete.html")
+
+@app.route("/account")
+def show_user_account():
+    """Creates page with user account infomation."""
+
+    user = crud.get_user_by_id(session["user_id"])
+
+    return render_template("/account", username=user.username)
 
 @app.route("/api/add-event")
 def add_event():
@@ -157,7 +169,7 @@ def create_new_event():
     end_date = request.args.get("end-date")
     end_time = request.args.get("end-time")
     all_day = request.args.get("all-day")
-    repeat = request.args.get("repeat-option")
+    repeat = request.args.get("event-repeat-option")
     days_of_week = request.args.getlist("days-of-week")
     start_recur = request.args.get("event-repeat-start")
     end_recur = request.args.get("event-repeat-end")
@@ -180,7 +192,7 @@ def create_new_event():
                  background_color, border_color, text_color, None, None,
                  completed, user)
     
-    if repeat == "day": # Create a recurring event with days_of_week set to None
+    elif repeat == "day": # Create a recurring event with days_of_week set to None
 
         crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
                  background_color, border_color, text_color, None, start_recur, end_recur, None, None,
@@ -249,8 +261,8 @@ def create_new_tasklist():
     """Creates a new tasklist."""
     
     # Get user input for tasklist
-    title = request.args.get("routine-title")
-    date = request.args.get("tasklist_date")
+    title = request.args.get("tasklist-title")
+    date = request.args.get("tasklist-date")
     repeat = request.args.get("repeat-option")
     days_of_week = request.args.getlist("days-of-week")
     start_recur = request.args.get("event-repeat-start")
@@ -270,7 +282,7 @@ def create_new_tasklist():
         tasklist = crud.create_tasklist(title, all_day, date, url, display, background_color,
                          border_color, text_color, None, None, completed, user)
     
-    if repeat == "day": # Create a recurring event with days_of_week set to None
+    elif repeat == "day": # Create a recurring event with days_of_week set to None
     
         recur_tasklist = crud.create_recur_tasklist(title, all_day, "", url, display, background_color,
                                    border_color, text_color, None, start_recur, end_recur,

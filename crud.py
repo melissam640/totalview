@@ -278,39 +278,56 @@ def delete_event(event_title):
 def get_todays_tasklists():
     """Gets tasklists assigned to today."""
 
-    # todays_date = date.today()
-    todays_date = "2024-04-20"
+    todays_date = str(date.today())
 
     tasklists = Tasklist.query.filter(Tasklist.start==todays_date).all()
 
     return tasklists
 
 
+def get_todays_recur_tasklists():
+    """Gets recurring tasklists assigned to today."""
+
+    todays_date = str(date.today())
+
+    recur_tasklists = RecurTasklist.query.filter(RecurTasklist.start==todays_date).all()
+
+    return recur_tasklists
+
+
 def get_todays_events():
     """Gets events assigned to today."""
 
-    todays_date = "2024-04-20"
+    todays_date = str(date.today())
 
-    events = Event.query.filter(Event.start==todays_date).all()
+    events = Event.query.filter(Event.start.startswith(todays_date)).all()
 
     return events
+
+def get_todays_recur_events():
+    """Gets recurring events assigned to today."""
+
+    todays_date = str(date.today())
+
+    recur_events = RecurEvent.query.filter(RecurEvent.start_recur==todays_date).all()
+
+    return recur_events
 
 
 def get_todays_routines():
     """Gets routines assigned to today."""
 
-    # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-20"
+    todays_date = str(date.today())
 
-    routines = Routine.query.filter(Routine.start_recur==todays_date).all()
+    routines = Routine.query.filter(Routine.start_recur.startswith(todays_date)).all()
 
     return routines
 
 
-def get_date_str(date, time):
+def get_date_str(item_date, item_time):
     """Converts user date and time input into a parsable string."""
 
-    return date + "T" + time
+    return item_date + "T" + item_time
 
 
 if __name__ == '__main__':
