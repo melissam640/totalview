@@ -1,5 +1,7 @@
 """CRUD operations."""
 
+from datetime import date
+
 from model import (db, User, Event, RecurEvent, Routine, Action, 
                    Tasklist, RecurTasklist, Task, RecurTask, connect_to_db)
 
@@ -54,8 +56,8 @@ def create_event(title, all_day, start, end, start_str, end_str, url, display,
                 all_day=all_day,
                 start=start,
                 end=end,
-                start_str=start_str, # Delete
-                end_str=end_str, # Delete
+                start_str=start_str,
+                end_str=end_str,
                 url=url,
                 display=display,
                 background_color=background_color,
@@ -84,8 +86,8 @@ def create_recur_event(title, all_day, start, end, start_str, end_str, url,
                 all_day=all_day,
                 start=start,
                 end=end,
-                start_str=start_str, # Delete
-                end_str=end_str, # Delete
+                start_str=start_str,
+                end_str=end_str,
                 url=url,
                 display=display,
                 background_color=background_color,
@@ -243,7 +245,7 @@ def create_task(title, display, background_color, border_color, text_color,
 
 
 def create_recur_task(title, display, background_color, border_color,
-                      text_color, icon, icon_color, completed):
+                      text_color, icon, icon_color, completed, recur_tasklist):
     """Create and return a new recurring task."""
 
     recur_task = RecurTask(
@@ -254,7 +256,8 @@ def create_recur_task(title, display, background_color, border_color,
                 text_color=text_color,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                recur_tasklist=recur_tasklist
                 )
 
     db.session.add(recur_task)
@@ -275,8 +278,8 @@ def delete_event(event_title):
 def get_todays_tasklists():
     """Gets tasklists assigned to today."""
 
-    # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-16"
+    # todays_date = date.today()
+    todays_date = "2024-04-20"
 
     tasklists = Tasklist.query.filter(Tasklist.start==todays_date).all()
 
@@ -286,8 +289,7 @@ def get_todays_tasklists():
 def get_todays_events():
     """Gets events assigned to today."""
 
-    # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-16"
+    todays_date = "2024-04-20"
 
     events = Event.query.filter(Event.start==todays_date).all()
 
@@ -298,7 +300,7 @@ def get_todays_routines():
     """Gets routines assigned to today."""
 
     # TODO: Hard coding the date for now, will change later
-    todays_date = "2024-04-09"
+    todays_date = "2024-04-20"
 
     routines = Routine.query.filter(Routine.start_recur==todays_date).all()
 

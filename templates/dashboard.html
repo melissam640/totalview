@@ -7,7 +7,9 @@
       <h1>Dashboard for {{ username }}</h1>  
     </div>
     <div class="row">
+      
       <div class="col-2" id="navigation">
+      <!-- Button to open new item modal -->
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-item-modal">
         NEW
       </button><br>
@@ -16,6 +18,7 @@
       <a href="/delete">EDIT EVENT</a><br>
       <a href="/account">ACCOUNT</a><br>
       </div>
+      
       <div class="col">
         <h3>Today</h3>
         {% for event in todays_events %}
@@ -232,13 +235,22 @@
                 <label for="routine-title">Routine Title</label>
               </div>
 
+              <!-- Input for routine start and end date -->
+              <div class="row">
+                <div class="col">
+                  <label for="routine-start">Start:</label><br>
+                  <input type="time" id="event-start-time" name="start-time"><br>
+                </div>
+                <div class="col">
+                  <label for="routine-end">End:</label><br>
+                  <input type="time" id="event-end-time" name="end-time"><br>
+                </div>
+              </div><br>
+              
               <!-- Specify repeating options -->
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-none" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="rou-repeat-none">None</label>
-
                   <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-day" autocomplete="off">
                   <label class="btn btn-outline-primary" for="rou-repeat-day">Day</label>
 
@@ -285,6 +297,7 @@
                 </div>
               </div><br>
 
+              <!-- Add actions to routine -->
               <div class="row" id="add-action-section">
                 <div class="col">
                   <label for="add-action">Actions</label>
@@ -325,30 +338,24 @@
                 <label for="tasklist-title">Tasklist Title</label>
               </div>
 
-              <!-- Input for routine start and end date/time -->
+              <!-- Input for tasklist date -->
               <div class="row">
-                <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="routine-start-date" name="start-date">
-                </div>
-                <div class="col">
-                  <label for="end-date">End:</label><br>
-                  <input type="date" id="routine-end-date" name="end-date">
-                </div>
+                  <label for="tasklist-date">Date:</label><br>
+                  <input type="date" id="tasklist-date" name="tasklist-date">
               </div><br>
 
               <!-- Specify repeating options -->
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="none" id="repeat-none" autocomplete="off" checked>
-                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-none" autocomplete="off" value="none">
+                  <label class="btn btn-outline-primary" for="tasklist-none">None</label>
 
-                  <input type="radio" class="btn-check" name="day" id="repeat-day" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-day" autocomplete="off" value="day">
+                  <label class="btn btn-outline-primary" for="tasklist-day">Day</label>
 
-                  <input type="radio" class="btn-check" name="week" id="repeat-week" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
+                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-week" autocomplete="off" value="week">
+                  <label class="btn btn-outline-primary" for="tasklist-week">Week</label>
                 </div>
               </div><br>
 
@@ -356,51 +363,47 @@
               <div class="row">
                 <div class="col">
                   <label for="start-date">Start:</label>
-                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
+                  <input type="date" id="tasklist-repeat-start" name="tasklist-repeat-start"><br>  
                 </div>
                 <div class="col">
                   <label for="end-date">End:</label>
-                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
+                  <input type="date" id="tasklist-repeat-end" name="tasklist-repeat-end"><br>    
                 </div>
               </div><br>
 
-              <!-- Specify days for weekly repeating event -->
+              <!-- Specify days for weekly repeating tasklist -->
               <div class="row">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <input type="checkbox" class="btn-check" id="sunday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-sunday" autocomplete="off" value="0" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-sunday">Sun</label>
             
-                  <input type="checkbox" class="btn-check" id="monday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="monday">Mon</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-monday" autocomplete="off" value="1" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-monday">Mon</label>
             
-                  <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-tuesday" autocomplete="off" value="2" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-tuesday">Tue</label>
 
-                  <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-wednesday" autocomplete="off" value="3" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-wednesday">Wed</label>
             
-                  <input type="checkbox" class="btn-check" id="thursday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-thursday" autocomplete="off" value="4" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-thursday">Thu</label>
             
-                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="friday">Fri</label>
+                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off" value="5" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-friday">Fri</label>
 
-                  <input type="checkbox" class="btn-check" id="saturday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
+                  <input type="checkbox" class="btn-check" id="tasklist-saturday" autocomplete="off" value="6" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="tasklist-saturday">Sat</label>
                 </div>
               </div><br>
             
-              <!-- TODO: Add changing number of tasks -->
-              <p>Tasks:</p>
-              <input type="text" id="task0" name="task0">
-              <button type="button" id="addtask0">+</button>
-              <input type="text" id="task1" name="task1" style="display:none">
-              <button type="button" id="addtask1" style="display:none">+</button>
-              <input type="text" id="task2" name="task2" style="display:none">
-              <button type="button" id="addtask2" style="display:none">+</button>
-              <input type="text" id="task3" name="task3" style="display:none">
-              <button type="button" id="addtask3" style="display:none">+</button>
-              <input type="text" id="task4" name="task4" style="display:none"><br>
+              <!-- Add tasks to tasklist -->
+              <div class="row" id="add-task-section">
+                <div class="col">
+                  <label for="add-task">Tasks</label>
+                  <button class="btn btn-primary" type="button" id="add-task" name="add-task">Add</button>  
+                </div>
+              </div><br>
             
               <div class="row">
                 <input type="submit" value="Create">  

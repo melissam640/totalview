@@ -200,16 +200,11 @@ def create_new_event():
 @app.route("/create-routine")
 def create_new_routine():
     """Creates a new routine."""
-
-    # TODO: Finish route for creating a routine
     
     # Get user input for routine
     title = request.args.get("routine-title")
-    start_date = request.args.get("start_date")
     start_time = request.args.get("start_time")
-    end_date = request.args.get("end_date")
     end_time = request.args.get("end_time")
-    all_day = request.args.get("all-day")
     repeat = request.args.get("routine-repeat-option")
     days_of_week = request.args.getlist("days-of-week")
     start_recur = request.args.get("routine-repeat-start")
@@ -224,19 +219,82 @@ def create_new_routine():
     completed = False
     user=crud.get_user_by_id(session["user_id"])
 
-    days_of_week = " ".join(days_of_week)
-        
-    routine = crud.create_routine(title, "", "", "", "", url, display,
+    if repeat == "day":
+        routine = crud.create_routine(title, start_time, end_time, "", "", url, display,
                         background_color, border_color, text_color,
-                        days_of_week, start_recur, end_recur, None, None,
+                        None, start_recur, end_recur, None, None,
                         completed, user)
+    
+    else:
+        days_of_week = " ".join(days_of_week)
+            
+        routine = crud.create_routine(title, start_time, end_time, "", "", url, display,
+                            background_color, border_color, text_color,
+                            days_of_week, start_recur, end_recur, None, None,
+                            completed, user)
     
     # Add actions to routine
     action_titles = request.args.getlist("action-title")
 
+    # TODO: Add more options for user to enter in addition to action title
     for action_title in action_titles:
         crud.create_action(action_title, "", "", "", "", "", "", "", "", "",
                            None, None, False, routine)
+
+    return redirect("/dashboard")
+
+
+@app.route("/create-tasklist")
+def create_new_tasklist():
+    """Creates a new tasklist."""
+    
+    # Get user input for tasklist
+    title = request.args.get("routine-title")
+    date = request.args.get("tasklist_date")
+    repeat = request.args.get("repeat-option")
+    days_of_week = request.args.getlist("days-of-week")
+    start_recur = request.args.get("event-repeat-start")
+    end_recur = request.args.get("event-repeat-end")
+    
+    all_day = True
+    url = "/delete"
+    display = "auto"
+    background_color = "blue"
+    border_color = "black"
+    text_color = "black"
+    completed = False
+    user=crud.get_user_by_id(session["user_id"])
+
+    if repeat == "none": # Create a one-time event
+        
+        tasklist = crud.create_tasklist(title, all_day, date, url, display, background_color,
+                         border_color, text_color, None, None, completed, user)
+    
+    if repeat == "day": # Create a recurring event with days_of_week set to None
+    
+        recur_tasklist = crud.create_recur_tasklist(title, all_day, "", url, display, background_color,
+                                   border_color, text_color, None, start_recur, end_recur,
+                                   None, None, completed, user)
+
+    else: # Create a recurring event with days_of_week specified
+
+        days_of_week = " ".join(days_of_week)
+
+        recur_tasklist = crud.create_recur_tasklist(title, all_day, "", url, display, background_color,
+                                   border_color, text_color, days_of_week, start_recur, end_recur,
+                                   None, None, completed, user)
+
+    # Add tasks to tasklist
+    task_titles = request.args.getlist("task-title")
+
+    # TODO: Add more options for user to enter in addition to task title
+    for task_title in task_titles:
+        
+        if repeat == "none":
+            crud.create_task(task_title, "", "", "", "", None, None, False, tasklist)
+        
+        else:
+            crud.create_recur_task(task_title, "", "", "", "", None, None, False, recur_tasklist)
 
     return redirect("/dashboard")
 

@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
 });
 
+// Adds additional text boxes to enter the title of actions for a new routine
+// within the new routine modal
 document.querySelector('#add-action').addEventListener('click', () => {
   document.querySelector('#add-action-section').insertAdjacentHTML('afterend',
     `<div class="form-floating mb-3">
@@ -30,22 +32,13 @@ document.querySelector('#add-action').addEventListener('click', () => {
   );
 });
 
-document.querySelector('#addtask0').addEventListener('click', () => {
-    document.querySelector('#task1').style.display = 'block';
-    document.querySelector('#addtask1').style.display = 'block';
-});
-
-document.querySelector('#addtask1').addEventListener('click', () => {
-    document.querySelector('#task2').style.display = 'block';
-    document.querySelector('#addtask2').style.display = 'block';
-});
-
-document.querySelector('#addtask2').addEventListener('click', () => {
-    document.querySelector('#task3').style.display = 'block';
-    document.querySelector('#addtask3').style.display = 'block';
-});
-
-document.querySelector('#addtask3').addEventListener('click', () => {
-    document.querySelector('#task4').style.display = 'block';
-    document.querySelector('#addtask4').style.display = 'block';
+// Adds additional text boxes to enter the title of tasks for a new tasklist
+// within the new tasklist modal
+document.querySelector('#add-task').addEventListener('click', () => {
+  document.querySelector('#add-task-section').insertAdjacentHTML('afterend',
+    `<div class="form-floating mb-3">
+      <input type="text" class="form-control" id="task-title" name="task-title" placeholder="New Task">
+      <label for="task-title">Task Title</label>
+    </div>`
+  );
 });
