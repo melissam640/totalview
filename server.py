@@ -197,6 +197,50 @@ def create_new_event():
     return redirect("/dashboard")
 
 
+@app.route("/create-routine")
+def create_new_routine():
+    """Creates a new routine."""
+
+    # TODO: Finish route for creating a routine
+    
+    # Get user input for routine
+    title = request.args.get("routine-title")
+    start_date = request.args.get("start_date")
+    start_time = request.args.get("start_time")
+    end_date = request.args.get("end_date")
+    end_time = request.args.get("end_time")
+    all_day = request.args.get("all-day")
+    repeat = request.args.get("routine-repeat-option")
+    days_of_week = request.args.getlist("days-of-week")
+    start_recur = request.args.get("routine-repeat-start")
+    end_recur = request.args.get("routine-repeat-end")
+
+    # Initalize user and default display settings
+    url = "/delete"
+    display = "auto"
+    background_color = "blue"
+    border_color = "black"
+    text_color = "black"
+    completed = False
+    user=crud.get_user_by_id(session["user_id"])
+
+    days_of_week = " ".join(days_of_week)
+        
+    routine = crud.create_routine(title, "", "", "", "", url, display,
+                        background_color, border_color, text_color,
+                        days_of_week, start_recur, end_recur, None, None,
+                        completed, user)
+    
+    # Add actions to routine
+    action_titles = request.args.getlist("action-title")
+
+    for action_title in action_titles:
+        crud.create_action(action_title, "", "", "", "", "", "", "", "", "",
+                           None, None, False, routine)
+
+    return redirect("/dashboard")
+
+
 @app.route("/delete-event")
 def delete_event():
     """Deletes an event."""

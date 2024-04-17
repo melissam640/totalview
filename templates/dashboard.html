@@ -42,11 +42,18 @@
                   {{ routine.title }}
                 </button>
               </h2>
-              <div id="collapse-routine{{ routine.routine_id }}" class="accordion-collapse collapse" data-bs-parent="#routineAccordion">
-                <div class="accordion-body">
-                  Actions
+                <div id="collapse-routine{{ routine.routine_id }}" class="accordion-collapse collapse" data-bs-parent="#routineAccordion">
+                  <div class="accordion-body">
+                    {% for action in routine.actions %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="action-flex-check">
+                        <label class="form-check-label" for="action-flex-check">
+                            {{ action.title }}
+                        </label>
+                      </div>
+                      {% endfor %}
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         {% endfor %}
@@ -65,8 +72,8 @@
               <div id="collapse-task{{ tasklist.tasklist_id }}" class="accordion-collapse collapse" data-bs-parent="#tasklistAccordion">
                 <div class="accordion-body">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" value="" id="task-flex-check">
+                    <label class="form-check-label" for="task-flex-check">
                         {{ task.title }}
                     </label>
                   </div>
@@ -225,32 +232,18 @@
                 <label for="routine-title">Routine Title</label>
               </div>
 
-              <!-- Input for routine start and end date/time -->
-              <div class="row">
-                <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="routine-start-date" name="start-date"><br>
-                  <input type="time" id="routine-start-time" name="start-time">
-                </div>
-                <div class="col">
-                  <label for="end-date">End:</label><br>
-                  <input type="date" id="routine-end-date" name="end-date"><br>
-                  <input type="time" id="routine-end-time" name="end-time">
-                </div>
-              </div><br>
-
               <!-- Specify repeating options -->
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="none" id="repeat-none" autocomplete="off" checked>
-                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-none" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="rou-repeat-none">None</label>
 
-                  <input type="radio" class="btn-check" name="day" id="repeat-day" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-day" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="rou-repeat-day">Day</label>
 
-                  <input type="radio" class="btn-check" name="week" id="repeat-week" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-week" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="rou-repeat-week">Week</label>
                 </div>
               </div><br>
 
@@ -258,37 +251,44 @@
               <div class="row">
                 <div class="col">
                   <label for="start-date">Start:</label>
-                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
+                  <input type="date" id="routine-repeat-start" name="routine-repeat-start"><br>  
                 </div>
                 <div class="col">
                   <label for="end-date">End:</label>
-                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
+                  <input type="date" id="routine-repeat-end" name="routine-repeat-end"><br>    
                 </div>
               </div><br>
 
-              <!-- Specify days for weekly repeating event -->
+              <!-- Specify days for weekly repeating routine -->
               <div class="row">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <input type="checkbox" class="btn-check" id="sunday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
+                  <input type="checkbox" class="btn-check" id="rou-sunday" autocomplete="off" value="0" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-sunday">Sun</label>
             
-                  <input type="checkbox" class="btn-check" id="monday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="monday">Mon</label>
+                  <input type="checkbox" class="btn-check" id="rou-monday" autocomplete="off" value="1" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-monday">Mon</label>
             
-                  <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
+                  <input type="checkbox" class="btn-check" id="rou-tuesday" autocomplete="off" value="2" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-tuesday">Tue</label>
 
-                  <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
+                  <input type="checkbox" class="btn-check" id="rou-wednesday" autocomplete="off" value="3" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-wednesday">Wed</label>
             
-                  <input type="checkbox" class="btn-check" id="thursday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
+                  <input type="checkbox" class="btn-check" id="rou-thursday" autocomplete="off" value="4" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-thursday">Thu</label>
             
-                  <input type="checkbox" class="btn-check" id="friday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="friday">Fri</label>
+                  <input type="checkbox" class="btn-check" id="rou-friday" autocomplete="off" value="5" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-friday">Fri</label>
 
-                  <input type="checkbox" class="btn-check" id="saturday" autocomplete="off">
-                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
+                  <input type="checkbox" class="btn-check" id="rou-saturday" autocomplete="off" value="6" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="rou-saturday">Sat</label>
+                </div>
+              </div><br>
+
+              <div class="row" id="add-action-section">
+                <div class="col">
+                  <label for="add-action">Actions</label>
+                  <button class="btn btn-primary" type="button" id="add-action" name="add-action">Add</button>  
                 </div>
               </div><br>
 
@@ -402,7 +402,7 @@
               <button type="button" id="addtask3" style="display:none">+</button>
               <input type="text" id="task4" name="task4" style="display:none"><br>
             
-            <div class="row">
+              <div class="row">
                 <input type="submit" value="Create">  
               </div>
             </form>

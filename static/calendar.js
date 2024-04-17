@@ -21,6 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
 });
 
+document.querySelector('#add-action').addEventListener('click', () => {
+  document.querySelector('#add-action-section').insertAdjacentHTML('afterend',
+    `<div class="form-floating mb-3">
+      <input type="text" class="form-control" id="action-title" name="action-title" placeholder="New Action">
+      <label for="action-title">Action Title</label>
+    </div>`
+  );
+});
+
 document.querySelector('#addtask0').addEventListener('click', () => {
     document.querySelector('#task1').style.display = 'block';
     document.querySelector('#addtask1').style.display = 'block';

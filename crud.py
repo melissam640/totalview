@@ -139,7 +139,7 @@ def create_routine(title, start, end, start_str, end_str, url, display,
 
 def create_action(title, start, end, start_str, end_str, url, display,
                   background_color, border_color, text_color, icon, icon_color,
-                  completed):
+                  completed, routine):
     """Create and return a new action."""
 
     action = Action(
@@ -155,7 +155,8 @@ def create_action(title, start, end, start_str, end_str, url, display,
                 text_color=text_color,
                 icon=icon,
                 icon_color=icon_color,
-                completed=completed
+                completed=completed,
+                routine=routine
                 )
 
     db.session.add(action)
