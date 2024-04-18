@@ -311,6 +311,15 @@ def create_new_tasklist():
     return redirect("/dashboard")
 
 
+@app.route("/edit/<event_id>")
+def show_event_details(event_id):
+    """Shows the details for a selected event."""
+
+    event = crud.get_event_by_id(event_id)
+    
+    return render_template("edit.html", event=event)
+
+
 @app.route("/delete-event")
 def delete_event():
     """Deletes an event."""

@@ -46,8 +46,8 @@ class Event(db.Model):
     all_day = db.Column(db.Boolean)
     start = db.Column(db.String)
     end = db.Column(db.String)
-    start_str = db.Column(db.String) # Delete
-    end_str = db.Column(db.String) # Delete
+    start_str = db.Column(db.String)
+    end_str = db.Column(db.String)
     url = db.Column(db.String)
     display = db.Column(db.String)
     background_color = db.Column(db.String)

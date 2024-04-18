@@ -266,6 +266,14 @@ def create_recur_task(title, display, background_color, border_color,
     return recur_task
 
 
+def get_event_by_id(event_id):
+    """Gets an event by id"""
+
+    event = Event.query.get(event_id)
+
+    return event
+
+
 def delete_event(event_title):
     """Deletes an event."""
 
