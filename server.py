@@ -89,7 +89,7 @@ def show_user_account():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return render_template("/account", username=user.username)
+    return render_template("account.html", username=user.username)
 
 @app.route("/api/add-event")
 def add_event():
@@ -215,8 +215,8 @@ def create_new_routine():
     
     # Get user input for routine
     title = request.args.get("routine-title")
-    start_time = request.args.get("start_time")
-    end_time = request.args.get("end_time")
+    start_time = request.args.get("routine-start-time")
+    end_time = request.args.get("routine-end-time")
     repeat = request.args.get("routine-repeat-option")
     days_of_week = request.args.getlist("days-of-week")
     start_recur = request.args.get("routine-repeat-start")
