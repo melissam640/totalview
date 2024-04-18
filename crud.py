@@ -267,11 +267,25 @@ def create_recur_task(title, display, background_color, border_color,
 
 
 def get_event_by_id(event_id):
-    """Gets an event by id"""
+    """Gets an event by id."""
 
     event = Event.query.get(event_id)
 
     return event
+
+
+def get_routine_by_id(routine_id):
+    """Gets a routine by id."""
+
+    routine = Routine.query.get(routine_id)
+
+    return routine
+
+
+# def create_custom_url(item, item_id, table):
+#     """Updates url from "/edit" to "/edit/<id>"."""
+
+#     update(table).where(table.item.item_id == item_id).values(url = "/edit/" + item_id)
 
 
 def delete_event(event_title):

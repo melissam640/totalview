@@ -77,11 +77,11 @@ def show_monthly_schedule():
     
     return render_template("month.html", username=user.username)
 
-@app.route("/delete")
-def show_delete_option():
-    """Create page with the option to delete an event."""
+# @app.route("/delete")
+# def show_delete_option():
+#     """Create page with the option to delete an event."""
     
-    return render_template("delete.html")
+#     return render_template("delete.html")
 
 @app.route("/account")
 def show_user_account():
@@ -175,7 +175,7 @@ def create_new_event():
     end_recur = request.args.get("event-repeat-end")
 
     # Initalize user and default display settings
-    url = "/delete"
+    url = "/edit"
     display = "auto"
     background_color = "blue"
     border_color = "black"
@@ -188,9 +188,12 @@ def create_new_event():
         start = crud.get_date_str(start_date, start_time)
         end = crud.get_date_str(end_date, end_time)
         
-        crud.create_event(title, all_day, start, end, "", "", url, display,
+        event = crud.create_event(title, all_day, start, end, "", "", url, display,
                  background_color, border_color, text_color, None, None,
                  completed, user)
+        
+        event.url = f"/edit/{event.event_id}"
+        db.session.commit()
     
     elif repeat == "day": # Create a recurring event with days_of_week set to None
 
@@ -236,6 +239,9 @@ def create_new_routine():
                         background_color, border_color, text_color,
                         None, start_recur, end_recur, None, None,
                         completed, user)
+        
+        routine.url = f"/edit/{routine.routine_id}"
+        db.session.commit()
     
     else:
         days_of_week = " ".join(days_of_week)
@@ -318,6 +324,15 @@ def show_event_details(event_id):
     event = crud.get_event_by_id(event_id)
     
     return render_template("edit.html", event=event)
+
+
+@app.route("/edit/<routine_id>")
+def show_routine_details(routine_id):
+    """Shows the details for a selected routine."""
+
+    routine = crud.get_routine_by_id(routine_id)
+    
+    return render_template("edit.html", routine=routine)
 
 
 @app.route("/delete-event")
