@@ -22,6 +22,9 @@
       <p> Event End Date: {{ event.end[:10] }} </p>
       <p> Event End Time: {{ event.end[11:] }} </p>
     {% endif %}
+    <form action="/edit/{{ event.event_id }}/delete-event" method="POST">
+      <input type="submit" value="Delete">
+    </form>
   </div>
   
   <!-- Edit event title modal -->

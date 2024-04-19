@@ -327,10 +327,6 @@ def update_event_title(event_id):
 
     title = request.form.get("edit-event-title")
 
-    print("******* Title in server", title)
-    print("******* ID in server", event_id)
-    print("******* ID type in server", type(event_id))
-
     event_id_int = int(event_id)
     
     event = crud.get_event_by_id(event_id_int)
@@ -341,6 +337,20 @@ def update_event_title(event_id):
     return redirect(f"/edit/{event_id}")
 
 
+@app.route("/edit/<event_id>/delete-event", methods = ["POST"])
+def delete_event(event_id):
+    """Updates the title of a given event."""
+
+    event_id_int = int(event_id)
+    
+    event = crud.get_event_by_id(event_id_int)
+
+    db.session.delete(event)
+    db.session.commit()
+    
+    return redirect("/dashboard")
+
+
 @app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
@@ -349,16 +359,6 @@ def show_routine_details(routine_id):
     routine = crud.get_routine_by_id(routine_id)
     
     return render_template("edit-routine.html", routine=routine, username=user.username)
-
-
-@app.route("/delete-event")
-def delete_event():
-    """Deletes an event."""
-
-    title = request.args.get("delete")
-    crud.delete_event(title)
-
-    return redirect("/dashboard")
 
 
 if __name__ == "__main__":
