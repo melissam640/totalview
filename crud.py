@@ -269,6 +269,9 @@ def create_recur_task(title, display, background_color, border_color,
 def get_event_by_id(event_id):
     """Gets an event by id."""
 
+    print("******* ID in crud", event_id)
+    print("******* ID type in crud", type(event_id))
+    
     event = Event.query.get(event_id)
 
     return event

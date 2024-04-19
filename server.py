@@ -72,16 +72,10 @@ def show_user_dashboard():
 @app.route("/month")
 def show_monthly_schedule():
     """Create user monthly schedule."""
-    
-    user = crud.get_user_by_id(session["user_id"])
-    
-    return render_template("month.html", username=user.username)
 
-# @app.route("/delete")
-# def show_delete_option():
-#     """Create page with the option to delete an event."""
-    
-#     return render_template("delete.html")
+    user = crud.get_user_by_id(session["user_id"])
+
+    return render_template("month.html", username=user.username)
 
 @app.route("/account")
 def show_user_account():
@@ -321,18 +315,40 @@ def create_new_tasklist():
 def show_event_details(event_id):
     """Shows the details for a selected event."""
 
+    user = crud.get_user_by_id(session["user_id"])
     event = crud.get_event_by_id(event_id)
     
-    return render_template("edit.html", event=event)
+    return render_template("edit.html", event=event, username=user.username)
+
+
+@app.route("/edit/<event_id>/edit-event-title", methods = ["POST"])
+def update_event_title(event_id):
+    """Updates the title of a given event."""
+
+    title = request.form.get("edit-event-title")
+
+    print("******* Title in server", title)
+    print("******* ID in server", event_id)
+    print("******* ID type in server", type(event_id))
+
+    event_id_int = int(event_id)
+    
+    event = crud.get_event_by_id(event_id_int)
+
+    event.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit/{event_id}")
 
 
 @app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
 
+    user = crud.get_user_by_id(session["user_id"])
     routine = crud.get_routine_by_id(routine_id)
     
-    return render_template("edit-routine.html", routine=routine)
+    return render_template("edit-routine.html", routine=routine, username=user.username)
 
 
 @app.route("/delete-event")
