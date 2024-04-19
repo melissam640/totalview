@@ -226,21 +226,21 @@ def create_new_routine():
     end_recur = request.args.get("routine-repeat-end")
 
     # Initalize user and default display settings
-    url = "/delete"
+    url = "/edit-routine"
     display = "auto"
     background_color = "blue"
     border_color = "black"
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])
-
+    
     if repeat == "day":
         routine = crud.create_routine(title, start_time, end_time, "", "", url, display,
                         background_color, border_color, text_color,
                         None, start_recur, end_recur, None, None,
                         completed, user)
         
-        routine.url = f"/edit/{routine.routine_id}"
+        routine.url = f"/edit-routine/{routine.routine_id}"
         db.session.commit()
     
     else:
@@ -326,13 +326,13 @@ def show_event_details(event_id):
     return render_template("edit.html", event=event)
 
 
-@app.route("/edit/<routine_id>")
+@app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
 
     routine = crud.get_routine_by_id(routine_id)
     
-    return render_template("edit.html", routine=routine)
+    return render_template("edit-routine.html", routine=routine)
 
 
 @app.route("/delete-event")

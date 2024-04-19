@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <!-- <h1>Edit An Event</h1>
-  <h2>Edit Event</h2>
-  <form action="/delete-event">
-    <label for="delete">Event Title:</label>
-    <input type="text" id="delete" name="delete">
-    <input type="submit" value="Delete">
-  </form>
-  <br> -->
-  <h2>Event Details</h2>
-  {{ event.title }}
-  {{ event.all_day }}
-  {{ event.start }}
-  {{ event.end }}
+  <h2>{{ event.title }}</h2><br>
+  {% if event.all_day %}
+    <p> Is All Day </p>
+    <p> Event Start Date: {{ event.start }}</p>
+    <p> Event End Date: {{ event.end }}</p>
+  {% else %}
+    <p> Event Start Date: {{ event.start[:10] }} </p>
+    <p> Event Start Time: {{ event.start[11:] }} </p>
+    <p> Event End Date: {{ event.end[:10] }} </p>
+    <p> Event End Time: {{ event.end[11:] }} </p>
+  {% endif %}
 {% endblock %}
