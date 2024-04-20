@@ -328,10 +328,33 @@ def update_event_title(event_id):
     title = request.form.get("edit-event-title")
 
     event_id_int = int(event_id)
-    
     event = crud.get_event_by_id(event_id_int)
 
     event.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit/{event_id}")
+
+
+@app.route("/edit/<event_id>/edit-event-time", methods = ["POST"])
+def update_event_time(event_id):
+    """Updates the time and date of a given event."""
+
+    start_date = request.form.get("start-date")
+    start_time = request.form.get("start-time")
+    end_date = request.form.get("end-date")
+    end_time = request.form.get("end-time")
+    all_day = request.form.get("all-day")
+
+    start = crud.get_date_str(start_date, start_time)
+    end = crud.get_date_str(end_date, end_time)
+    
+    event_id_int = int(event_id)
+    event = crud.get_event_by_id(event_id_int)
+
+    event.start = start
+    event.end = end
+    event.all_day = all_day
     db.session.commit()
     
     return redirect(f"/edit/{event_id}")
@@ -349,6 +372,16 @@ def delete_event(event_id):
     db.session.commit()
     
     return redirect("/dashboard")
+
+
+@app.route("/edit-recur-event/<recur_event_id>")
+def show_recur_event_details(recur_event_id):
+    """Shows the details for a selected recurring event."""
+
+    user = crud.get_user_by_id(session["user_id"])
+    recur_event = crud.get_recur_event_by_id(recur_event_id)
+    
+    return render_template("edit-recur-event.html", recur_event=recur_event, username=user.username)
 
 
 @app.route("/edit-routine/<routine_id>")

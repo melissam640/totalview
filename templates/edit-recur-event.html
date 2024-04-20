@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Edit Item{% endblock %}
+{% block body %}
+  <div class="col">
+    <h2 style="display: inline">{{ recur_event.title }}</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
+      EDIT
+    </button>
+    <br><br>
+    <h3 style="display: inline">Scheduled Time</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
+      EDIT
+    </button>
+    <br>
+    {% if recur_event.all_day %}
+      <p> Is All Day </p>
+      <p> Event Start Date: {{ recur_event.start }}</p>
+      <p> Event End Date: {{ recur_event.end }}</p>
+    {% else %}
+      <p> Event Start Date: {{ recur_event.start[:10] }} </p>
+      <p> Event Start Time: {{ recur_event.start[11:] }} </p>
+      <p> Event End Date: {{ recur_event.end[:10] }} </p>
+      <p> Event End Time: {{ recur_event.end[11:] }} </p>
+    {% endif %}
+    <h3 style="display: inline">Recurrence</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
+      EDIT
+    </button>
+    <br>
+    {% if recur_event.days_of_week %}
+      <p> From: {{ recur_event.start_recur }}</p>
+      <p> To: {{ recur_event.end_recur }}</p>
+      <p> On: {{ recur_event.days_of_week }} </p>
+    {% else %}
+      <p> From: {{ recur_event.start_recur }}</p>
+      <p> To: {{ recur_event.end_recur }}</p>
+      <p> Every Day </p>
+    {% endif %}
+    <form action="/edit/{{ recur_event.recur_event_id }}/delete-recur-event" method="POST">
+      <input type="submit" value="Delete">
+    </form>
+  </div>
+  
+  <!-- Edit event title modal -->
+  <div class="modal fade" id="edit-recur-event-title" aria-hidden="true" aria-labelledby="edit-recur-event-title-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-recur-event-title-label">Edit Event Title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit/{{ recur_event.recur_event_id }}/edit-recur-event-title" method="POST">
+              <!-- Input for event title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="edit-recur-event-title" name="edit-recur-event-title">
+                <label for="edit-recur-event-title">New Title</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit event date/time modal -->
+  <div class="modal fade" id="edit-recur-event-time" aria-hidden="true" aria-labelledby="edit-recur-event-time-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-recur-event-time-label">Edit Event Date and Time</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- action="/edit-event-time" -->
+          <div class="row">
+            <form>
+              
+              <!-- Input for event date and time -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label><br>
+                  <input type="date" id="recur-event-start-date" name="start-date"><br>
+                  <input type="time" id="recur-event-start-time" name="start-time">
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label><br>
+                  <input type="date" id="recur-event-end-date" name="end-date"><br>
+                  <input type="time" id="recur-event-end-time" name="end-time">
+                </div>
+              </div><br>
+              
+              <!-- Toggle all day option -->
+              <div class="row">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day">
+                  <label class="form-check-label" for="all-day-switch">All Day</label>
+                </div>
+              </div><br>
+  
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

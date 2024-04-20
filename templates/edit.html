@@ -64,7 +64,7 @@
         <div class="modal-body">
           <!-- action="/edit-event-time" -->
           <div class="row">
-            <form>
+            <form action="/edit/{{ event.event_id }}/edit-event-time" method="POST">
               
               <!-- Input for event date and time -->
               <div class="row">
@@ -89,7 +89,7 @@
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" value="Update">
               </div>
             </form>
           </div>
