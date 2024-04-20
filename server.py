@@ -384,6 +384,20 @@ def show_recur_event_details(recur_event_id):
     return render_template("edit-recur-event.html", recur_event=recur_event, username=user.username)
 
 
+@app.route("/edit-recur-event/<recur_event_id>/edit-recur-event-title", methods = ["POST"])
+def update_recur_event_title(recur_event_id):
+    """Updates the title of a given recurring event."""
+
+    title = request.form.get("edit-recur-event-title")
+
+    recur_event = crud.get_recur_event_by_id(int(recur_event_id))
+
+    recur_event.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit-recur-event/{recur_event_id}")
+
+
 @app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
