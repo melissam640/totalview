@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Edit Item{% endblock %}
+{% block body %}
+  <div class="col">
+    <h2 style="display: inline">{{ tasklist.title }}</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
+      EDIT
+    </button>
+    <br><br>
+    <h3 style="display: inline">Scheduled Time</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
+      EDIT
+    </button>
+    <br>
+      <p> Tasklist Start Date: {{ tasklist.start }}</p>
+    <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/delete-tasklist" method="POST">
+      <input type="submit" value="Delete">
+    </form>
+    <h3 style="display: inline">Tasks</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-task">
+      ADD
+    </button>
+    <br><br>
+    {% for task in tasklist.tasks %}
+      <p style="display: inline"> {{ task.title }} </p>
+      <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" method="POST" style="display: inline">
+        <input type="submit" class="btn btn-primary" value="Delete">
+      </form>
+      <br><br>
+    {% endfor %}
+  </div>
+
+  <!-- Edit tasklist title modal -->
+  <div class="modal fade" id="edit-tasklist-title" aria-hidden="true" aria-labelledby="edit-tasklist-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-tasklist-label">Edit Tasklist Title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/edit-tasklist-title" method="POST">
+              <!-- Input for tasklist title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="edit-tasklist-title" name="edit-tasklist-title">
+                <label for="edit-tasklist-title">New Title</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit tasklist date modal -->
+  <div class="modal fade" id="edit-tasklist-time" aria-hidden="true" aria-labelledby="edit-tasklist-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-tasklist-label">Edit Tasklist Date</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/edit-tasklist-time" method="POST">
+              
+              <!-- Input for tasklist date -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label><br>
+                  <input type="date" id="tasklist-start-date" name="start-date">
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label><br>
+                  <input type="date" id="tasklist-end-date" name="end-date">
+                </div>
+              </div><br>
+  
+              <div class="row">
+                <input type="submit" value="Update">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add another task -->
+  <div class="modal fade" id="add-new-task" aria-hidden="true" aria-labelledby="add-new-task-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="add-new-task-label">Add New Task</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/add-task" method="POST">
+              <!-- Input for task title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="add-task-title" name="add-task-title">
+                <label for="add-task-title">New Task</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Add">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

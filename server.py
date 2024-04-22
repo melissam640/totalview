@@ -565,6 +565,183 @@ def delete_action(routine_id, action_id):
     return redirect(f"/edit-routine/{routine_id}")
 
 
+@app.route("/edit-tasklist/<tasklist_id>")
+def show_tasklist_details(tasklist_id):
+    """Shows the details for a selected tasklist."""
+
+    user = crud.get_user_by_id(session["user_id"])
+    tasklist = crud.get_tasklist_by_id(tasklist_id)
+    
+    return render_template("edit-tasklist.html", tasklist=tasklist, username=user.username)
+
+
+@app.route("/edit-tasklist/<tasklist_id>/edit-tasklist-title", methods = ["POST"])
+def update_tasklist_title(tasklist_id):
+    """Updates the title of a given tasklist."""
+
+    title = request.form.get("edit-tasklist-title")
+
+    tasklist = crud.get_tasklist_by_id(int(tasklist_id))
+
+    tasklist.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit-tasklist/{tasklist_id}")
+
+
+@app.route("/edit-tasklist/<tasklist_id>/edit-tasklist-time", methods = ["POST"])
+def update_tasklist_time(tasklist_id):
+    """Updates the date of a given tasklist."""
+
+    start_date = request.form.get("start-date")
+    
+    tasklist = crud.get_tasklist_by_id(int(tasklist_id))
+
+    tasklist.start = start_date
+    db.session.commit()
+    
+    return redirect(f"/edit-tasklist/{tasklist_id}")
+
+
+@app.route("/edit-tasklist/<tasklist_id>/delete-tasklist", methods = ["POST"])
+def delete_tasklist(tasklist_id):
+    """Deletes a tasklist."""
+
+    tasklist = crud.get_tasklist_by_id(int(tasklist_id))
+
+    db.session.delete(tasklist)
+    db.session.commit()
+    
+    return redirect("/dashboard")
+
+
+@app.route("/edit-tasklist/<tasklist_id>/add-task", methods = ["POST"])
+def add_task(tasklist_id):
+    """Adds a new task to a tasklist."""
+
+    task_title = request.form.get("add-task-title")
+
+    tasklist = crud.get_tasklist_by_id(int(tasklist_id))
+
+    # TODO: Add more options for user to enter in addition to task title
+    crud.create_task(task_title, "", "", "", "", None, None, False, tasklist)
+    
+    return redirect(f"/edit-tasklist/{tasklist_id}")
+
+
+@app.route("/edit-tasklist/<tasklist_id>/<task_id>/delete-task", methods = ["POST"])
+def delete_task(tasklist_id, task_id):
+    """Deletes a task."""
+
+    task = crud.get_task_by_id(int(task_id))
+
+    db.session.delete(task)
+    db.session.commit()
+    
+    return redirect(f"/edit-tasklist/{tasklist_id}")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>")
+def show_recur_tasklist_details(recur_tasklist_id):
+    """Shows the details for a selected recurring tasklist."""
+
+    user = crud.get_user_by_id(session["user_id"])
+    recur_tasklist = crud.get_recur_tasklist_by_id(recur_tasklist_id)
+    
+    return render_template("edit-recur-tasklist.html", recur_tasklist=recur_tasklist, username=user.username)
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-title", methods = ["POST"])
+def update_recur_tasklist_title(recur_tasklist_id):
+    """Updates the title of a given recurring tasklist."""
+
+    title = request.form.get("edit-recur-tasklist-title")
+
+    recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
+
+    recur_tasklist.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit-recur-tasklist/{recur_tasklist_id}")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-time", methods = ["POST"])
+def update_recur_tasklist_time(recur_tasklist_id):
+    """Updates the date of a given recurring tasklist."""
+
+    start_date = request.form.get("start-date")
+    
+    recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
+
+    recur_tasklist.start = start_date
+    db.session.commit()
+    
+    return redirect(f"/edit-recur-tasklist/{recur_tasklist_id}")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-recurrence", methods = ["POST"])
+def update_recur_tasklist_recurrence(recur_tasklist_id):
+    """Updates the recurrence of a given tasklist."""
+
+    repeat = request.form.get("tasklist-repeat-option")
+    days_of_week = request.form.getlist("days-of-week")
+    start_recur = request.form.get("tasklist-repeat-start")
+    end_recur = request.form.get("tasklist-repeat-end")
+    
+    recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
+
+    recur_tasklist.start_recur = start_recur
+    recur_tasklist.end_recur = end_recur
+    
+    if repeat == "day":
+        recur_tasklist.days_of_week = None
+    else:
+        days_of_week = " ".join(days_of_week)
+        recur_tasklist.days_of_week = days_of_week
+
+    db.session.commit()
+
+    return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/delete-recur-tasklist", methods = ["POST"])
+def delete_recur_tasklist(recur_tasklist_id):
+    """Deletes a recurring tasklist."""
+
+    recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
+
+    db.session.delete(recur_tasklist)
+    db.session.commit()
+    
+    return redirect("/dashboard")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/add-recur-task", methods = ["POST"])
+def add_recur_task(recur_tasklist_id):
+    """Adds a new task to a recurring tasklist."""
+
+    recur_task_title = request.form.get("add-recur_task-title")
+
+    recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
+
+    # TODO: Add more options for user to enter in addition to task title
+    crud.create_recur_task(recur_task_title, "", "", "", "", None, None, False, recur_tasklist)
+    
+    return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
+
+
+@app.route("/edit-recur-tasklist/<recur_tasklist_id>/<recur_task_id>/delete-recur-task", methods = ["POST"])
+def delete_recur_task(recur_tasklist_id, recur_task_id):
+    """Deletes a task for a recurring tasklist."""
+
+    recur_task = crud.get_recur_task_by_id(int(recur_task_id))
+
+    db.session.delete(recur_task)
+    db.session.commit()
+    
+    return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
+
+
 if __name__ == "__main__":
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)

@@ -298,6 +298,38 @@ def get_action_by_id(action_id):
     return action
 
 
+def get_tasklist_by_id(tasklist_id):
+    """Gets a tasklist by id."""
+
+    tasklist = Tasklist.query.get(tasklist_id)
+
+    return tasklist
+
+
+def get_task_by_id(task_id):
+    """Gets a task by id."""
+
+    task = Task.query.get(task_id)
+
+    return task
+
+
+def get_recur_tasklist_by_id(recur_tasklist_id):
+    """Gets a recurring tasklist by id."""
+
+    recur_tasklist = RecurTasklist.query.get(recur_tasklist_id)
+
+    return recur_tasklist
+
+
+def get_recur_task_by_id(recur_task_id):
+    """Gets a recuring task by id."""
+
+    recur_task = RecurTask.query.get(recur_task_id)
+
+    return recur_task
+
+
 def delete_event(event_title):
     """Deletes an event."""
 
