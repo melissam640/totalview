@@ -191,9 +191,12 @@ def create_new_event():
     
     elif repeat == "day": # Create a recurring event with days_of_week set to None
 
-        crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
+        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
                  background_color, border_color, text_color, None, start_recur, end_recur, None, None,
                  completed, user)
+        
+        recur_event.url = f"/edit-recur-event/{recur_event.recur_event_id}"
+        db.session.commit()
     
     else: # Create a recurring event with days_of_week specified
 
@@ -202,6 +205,9 @@ def create_new_event():
         crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
                  background_color, border_color, text_color, days_of_week, start_recur, end_recur, None, None,
                  completed, user)
+        
+        recur_event.url = f"/edit-recur-event/{recur_event.recur_event_id}"
+        db.session.commit()
 
     return redirect("/dashboard")
 
@@ -362,7 +368,7 @@ def update_event_time(event_id):
 
 @app.route("/edit/<event_id>/delete-event", methods = ["POST"])
 def delete_event(event_id):
-    """Updates the title of a given event."""
+    """Deletes an event."""
 
     event_id_int = int(event_id)
     
@@ -398,6 +404,61 @@ def update_recur_event_title(recur_event_id):
     return redirect(f"/edit-recur-event/{recur_event_id}")
 
 
+@app.route("/edit-recur-event/<recur_event_id>/edit-recur-event-time", methods = ["POST"])
+def update_recur_event_time(recur_event_id):
+    """Updates the time and date of a given recurring event."""
+
+    start_time = request.form.get("start-time")
+    end_time = request.form.get("end-time")
+    all_day = request.form.get("all-day")
+    
+    recur_event = crud.get_recur_event_by_id(int(recur_event_id))
+
+    recur_event.start = start_time
+    recur_event.end = end_time
+    recur_event.all_day = all_day
+    db.session.commit()
+    
+    return redirect(f"/edit-recur-event/{recur_event_id}")
+
+
+@app.route("/edit-recur-event/<recur_event_id>/edit-event-recurrence", methods = ["POST"])
+def update_event_recurrence(recur_event_id):
+    """Updates the recurrence of a given recurring event."""
+
+    repeat = request.form.get("event-repeat-option")
+    days_of_week = request.form.getlist("days-of-week")
+    start_recur = request.form.get("event-repeat-start")
+    end_recur = request.form.get("event-repeat-end")
+    
+    recur_event = crud.get_recur_event_by_id(int(recur_event_id))
+
+    recur_event.start_recur = start_recur
+    recur_event.end_recur = end_recur
+    
+    if repeat == "day":
+        recur_event.days_of_week = None
+    else:
+        days_of_week = " ".join(days_of_week)
+        recur_event.days_of_week = days_of_week
+
+    db.session.commit()
+
+    return redirect(f"/edit-recur-event/{recur_event_id}")
+
+
+@app.route("/edit-recur-event/<recur_event_id>/delete-recur-event", methods = ["POST"])
+def delete_recur_event(recur_event_id):
+    """Deletes a recurring event."""
+
+    recur_event = crud.get_recur_event_by_id(int(recur_event_id))
+
+    db.session.delete(recur_event)
+    db.session.commit()
+    
+    return redirect("/dashboard")
+
+
 @app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
@@ -406,6 +467,102 @@ def show_routine_details(routine_id):
     routine = crud.get_routine_by_id(routine_id)
     
     return render_template("edit-routine.html", routine=routine, username=user.username)
+
+
+@app.route("/edit-routine/<routine_id>/edit-routine-title", methods = ["POST"])
+def update_routine_title(routine_id):
+    """Updates the title of a given routine."""
+
+    title = request.form.get("edit-routine-title")
+
+    routine = crud.get_routine_by_id(int(routine_id))
+
+    routine.title = title
+    db.session.commit()
+    
+    return redirect(f"/edit-routine/{routine_id}")
+
+
+@app.route("/edit-routine/<routine_id>/edit-routine-time", methods = ["POST"])
+def update_routine_time(routine_id):
+    """Updates the time of a given routine."""
+
+    start_time = request.form.get("start-time")
+    end_time = request.form.get("end-time")
+    all_day = request.form.get("all-day")
+    
+    routine = crud.get_routine_by_id(int(routine_id))
+
+    routine.start = start_time
+    routine.end = end_time
+    routine.all_day = all_day
+    db.session.commit()
+    
+    return redirect(f"/edit-routine/{routine_id}")
+
+
+@app.route("/edit-routine/<routine_id>/edit-routine-recurrence", methods = ["POST"])
+def update_routine_recurrence(routine_id):
+    """Updates the recurrence of a given routine."""
+
+    repeat = request.form.get("routine-repeat-option")
+    days_of_week = request.form.getlist("days-of-week")
+    start_recur = request.form.get("routine-repeat-start")
+    end_recur = request.form.get("routine-repeat-end")
+    
+    routine = crud.get_routine_by_id(int(routine_id))
+
+    routine.start_recur = start_recur
+    routine.end_recur = end_recur
+    
+    if repeat == "day":
+        routine.days_of_week = None
+    else:
+        days_of_week = " ".join(days_of_week)
+        routine.days_of_week = days_of_week
+
+    db.session.commit()
+
+    return redirect(f"/edit-routine/{routine_id}")
+
+
+@app.route("/edit-routine/<routine_id>/delete-routine", methods = ["POST"])
+def delete_routine(routine_id):
+    """Deletes a routine."""
+
+    routine = crud.get_routine_by_id(int(routine_id))
+
+    db.session.delete(routine)
+    db.session.commit()
+    
+    return redirect("/dashboard")
+
+
+@app.route("/edit-routine/<routine_id>/add-action", methods = ["POST"])
+def add_action(routine_id):
+    """Adds a new action to a routine."""
+
+    action_title = request.form.get("add-action-title")
+
+    routine = crud.get_routine_by_id(int(routine_id))
+
+    # TODO: Add more options for user to enter in addition to action title
+    crud.create_action(action_title, "", "", "", "", "", "", "", "", "",
+                           None, None, False, routine)
+    
+    return redirect(f"/edit-routine/{routine_id}")
+
+
+@app.route("/edit-routine/<routine_id>/<action_id>/delete-action", methods = ["POST"])
+def delete_action(routine_id, action_id):
+    """Deletes an action."""
+
+    action = crud.get_action_by_id(int(action_id))
+
+    db.session.delete(action)
+    db.session.commit()
+    
+    return redirect(f"/edit-routine/{routine_id}")
 
 
 if __name__ == "__main__":

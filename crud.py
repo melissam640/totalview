@@ -290,6 +290,14 @@ def get_routine_by_id(routine_id):
     return routine
 
 
+def get_action_by_id(action_id):
+    """Gets an action by id."""
+
+    action = Action.query.get(action_id)
+
+    return action
+
+
 def delete_event(event_title):
     """Deletes an event."""
 

@@ -1,8 +1,211 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <h2>Routine Details</h2>
-  {{ routine.title }}
-  {{ routine.start }}
-  {{ routine.end }}
+  <div class="col">
+    <h2 style="display: inline">{{ routine.title }}</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
+      EDIT
+    </button>
+    <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" method="POST" style="display: inline">
+      <input type="submit" class="btn btn-primary" value="Delete">
+    </form>
+    <br><br>
+    <h3 style="display: inline">Scheduled Time</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
+      EDIT
+    </button>
+    <br>
+      <p> Routine Start Time: {{ routine.start }} </p>
+      <p> Routine End Time: {{ routine.end }} </p>
+    <h3 style="display: inline">Recurrence</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
+      EDIT
+    </button>
+    <br>
+    {% if routine.days_of_week %}
+      <p> From: {{ routine.start_recur }}</p>
+      <p> To: {{ routine.end_recur }}</p>
+      <p> On: {{ routine.days_of_week }} </p>
+    {% else %}
+      <p> From: {{ routine.start_recur }}</p>
+      <p> To: {{ routine.end_recur }}</p>
+      <p> Every Day </p>
+    {% endif %}
+    <h3 style="display: inline">Actions</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-action">
+      ADD
+    </button>
+    <br><br>
+    {% for action in routine.actions %}
+      <p style="display: inline"> {{ action.title }} </p>
+      <form action="/edit-routine/{{ routine.routine_id }}/{{ action.action_id }}/delete-action" method="POST" style="display: inline">
+        <input type="submit" class="btn btn-primary" value="Delete">
+      </form>
+      <br><br>
+    {% endfor %}
+  </div>
+
+  <!-- Edit routine title modal -->
+  <div class="modal fade" id="edit-routine-title" aria-hidden="true" aria-labelledby="edit-routine-title-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-routine-title-label">Edit Routine Title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-routine/{{ routine.routine_id }}/edit-routine-title" method="POST">
+              <!-- Input for routine title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="edit-routine-title" name="edit-routine-title">
+                <label for="edit-routine-title">New Title</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit routine time modal -->
+  <div class="modal fade" id="edit-routine-time" aria-hidden="true" aria-labelledby="edit-routine-time-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-routine-time-label">Edit Routine Time</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-routine/{{ routine.routine_id }}/edit-routine-time" method="POST">
+              
+              <!-- Input for routine time -->
+              <div class="row">
+                <div class="col">
+                  <label for="start-time">Start:</label><br>
+                  <input type="time" id="edit-routine-start-time" name="start-time">
+                </div>
+                <div class="col">
+                  <label for="end-time">End:</label><br>
+                  <input type="time" id="edit-routine-end-time" name="end-time">
+                </div>
+              </div><br>
+              
+              <!-- Toggle all day option -->
+              <div class="row">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day">
+                  <label class="form-check-label" for="all-day-switch">All Day</label>
+                </div>
+              </div><br>
+  
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit routine recurrence -->
+  <div class="modal fade" id="edit-routine-recurrence" aria-hidden="true" aria-labelledby="edit-routine-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-routine-label">Edit Routine Recurrence</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-routine/{{ routine.routine_id }}/edit-routine-recurrence" method="POST">
+
+              <div class="row">
+                <p>Repeats</p>
+                <div class="btn-group" role="group" aria-label="repeat-day-or-week">
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="edit-routine-repeat-day" autocomplete="off" value="day">
+                  <label class="btn btn-outline-primary" for="edit-routine-repeat-day">Day</label>
+
+                  <input type="radio" class="btn-check" name="event-repeat-option" id="edit-routine-repeat-week" autocomplete="off" value="week">
+                  <label class="btn btn-outline-primary" for="edit-routine-repeat-week">Week</label>
+                </div>
+              </div><br>
+
+              <div class="row">
+                <div class="col">
+                  <label for="start-date">Start:</label>
+                  <input type="date" id="edit-routine-start" name="routine-repeat-start"><br>  
+                </div>
+                <div class="col">
+                  <label for="end-date">End:</label>
+                  <input type="date" id="edit-routine-end" name="routine-repeat-end"><br>    
+                </div>
+              </div><br>
+
+              <div class="row">
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <input type="checkbox" class="btn-check" id="edit-routine-sunday" autocomplete="off" value="0" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-sunday">Sun</label>
+            
+                  <input type="checkbox" class="btn-check" id="edit-routine-monday" autocomplete="off" value="1" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-monday">Mon</label>
+            
+                  <input type="checkbox" class="btn-check" id="edit-routine-tuesday" autocomplete="off" value="2" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-tuesday">Tue</label>
+
+                  <input type="checkbox" class="btn-check" id="edit-routine-wednesday" autocomplete="off" value="3" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-wednesday">Wed</label>
+            
+                  <input type="checkbox" class="btn-check" id="edit-routine-thursday" autocomplete="off" value="4" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-thursday">Thu</label>
+            
+                  <input type="checkbox" class="btn-check" id="edit-routine-friday" autocomplete="off" value="5" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-friday">Fri</label>
+
+                  <input type="checkbox" class="btn-check" id="edit-routine-saturday" autocomplete="off" value="6" name="days-of-week">
+                  <label class="btn btn-outline-primary" for="edit-routine-saturday">Sat</label>
+                </div>
+              </div><br>
+  
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add another action -->
+  <div class="modal fade" id="add-new-action" aria-hidden="true" aria-labelledby="add-new-action-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="add-new-action-label">Add New Action</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/edit-routine/{{ routine.routine_id }}/add-action" method="POST">
+              <!-- Input for action title -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="add-action-title" name="add-action-title">
+                <label for="add-action-title">New Action</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Add">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}
