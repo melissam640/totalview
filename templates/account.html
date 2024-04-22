@@ -1,7 +1,101 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-<div class="col">
+  <div class="col">
   <h1>Account for {{ username }}</h1>
-</div>
+  <h2 style="display: inline">Email</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
+      UPDATE
+    </button>
+    <br><br>
+
+    <h2 style="display: inline">Password</h2>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-password-modal">
+      UPDATE
+    </button>
+    <br><br>
+
+    <form action="/account/{{ user_id }}/logout" method="POST">
+      <input type="submit" class="btn btn-primary" value="LOG OUT">
+    </form>
+    <br>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete-account-modal">
+      DELETE ACCOUNT
+    </button>
+  </div>
+
+  <!-- Edit user email -->
+  <div class="modal fade" id="edit-email-modal" aria-hidden="true" aria-labelledby="edit-email-modal-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-email-modal-label">Update Email</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/account/{{ user_id }}/edit-email" method="POST">
+              <!-- Input for new email -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="edit-email" name="email">
+                <label for="edit-email">New Email</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit user password -->
+  <div class="modal fade" id="edit-password-modal" aria-hidden="true" aria-labelledby="edit-password-modal-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-password-modal-label">Update Password</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/account/{{ user_id }}/edit-password" method="POST">
+              <!-- Input for new password -->
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="edit-password" name="password">
+                <label for="edit-password">New Password</label>
+              </div>
+              <div class="row">
+                <input type="submit" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm delete account -->
+  <div class="modal fade" id="delete-account-modal" aria-hidden="true" aria-labelledby="delete-account-modal-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="delete-account-modal-label">Delete Account</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <h2>Are you sure you want to delete your account?</h2>
+            <form action="/account/{{ user_id }}/delete-account" method="POST">
+              <div class="row">
+                <input type="submit" value="Delete Account">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

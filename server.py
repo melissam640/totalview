@@ -83,7 +83,7 @@ def show_user_account():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return render_template("account.html", username=user.username)
+    return render_template("account.html", username=user.username, user_id=session["user_id"])
 
 @app.route("/api/add-event")
 def add_event():
