@@ -83,7 +83,7 @@ def show_user_account():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return render_template("account.html", username=user.username, user_id=session["user_id"])
+    return render_template("account.html", username=user.username)
 
 @app.route("/api/add-event")
 def add_event():
@@ -176,6 +176,11 @@ def create_new_event():
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])
+    
+    if all_day == "true":
+        all_day = True
+    else:
+        all_day = False
     
     if repeat == "none": # Create a one-time event
 
@@ -317,6 +322,55 @@ def create_new_tasklist():
     return redirect("/dashboard")
 
 
+@app.route("/account/edit-email", methods = ["POST"])
+def update_user_email():
+    """Updates the user's email address."""
+
+    new_email = request.form.get("email")
+    
+    user = crud.get_user_by_id(session["user_id"])
+
+    user.email = new_email
+    db.session.commit()
+
+    return redirect("/account")
+
+
+@app.route("/account/edit-password", methods = ["POST"])
+def update_user_password():
+    """Updates the user's password."""
+
+    new_password = request.form.get("password")
+    
+    user = crud.get_user_by_id(session["user_id"])
+
+    user.password = new_password
+    db.session.commit()
+
+    return redirect("/account")
+
+
+@app.route("/account/logout", methods = ["POST"])
+def logout():
+    """Logs out a user."""
+
+    session.clear()
+
+    return redirect("/")
+
+
+@app.route("/account/delete-account", methods = ["POST"])
+def delete_account():
+    """Deletes a user's account."""
+
+    user = crud.get_user_by_id(session["user_id"])
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return redirect("/")
+
+
 @app.route("/edit/<event_id>")
 def show_event_details(event_id):
     """Shows the details for a selected event."""
@@ -354,6 +408,11 @@ def update_event_time(event_id):
 
     start = crud.get_date_str(start_date, start_time)
     end = crud.get_date_str(end_date, end_time)
+
+    if all_day == "true":
+        all_day = True
+    else:
+        all_day = False
     
     event_id_int = int(event_id)
     event = crud.get_event_by_id(event_id_int)
@@ -411,6 +470,11 @@ def update_recur_event_time(recur_event_id):
     start_time = request.form.get("start-time")
     end_time = request.form.get("end-time")
     all_day = request.form.get("all-day")
+
+    if all_day == "true":
+        all_day = True
+    else:
+        all_day = False
     
     recur_event = crud.get_recur_event_by_id(int(recur_event_id))
 

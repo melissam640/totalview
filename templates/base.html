@@ -13,12 +13,6 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    {% for msg in get_flashed_messages() %}
-      <p class="flash-msg">
-        {{ msg }}
-      </p>
-    {% endfor %}
-    
     <div class="container">
       <div class="row" id="header">
         <h1>Dashboard for {{ username }}</h1>  
@@ -32,7 +26,6 @@
         </button><br>
         <a href="/dashboard">DASHBOARD</a><br>
         <a href="/month">MONTH</a><br>
-        <a href="/edit/2">EDIT EVENT</a><br>
         <a href="/account">ACCOUNT</a><br>
         </div>
         {% block body %}{% endblock %}
@@ -92,7 +85,7 @@
               <!-- Toggle all day option -->
               <div class="row">
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day">
+                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
                   <label class="form-check-label" for="all-day-switch">All Day</label>
                 </div>
               </div><br>
@@ -124,7 +117,7 @@
                 </div>
               </div><br>
               
-              <!-- TODO: Specify days for weekly repeating event -->
+              <!-- Specify days for weekly repeating event -->
               <div class="row">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="sunday" autocomplete="off" value="0" name="days-of-week">

@@ -15,7 +15,7 @@
     </button>
     <br><br>
 
-    <form action="/account/{{ user_id }}/logout" method="POST">
+    <form action="/account/logout" method="POST">
       <input type="submit" class="btn btn-primary" value="LOG OUT">
     </form>
     <br>
@@ -35,7 +35,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <form action="/account/{{ user_id }}/edit-email" method="POST">
+            <form action="/account/edit-email" method="POST">
               <!-- Input for new email -->
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="edit-email" name="email">
@@ -61,7 +61,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <form action="/account/{{ user_id }}/edit-password" method="POST">
+            <form action="/account/edit-password" method="POST">
               <!-- Input for new password -->
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="edit-password" name="password">
@@ -88,7 +88,7 @@
         <div class="modal-body">
           <div class="row">
             <h2>Are you sure you want to delete your account?</h2>
-            <form action="/account/{{ user_id }}/delete-account" method="POST">
+            <form action="/account/delete-account" method="POST">
               <div class="row">
                 <input type="submit" value="Delete Account">  
               </div>
