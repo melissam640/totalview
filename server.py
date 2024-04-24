@@ -825,45 +825,29 @@ def delete_recur_task(recur_tasklist_id, recur_task_id):
 @app.route("/complete-action", methods = ["POST"])
 def mark_action_complete():
     """Changes the completed status of an action to True."""
-
-    print("****** In the server *******")
-
+    
     action_id = request.json.get("actionId")
-
-    print("******* action_id: ", action_id)
     
     action = crud.get_action_by_id(int(action_id))
 
     action.completed = True
     db.session.commit()
 
-    print("******* action completed: ", action.completed)
-
-    message = "action was changed"
-
-    return jsonify(message)
+    return jsonify("action was changed")
 
 
 @app.route("/undo-complete-action", methods = ["POST"])
 def mark_action_incomplete():
     """Changes the completed status of an action to False."""
-
-    print("****** In the server *******")
-
+    
     action_id = request.json.get("actionId")
-
-    print("******* action_id: ", action_id)
     
     action = crud.get_action_by_id(int(action_id))
 
     action.completed = False
     db.session.commit()
 
-    print("******* action completed: ", action.completed)
-
-    message = "action marked complete"
-
-    return jsonify(message)
+    return jsonify("action marked incomplete")
 
 
 if __name__ == "__main__":
