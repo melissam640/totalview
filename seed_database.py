@@ -46,9 +46,17 @@ event4 = crud.create_recur_event("Recur Event 4", False, "14:30:00", "15:30:00",
 model.db.session.add(event4)
 
 # Routine
-routine = crud.create_routine("Routine", "14:30:00", "15:30:00", "April 9th 2024 2:30PM", "April 12th 2024 3:30PM", "/edit-routine/1", "auto",
-                              "red", "red", "white", "2 4", "2024-04-09",
-                              "2024-04-12", None, None, False, user)
+routine = crud.create_routine("Routine", "14:30:00", "15:30:00", "April 24th 2024 2:30PM", "April 26th 2024 3:30PM", "/edit-routine/1", "auto",
+                              "red", "red", "white", None, "2024-04-24",
+                              "2024-04-26", None, None, False, user)
 model.db.session.add(routine)
+
+action1 = crud.create_action("uncompleted action", "", "", "", "", "", "", "", "", "",
+                           None, None, False, routine)
+model.db.session.add(action1)
+
+action2 = crud.create_action("completed action", "", "", "", "", "", "", "", "", "",
+                           None, None, True, routine)
+model.db.session.add(action2)
 
 model.db.session.commit()

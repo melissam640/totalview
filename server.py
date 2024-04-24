@@ -149,6 +149,22 @@ def add_event():
             "endRecur": routine.end_recur
         })
 
+    # for tasklist in Tasklist.query.all():
+        
+    #     items.append({
+    #         "title": tasklist.title,
+    #         "startTime": routine.start,
+    #         "endTime": routine.end,
+    #         "url": routine.url,
+    #         "display": routine.display,
+    #         "backgroundColor": routine.background_color,
+    #         "borderColor": routine.border_color,
+    #         "textColor": routine.text_color,
+    #         "daysOfWeek": days_of_week,
+    #         "startRecur": routine.start_recur,
+    #         "endRecur": routine.end_recur
+    #     })
+
     return jsonify(items)
 
 
@@ -804,6 +820,50 @@ def delete_recur_task(recur_tasklist_id, recur_task_id):
     db.session.commit()
     
     return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
+
+
+@app.route("/complete-action", methods = ["POST"])
+def mark_action_complete():
+    """Changes the completed status of an action to True."""
+
+    print("****** In the server *******")
+
+    action_id = request.json.get("actionId")
+
+    print("******* action_id: ", action_id)
+    
+    action = crud.get_action_by_id(int(action_id))
+
+    action.completed = True
+    db.session.commit()
+
+    print("******* action completed: ", action.completed)
+
+    message = "action was changed"
+
+    return jsonify(message)
+
+
+@app.route("/undo-complete-action", methods = ["POST"])
+def mark_action_incomplete():
+    """Changes the completed status of an action to False."""
+
+    print("****** In the server *******")
+
+    action_id = request.json.get("actionId")
+
+    print("******* action_id: ", action_id)
+    
+    action = crud.get_action_by_id(int(action_id))
+
+    action.completed = False
+    db.session.commit()
+
+    print("******* action completed: ", action.completed)
+
+    message = "action marked complete"
+
+    return jsonify(message)
 
 
 if __name__ == "__main__":

@@ -32,6 +32,35 @@ document.querySelector('#add-action').addEventListener('click', () => {
   );
 });
 
+for (const uncheckedAction of document.querySelectorAll('.action-unchecked')) {
+  uncheckedAction.addEventListener('change', (evt) => {
+    
+    console.log('event was triggered');
+    
+    const checkbox = evt.target
+    console.log('checkbox:', checkbox);
+    
+    const data = {
+      'actionId': checkbox.value
+    };
+    console.log('data: ', data);
+    
+    fetch('/complete-action', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((message) => {
+      console.log(message);
+      checkbox.classList.remove('action-unchecked');
+      checkbox.classList.add('action-checked');
+    } )
+  })
+}
+
 // Adds additional text boxes to enter the title of tasks for a new tasklist
 // within the new tasklist modal
 document.querySelector('#add-task').addEventListener('click', () => {

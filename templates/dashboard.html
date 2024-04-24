@@ -33,12 +33,12 @@
                     {% for action in routine.actions %}
                     <div class="form-check">
                         {% if action.completed %}
-                        <input class="form-check-input" type="checkbox" value="{{ action.action_id }}" id="action-check-checked" checked>
+                        <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-check-checked" checked>
                         <label class="form-check-label" for="action-check-checked">
                             {{ action.title }}
                         </label>
                         {% else %}
-                        <input class="form-check-input" type="checkbox" value="{{ action.action_id }}" id="action-check" >
+                        <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-check" >
                         <label class="form-check-label" for="action-check">
                             {{ action.title }}
                         </label>
