@@ -66,12 +66,12 @@
                   {% for task in tasklist.tasks %}
                   <div class="form-check">
                     {% if task.completed %}
-                    <input class="form-check-input task-checked" type="checkbox" value="" id="task-flex-check" checked>
+                    <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
                     <label class="form-check-label" for="task-flex-check">
                         {{ task.title }}
                     </label>
                     {% else %}
-                    <input class="form-check-input task-unchecked" type="checkbox" value="" id="task-flex-check">
+                    <input class="form-check-input task-unchecked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
                     <label class="form-check-label" for="task-flex-check">
                         {{ task.title }}
                     </label>

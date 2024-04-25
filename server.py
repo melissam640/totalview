@@ -852,7 +852,7 @@ def mark_action_complete():
     action.completed = True
     db.session.commit()
 
-    return jsonify("action was changed")
+    return jsonify("action marked complete")
 
 
 @app.route("/undo-complete-action", methods = ["POST"])
@@ -867,6 +867,34 @@ def mark_action_incomplete():
     db.session.commit()
 
     return jsonify("action marked incomplete")
+
+
+@app.route("/complete-task", methods = ["POST"])
+def mark_task_complete():
+    """Changes the completed status of a task to True."""
+    
+    task_id = request.json.get("taskId")
+    
+    task = crud.get_task_by_id(int(task_id))
+
+    task.completed = True
+    db.session.commit()
+
+    return jsonify("task marked complete")
+
+
+@app.route("/undo-complete-task", methods = ["POST"])
+def mark_task_incomplete():
+    """Changes the completed status of a task to False."""
+    
+    task_id = request.json.get("taskId")
+    
+    task = crud.get_task_by_id(int(task_id))
+
+    task.completed = False
+    db.session.commit()
+
+    return jsonify("task marked incomplete")
 
 
 if __name__ == "__main__":
