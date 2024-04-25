@@ -149,21 +149,40 @@ def add_event():
             "endRecur": routine.end_recur
         })
 
-    # for tasklist in Tasklist.query.all():
+    for tasklist in Tasklist.query.all():
         
-    #     items.append({
-    #         "title": tasklist.title,
-    #         "startTime": routine.start,
-    #         "endTime": routine.end,
-    #         "url": routine.url,
-    #         "display": routine.display,
-    #         "backgroundColor": routine.background_color,
-    #         "borderColor": routine.border_color,
-    #         "textColor": routine.text_color,
-    #         "daysOfWeek": days_of_week,
-    #         "startRecur": routine.start_recur,
-    #         "endRecur": routine.end_recur
-    #     })
+        items.append({
+            "title": tasklist.title,
+            "allDay": tasklist.all_day,
+            "start": tasklist.start,
+            "url": tasklist.url,
+            "display": tasklist.display,
+            "backgroundColor": tasklist.background_color,
+            "borderColor": tasklist.border_color,
+            "textColor": tasklist.text_color
+        })
+
+    for recur_tasklist in RecurTasklist.query.all():
+        
+        # Convert days of week from string to list if it's not None
+        if recur_tasklist.days_of_week:
+            days_of_week = recur_tasklist.days_of_week.split(" ")
+        else:
+            days_of_week = recur_tasklist.days_of_week
+        
+        items.append({
+            "title": recur_tasklist.title,
+            "allDay": recur_tasklist.all_day,
+            "start": recur_tasklist.start,
+            "url": recur_tasklist.url,
+            "display": recur_tasklist.display,
+            "backgroundColor": recur_tasklist.background_color,
+            "borderColor": recur_tasklist.border_color,
+            "textColor": recur_tasklist.text_color,
+            "daysOfWeek": days_of_week,
+            "startRecur": recur_tasklist.start_recur,
+            "endRecur": recur_tasklist.end_recur
+        })
 
     return jsonify(items)
 

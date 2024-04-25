@@ -61,18 +61,25 @@
                   {{ tasklist.title }}
                 </button>
               </h2>
-              {% for task in tasklist.tasks %}
               <div id="collapse-task{{ tasklist.tasklist_id }}" class="accordion-collapse collapse" data-bs-parent="#tasklistAccordion">
                 <div class="accordion-body">
+                  {% for task in tasklist.tasks %}
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="task-flex-check">
+                    {% if task.completed %}
+                    <input class="form-check-input task-checked" type="checkbox" value="" id="task-flex-check" checked>
                     <label class="form-check-label" for="task-flex-check">
                         {{ task.title }}
                     </label>
+                    {% else %}
+                    <input class="form-check-input task-unchecked" type="checkbox" value="" id="task-flex-check">
+                    <label class="form-check-label" for="task-flex-check">
+                        {{ task.title }}
+                    </label>
+                    {% endif %}
                   </div>
+                  {% endfor %}
                 </div>
               </div>
-              {% endfor %}
             </div>
           </div>
         {% endfor %}

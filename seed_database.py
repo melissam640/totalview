@@ -51,12 +51,24 @@ routine = crud.create_routine("Routine", "14:30:00", "15:30:00", "April 24th 202
                               "2024-04-26", None, None, False, user)
 model.db.session.add(routine)
 
+# Action for routine
 action1 = crud.create_action("uncompleted action", "", "", "", "", "", "", "", "", "",
                            None, None, False, routine)
 model.db.session.add(action1)
 
+# Action for routine
 action2 = crud.create_action("completed action", "", "", "", "", "", "", "", "", "",
                            None, None, True, routine)
 model.db.session.add(action2)
+
+tasklist = crud.create_tasklist("Tasklist", True, "2024-04-24", "/edit-tasklist/1", "auto", "blue",
+                         "blue", "white", None, None, False, user)
+model.db.session.add(tasklist)
+
+task1 = crud.create_task("uncompleted task", "", "", "", "", None, None, False, tasklist)
+model.db.session.add(task1)
+
+task2 = crud.create_task("completed task", "", "", "", "", None, None, True, tasklist)
+model.db.session.add(task2)
 
 model.db.session.commit()
