@@ -242,7 +242,7 @@ def create_new_event():
 
         days_of_week = " ".join(days_of_week)
         
-        crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
+        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
                  background_color, border_color, text_color, days_of_week, start_recur, end_recur, None, None,
                  completed, user)
         
@@ -290,6 +290,9 @@ def create_new_routine():
                             background_color, border_color, text_color,
                             days_of_week, start_recur, end_recur, None, None,
                             completed, user)
+        
+        routine.url = f"/edit-routine/{routine.routine_id}"
+        db.session.commit()
     
     # Add actions to routine
     action_titles = request.args.getlist("action-title")
@@ -327,12 +330,18 @@ def create_new_tasklist():
         
         tasklist = crud.create_tasklist(title, all_day, date, url, display, background_color,
                          border_color, text_color, None, None, completed, user)
+        
+        tasklist.url = f"/edit-tasklist/{tasklist.tasklist_id}"
+        db.session.commit()
     
     elif repeat == "day": # Create a recurring event with days_of_week set to None
     
         recur_tasklist = crud.create_recur_tasklist(title, all_day, "", url, display, background_color,
                                    border_color, text_color, None, start_recur, end_recur,
                                    None, None, completed, user)
+        
+        recur_tasklist.url = f"/edit-recur-tasklist/{recur_tasklist.recur_tasklist_id}"
+        db.session.commit()
 
     else: # Create a recurring event with days_of_week specified
 
@@ -341,6 +350,9 @@ def create_new_tasklist():
         recur_tasklist = crud.create_recur_tasklist(title, all_day, "", url, display, background_color,
                                    border_color, text_color, days_of_week, start_recur, end_recur,
                                    None, None, completed, user)
+        
+        recur_tasklist.url = f"/edit-recur-tasklist/{recur_tasklist.recur_tasklist_id}"
+        db.session.commit()
 
     # Add tasks to tasklist
     task_titles = request.args.getlist("task-title")
