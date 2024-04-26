@@ -1,5 +1,6 @@
 """CRUD operations."""
 
+from pandas import date_range
 from datetime import date
 
 from model import (db, User, Event, RecurEvent, Routine, Action, 
@@ -359,39 +360,179 @@ def get_todays_recur_tasklists():
     return recur_tasklists
 
 
-def get_todays_events():
-    """Gets events assigned to today."""
+# def get_todays_events():
+#     """Gets events assigned to today."""
 
-    todays_date = str(date.today())
+#     todays_date = str(date.today())
 
-    events = Event.query.filter(Event.start.startswith(todays_date)).all()
+#     events = Event.query.filter(Event.start.startswith(todays_date)).all()
 
-    return events
+#     return events
 
-def get_todays_recur_events():
-    """Gets recurring events assigned to today."""
+# def get_todays_recur_events():
+#     """Gets recurring events assigned to today."""
 
-    todays_date = str(date.today())
+#     todays_date = str(date.today())
 
-    recur_events = RecurEvent.query.filter(RecurEvent.start_recur==todays_date).all()
+#     recur_events = RecurEvent.query.filter(RecurEvent.start_recur==todays_date).all()
 
-    return recur_events
+#     return recur_events
 
 
-def get_todays_routines():
-    """Gets routines assigned to today."""
+# def get_todays_routines():
+#     """Gets routines assigned to today."""
 
-    todays_date = str(date.today())
+#     todays_date = str(date.today())
 
-    routines = Routine.query.filter(Routine.start_recur.startswith(todays_date)).all()
+#     routines = Routine.query.filter(Routine.start_recur.startswith(todays_date)).all()
 
-    return routines
+#     return routines
 
 
 def get_date_str(item_date, item_time):
     """Converts user date and time input into a parsable string."""
 
     return item_date + "T" + item_time
+
+
+def get_todays_events(user):
+    """Gets user events scheduled for today."""
+
+    todays_date = str(date.today())
+    todays_events = []
+    
+    for event in Event.query.filter_by(user=user).all():
+        
+        event_range = date_range(event.start, event.end)
+        
+        if todays_date in event_range:
+            todays_events.append(event)
+
+    return todays_events
+
+
+def get_todays_recur_events(user):
+    """Gets user recurring events scheduled for today."""
+
+    todays_date = str(date.today())
+    day_of_week = str(date.today().isoweekday() % 7) # converts Sunday to 0 instead of 7 to match FullCalendar
+    todays_recur_events = []
+
+    for recur_event in RecurEvent.query.filter_by(user=user).all():
+        recur_event_range = date_range(recur_event.start_recur, recur_event.end_recur)
+        
+        if todays_date in recur_event_range:
+            
+            if recur_event.days_of_week is None:
+                todays_recur_events.append(recur_event)
+            
+            elif recur_event.days_of_week is not None and day_of_week in recur_event.days_of_week:
+                todays_recur_events.append(recur_event)
+
+    return todays_recur_events
+
+
+def get_todays_routines(user):
+    """Gets user routines scheduled for today."""
+
+    todays_date = str(date.today())
+    day_of_week = str(date.today().isoweekday() % 7) # converts Sunday to 0 instead of 7 to match FullCalendar
+    todays_routines = []
+
+    for routine in Routine.query.filter_by(user=user).all():
+        routine_range = date_range(routine.start_recur, routine.end_recur)
+        
+        if todays_date in routine_range:
+            
+            if routine.days_of_week is None:
+                todays_routines.append(routine)
+            
+            elif routine.days_of_week is not None and day_of_week in routine.days_of_week:
+                todays_routines.append(routine)
+
+    return todays_routines
+
+
+def create_dashboard_event_objects(user):
+    """Creates a dictionary of event information for /dashboard."""
+
+    events = get_todays_events(user)
+    event_objects = []
+    
+    for event in events:
+        if event.all_day:
+            start_time = ""
+        else:
+            start_time = event.start[11:]
+        
+        event_objects.append({
+            "type": "event",
+            "all_day": event.all_day, # True or False
+            "start_time": start_time, # Takes the time part from date string
+            "title": event.title
+            # Add more info after this starts working
+        })
+    
+    return event_objects
+
+
+def create_dashboard_recur_event_objects(user):
+    """Creates a dictionary of recurring event information for /dashboard."""
+
+    recur_events = get_todays_recur_events(user)
+    recur_event_objects = []
+    
+    # Change start_time for all_day events from None to "" for sorting
+    for recur_event in recur_events:
+        if recur_event.all_day:
+            start_time = ""
+        else:
+            start_time = recur_event.start
+        
+        recur_event_objects.append({
+            "type": "recur_event",
+            "all_day": recur_event.all_day, # True or False
+            "start_time": start_time,
+            "title": recur_event.title
+            # Add more info after this starts working
+        })
+    
+    return recur_event_objects
+
+
+def create_dashboard_routine_objects(user):
+    """Creates a dictionary of routine information for /dashboard."""
+
+    routines = get_todays_routines(user)
+    routine_objects = []
+    
+    for routine in routines:
+        routine_objects.append({
+            "type": "routine",
+            "all_day": False,
+            "start_time": routine.start,
+            "title": routine.title
+            # Add more info after this starts working
+        })
+    
+    return routine_objects
+
+
+def sort_dashboard_objects(user):
+    """Combines and sorts calendar items to be displayed on /dashboard."""
+
+    event_objects = create_dashboard_event_objects(user)
+    recur_event_objects = create_dashboard_recur_event_objects(user)
+    routine_objects = create_dashboard_routine_objects(user)
+
+    dashboard_objects = []
+    dashboard_objects.extend(event_objects)
+    dashboard_objects.extend(recur_event_objects)
+    dashboard_objects.extend(routine_objects)
+
+    sorted_dashboard_objects = sorted(dashboard_objects, key=lambda x: x["start_time"])
+
+    return sorted_dashboard_objects
 
 
 if __name__ == '__main__':

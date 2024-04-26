@@ -56,18 +56,12 @@ def show_user_dashboard():
     """Create user dashboard."""
     
     user = crud.get_user_by_id(session["user_id"])
+    todays_events_routines = crud.sort_dashboard_objects(user)
     todays_tasklists = crud.get_todays_tasklists()
-    todays_recur_tasklists = crud.get_todays_recur_tasklists()
-    todays_events = crud.get_todays_events()
-    todays_recur_events = crud.get_todays_recur_events()
-    todays_routines = crud.get_todays_routines()
     
     return render_template("dashboard.html", username=user.username,
-                           todays_tasklists=todays_tasklists,
-                           todays_recur_tasklists=todays_recur_tasklists,
-                           todays_events=todays_events,
-                           todays_recur_events=todays_recur_events,
-                           todays_routines=todays_routines)
+                           todays_events_routines=todays_events_routines,
+                           todays_tasklists=todays_tasklists)
 
 @app.route("/month")
 def show_monthly_schedule():
