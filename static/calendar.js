@@ -24,10 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
 // Adds additional text boxes to enter the title of actions for a new routine
 // within the new routine modal
 document.querySelector('#add-action').addEventListener('click', () => {
-  document.querySelector('#add-action-section').insertAdjacentHTML('afterend',
-    `<div class="form-floating mb-3">
-      <input type="text" class="form-control" id="action-title" name="action-title" placeholder="New Action">
-      <label for="action-title">Action Title</label>
+  document.querySelector('#routine-create-button').insertAdjacentHTML('beforebegin',
+    `<div class="mb-3">
+    <input type="text" class="form-control" id="action-title" placeholder="New Action">
     </div>`
   );
 });
@@ -35,12 +34,54 @@ document.querySelector('#add-action').addEventListener('click', () => {
 // Adds additional text boxes to enter the title of tasks for a new tasklist
 // within the new tasklist modal
 document.querySelector('#add-task').addEventListener('click', () => {
-  document.querySelector('#add-task-section').insertAdjacentHTML('afterend',
-    `<div class="form-floating mb-3">
-      <input type="text" class="form-control" id="task-title" name="task-title" placeholder="New Task">
-      <label for="task-title">Task Title</label>
+  document.querySelector('#tasklist-create-button').insertAdjacentHTML('beforebegin',
+    `<div class="mb-3">
+    <input type="text" class="form-control" id="task-title" placeholder="New Task">
     </div>`
   );
+});
+
+// Event repeat options show/hide
+document.querySelector('#repeat-none').addEventListener('click', () => {
+  document.querySelector('#event-repeat-date-range').classList.add('d-none');
+  document.querySelector('#event-repeat-days').classList.add('d-none');
+});
+
+document.querySelector('#repeat-day').addEventListener('click', () => {
+  document.querySelector('#event-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#event-repeat-days').classList.add('d-none');
+});
+
+document.querySelector('#repeat-week').addEventListener('click', () => {
+  document.querySelector('#event-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#event-repeat-days').classList.remove('d-none');
+});
+
+// Routine repeat options show/hide
+document.querySelector('#rou-repeat-day').addEventListener('click', () => {
+  document.querySelector('#routine-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#routine-repeat-days').classList.add('d-none');
+});
+
+document.querySelector('#rou-repeat-week').addEventListener('click', () => {
+  document.querySelector('#routine-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#routine-repeat-days').classList.remove('d-none');
+});
+
+// Tasklist repeat options show/hide
+document.querySelector('#tasklist-none').addEventListener('click', () => {
+  document.querySelector('#tasklist-repeat-date-range').classList.add('d-none');
+  document.querySelector('#tasklist-repeat-days').classList.add('d-none');
+});
+
+document.querySelector('#tasklist-day').addEventListener('click', () => {
+  document.querySelector('#tasklist-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#tasklist-repeat-days').classList.add('d-none');
+});
+
+document.querySelector('#tasklist-week').addEventListener('click', () => {
+  document.querySelector('#tasklist-repeat-date-range').classList.remove('d-none');
+  document.querySelector('#tasklist-repeat-days').classList.remove('d-none');
 });
 
 // When unchecked action checkbox is checked, action is marked completed

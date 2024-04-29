@@ -13,20 +13,44 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    <div class="container">
-      <div class="row" id="header">
-        <h1>Dashboard for {{ username }}</h1>  
-      </div>
+    <div class="container-fluid">
       <div class="row">
-        
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand">App Name</a>
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-fill"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/account/logout">Log Out</a></li>
+          </ul>
+        </div>
+      </nav>
+      </div>
+      <div class="row vh-100">
         <div class="col-2" id="navigation">
-        <!-- Button to open new item modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-item-modal">
-          NEW
-        </button><br>
-        <a href="/dashboard">DASHBOARD</a><br>
-        <a href="/month">MONTH</a><br>
-        <a href="/account">ACCOUNT</a><br>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <i class="bi bi-person-circle" style="font-size: 3rem; color: cornflowerblue;"></i>
+          </li>
+          <li class="nav-item">
+            {{ username }}
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-item-modal">
+              NEW
+            </button><br>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/month">Calendar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Account or Settings</a>
+          </li>
+        </ul>
         </div>
         {% block body %}{% endblock %}
       </div>
@@ -63,38 +87,56 @@
             <form action="/create-event">
               
               <!-- Input for event title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="event-title" name="event-title" placeholder="New Event">
-                <label for="event-title">Event Title</label>
+              <div class="mb-3">
+                <label for="event-title" class="form-label">Event Title</label>
+                <input type="text" class="form-control" id="event-title" placeholder="New Event">
               </div>
-
+              
               <!-- Input for event start and end date/time -->
               <div class="row">
-                <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="event-start-date" name="start-date"><br>
-                  <input type="time" id="event-start-time" name="start-time">
+                <div class="col-auto">
+                  <label class="form-label">Date & Time</label>
                 </div>
-                <div class="col">
-                  <label for="end-date">End:</label><br>
-                  <input type="date" id="event-end-date" name="end-date"><br>
-                  <input type="time" id="event-end-time" name="end-time">
+                <div class="col-auto offset-6">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
+                    <label class="form-check-label" for="all-day-switch">All Day</label>
+                  </div>
                 </div>
-              </div><br>
-
-              <!-- Toggle all day option -->
+              </div>
               <div class="row">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
-                  <label class="form-check-label" for="all-day-switch">All Day</label>
+                <div class="col">
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-start-date" name="start-date" aria-label="Start date">
+                    </li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="event-start-time" name="start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
-              </div><br>
+                <div class="col">
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-end-date" name="end-date" aria-label="End date">
+                    </li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="event-end-time" name="end-time" aria-label="End time">
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <br>
 
               <!-- Specify repeating options -->
               <div class="row">
-                <p>Repeats</p>
+                <label class="form-label">Repeats</label>
+              </div>
+              <div class="row">
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-none" autocomplete="off" value="none">
+                  <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-none" autocomplete="off" value="none" checked>
                   <label class="btn btn-outline-primary" for="repeat-none">None</label>
 
                   <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-day" autocomplete="off" value="day">
@@ -106,19 +148,27 @@
               </div><br>
 
               <!-- Specify repeat date range -->
-              <div class="row">
+              <div class="row d-none" id="event-repeat-date-range">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="event-repeat-start" name="event-repeat-start"><br>  
+                  <ul class="list-group" style="display: hidden;">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-repeat-start" name="event-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="event-repeat-end" name="event-repeat-end"><br>    
+                  <ul class="list-group" style="display: hidden;">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-repeat-end" name="event-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
               
               <!-- Specify days for weekly repeating event -->
-              <div class="row">
+              <div class="row d-none" id="event-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="sunday" autocomplete="off" value="0" name="days-of-week">
                   <label class="btn btn-outline-primary" for="sunday">Sun</label>
@@ -171,22 +221,31 @@
             <form action="/create-routine">
               
               <!-- Input for routine title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="routine-title" name="routine-title" placeholder="New Routine">
-                <label for="routine-title">Routine Title</label>
+              <div class="mb-3">
+                <label for="routine-title" class="form-label">Routine Title</label>
+                <input type="text" class="form-control" id="routine-title" placeholder="New Routine">
               </div>
 
               <!-- Input for routine start and end date -->
               <div class="row">
                 <div class="col">
-                  <label for="routine-start">Start:</label><br>
-                  <input type="time" id="routine-start-time" name="routine-start-time"><br>
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="routine-start-time" name="routine-start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="routine-end">End:</label><br>
-                  <input type="time" id="routine-end-time" name="routine-end-time"><br>
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="routine-end-time" name="routine-end-time" aria-label="End time">
+                    </li>
+                  </ul>
                 </div>
-              </div><br>
+              </div>
+              <br>
               
               <!-- Specify repeating options -->
               <div class="row">
@@ -201,19 +260,27 @@
               </div><br>
 
               <!-- Specify repeat date range -->
-              <div class="row">
+              <div class="row d-none" id="routine-repeat-date-range">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="routine-repeat-start" name="routine-repeat-start"><br>  
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="routine-repeat-start" name="routine-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="routine-repeat-end" name="routine-repeat-end"><br>    
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="routine-repeat-end" name="routine-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
 
               <!-- Specify days for weekly repeating routine -->
-              <div class="row">
+              <div class="row d-none" id="routine-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="rou-sunday" autocomplete="off" value="0" name="days-of-week">
                   <label class="btn btn-outline-primary" for="rou-sunday">Sun</label>
@@ -242,11 +309,13 @@
               <div class="row" id="add-action-section">
                 <div class="col">
                   <label for="add-action">Actions</label>
-                  <button class="btn btn-primary" type="button" id="add-action" name="add-action">Add</button>  
+                  <button class="btn btn-primary" type="button" id="add-action" name="add-action">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>  
                 </div>
               </div><br>
 
-              <div class="row">
+              <div class="row" id="routine-create-button">
                 <input type="submit" value="Create">  
               </div>
             </form>
@@ -274,22 +343,29 @@
             <form action="/create-tasklist">
 
               <!-- Input for tasklist title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="tasklist-title" name="tasklist-title" placeholder="New Tasklist">
-                <label for="tasklist-title">Tasklist Title</label>
+              <div class="mb-3">
+                <label for="tasklist-title" class="form-label">Tasklist Title</label>
+                <input type="text" class="form-control" id="tasklist-title" placeholder="New Tasklist">
               </div>
 
               <!-- Input for tasklist date -->
               <div class="row">
-                  <label for="tasklist-date">Date:</label><br>
-                  <input type="date" id="tasklist-date" name="tasklist-date">
-              </div><br>
+                <div class="col">
+                  <ul class="list-group">
+                    <li class="list-group-item">Date</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="tasklist-date" name="tasklist-date" aria-label="Date">
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <br>
 
               <!-- Specify repeating options -->
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-none" autocomplete="off" value="none">
+                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-none" autocomplete="off" value="none" checked>
                   <label class="btn btn-outline-primary" for="tasklist-none">None</label>
 
                   <input type="radio" class="btn-check" name="repeat-option" id="tasklist-day" autocomplete="off" value="day">
@@ -301,19 +377,27 @@
               </div><br>
 
               <!-- Specify repeat date range -->
-              <div class="row">
+              <div class="row d-none" id="tasklist-repeat-date-range">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="tasklist-repeat-start" name="tasklist-repeat-start"><br>  
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="tasklist-repeat-start" name="tasklist-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="tasklist-repeat-end" name="tasklist-repeat-end"><br>    
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="tasklist-repeat-end" name="tasklist-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
 
               <!-- Specify days for weekly repeating tasklist -->
-              <div class="row">
+              <div class="row d-none" id="tasklist-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="tasklist-sunday" autocomplete="off" value="0" name="days-of-week">
                   <label class="btn btn-outline-primary" for="tasklist-sunday">Sun</label>
@@ -342,11 +426,13 @@
               <div class="row" id="add-task-section">
                 <div class="col">
                   <label for="add-task">Tasks</label>
-                  <button class="btn btn-primary" type="button" id="add-task" name="add-task">Add</button>  
+                  <button class="btn btn-primary" type="button" id="add-task" name="add-task">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>  
                 </div>
               </div><br>
             
-              <div class="row">
+              <div class="row" id="tasklist-create-button">
                 <input type="submit" value="Create">  
               </div>
             </form>

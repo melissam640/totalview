@@ -467,9 +467,11 @@ def create_dashboard_event_objects(user):
         
         event_objects.append({
             "type": "event",
+            "id": event.event_id,
             "all_day": event.all_day, # True or False
             "start_time": start_time, # Takes the time part from date string
-            "title": event.title
+            "title": event.title,
+            "url": event.url
             # Add more info after this starts working
         })
     
@@ -491,9 +493,11 @@ def create_dashboard_recur_event_objects(user):
         
         recur_event_objects.append({
             "type": "recur_event",
+            "id": recur_event.recur_event_id,
             "all_day": recur_event.all_day, # True or False
             "start_time": start_time,
-            "title": recur_event.title
+            "title": recur_event.title,
+            "url": recur_event.url
             # Add more info after this starts working
         })
     
@@ -509,9 +513,12 @@ def create_dashboard_routine_objects(user):
     for routine in routines:
         routine_objects.append({
             "type": "routine",
+            "id": routine.routine_id,
             "all_day": False,
             "start_time": routine.start,
-            "title": routine.title
+            "title": routine.title,
+            "actions": routine.actions,
+            "url": routine.url
             # Add more info after this starts working
         })
     

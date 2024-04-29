@@ -3,26 +3,82 @@
 {% block head %}{% endblock %}
 {% block body %}
   <div class="col">
-        <h3>Today</h3>
-        {% for item in todays_events_routines %}
+    <div class="card" style="height: 100%;">
+    <h4 class="card-header">Today</h4>
+      {% for item in todays_events_routines %}
+        {% if item["all_day"] %}
           <div class="accordion" id="eventAccordion">
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-item" aria-expanded="true" aria-controls="collapse-item">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
                   {{ item["title"] }}
+                  All Day
                 </button>
               </h2>
-              <div id="collapse-item" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
+              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
+                <div class="accordion-body">
+                  <a href="{{ item["url"] }}">Edit</a>
+                  Info
+                </div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          {% if item["type"]=="routine" %}
+          <div class="accordion" id="eventAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
+                  {{ item["title"] }}
+                  {{ item["start_time"] }}
+                </button>
+              </h2>
+              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
+                <div class="accordion-body">
+                  {% for action in item["actions"] %}
+                  <div class="form-check">
+                      {% if action.completed %}
+                      <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-check-checked" checked>
+                      <label class="form-check-label" for="action-check-checked">
+                          {{ action.title }}
+                      </label>
+                      {% else %}
+                      <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-check" >
+                      <label class="form-check-label" for="action-check">
+                          {{ action.title }}
+                      </label>
+                      {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="accordion" id="eventAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
+                  {{ item["title"] }}
+                  {{ item["start_time"] }}
+                </button>
+              </h2>
+              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
                 <div class="accordion-body">
                   Info
                 </div>
               </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+      
       <div class="col">
-        <h3>Tasks</h3>
+        <div class="card" style="height: 100%;">
+          <h4 class="card-header">Tasks</h4>
         {% for tasklist in todays_tasklists %}
           <div class="accordion" id="tasklistAccordion">
             <div class="accordion-item">
@@ -53,5 +109,6 @@
             </div>
           </div>
         {% endfor %}
+      </div>
       </div>
 {% endblock %}
