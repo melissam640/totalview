@@ -267,6 +267,107 @@ def create_recur_task(title, display, background_color, border_color,
     return recur_task
 
 
+def get_all_calendar_items(user):
+    """Gets all calendar items for a user."""
+
+    items = []
+    
+    for event in Event.query.filter_by(user=user).all():
+        items.append({
+            "title": event.title,
+            "allDay": event.all_day,
+            "start": event.start,
+            "end": event.end,
+            "url": event.url,
+            "display": event.display,
+            "backgroundColor": event.background_color,
+            "borderColor": event.border_color,
+            "textColor": event.text_color
+        })
+    
+    for recur_event in RecurEvent.query.filter_by(user=user).all():
+        
+        # Convert days of week from string to list if it's not None
+        if recur_event.days_of_week:
+            days_of_week = recur_event.days_of_week.split(" ")
+        else:
+            days_of_week = recur_event.days_of_week
+        
+        items.append({
+            "title": recur_event.title,
+            "allDay": recur_event.all_day,
+            "startTime": recur_event.start,
+            "endTime": recur_event.end,
+            "url": recur_event.url,
+            "display": recur_event.display,
+            "backgroundColor": recur_event.background_color,
+            "borderColor": recur_event.border_color,
+            "textColor": recur_event.text_color,
+            "daysOfWeek": days_of_week,
+            "startRecur": recur_event.start_recur,
+            "endRecur": recur_event.end_recur
+        })
+
+    for routine in Routine.query.filter_by(user=user).all():
+        
+        # Convert days of week from string to list if it's not None
+        if routine.days_of_week:
+            days_of_week = routine.days_of_week.split(" ")
+        else:
+            days_of_week = routine.days_of_week
+        
+        items.append({
+            "title": routine.title,
+            "startTime": routine.start,
+            "endTime": routine.end,
+            "url": routine.url,
+            "display": routine.display,
+            "backgroundColor": routine.background_color,
+            "borderColor": routine.border_color,
+            "textColor": routine.text_color,
+            "daysOfWeek": days_of_week,
+            "startRecur": routine.start_recur,
+            "endRecur": routine.end_recur
+        })
+
+    for tasklist in Tasklist.query.filter_by(user=user).all():
+        
+        items.append({
+            "title": tasklist.title,
+            "allDay": tasklist.all_day,
+            "start": tasklist.start,
+            "url": tasklist.url,
+            "display": tasklist.display,
+            "backgroundColor": tasklist.background_color,
+            "borderColor": tasklist.border_color,
+            "textColor": tasklist.text_color
+        })
+
+    for recur_tasklist in RecurTasklist.query.filter_by(user=user).all():
+        
+        # Convert days of week from string to list if it's not None
+        if recur_tasklist.days_of_week:
+            days_of_week = recur_tasklist.days_of_week.split(" ")
+        else:
+            days_of_week = recur_tasklist.days_of_week
+        
+        items.append({
+            "title": recur_tasklist.title,
+            "allDay": recur_tasklist.all_day,
+            "start": recur_tasklist.start,
+            "url": recur_tasklist.url,
+            "display": recur_tasklist.display,
+            "backgroundColor": recur_tasklist.background_color,
+            "borderColor": recur_tasklist.border_color,
+            "textColor": recur_tasklist.text_color,
+            "daysOfWeek": days_of_week,
+            "startRecur": recur_tasklist.start_recur,
+            "endRecur": recur_tasklist.end_recur
+        })
+
+    return items
+
+
 def get_event_by_id(event_id):
     """Gets an event by id."""
     
@@ -358,35 +459,6 @@ def get_todays_recur_tasklists():
     recur_tasklists = RecurTasklist.query.filter(RecurTasklist.start==todays_date).all()
 
     return recur_tasklists
-
-
-# def get_todays_events():
-#     """Gets events assigned to today."""
-
-#     todays_date = str(date.today())
-
-#     events = Event.query.filter(Event.start.startswith(todays_date)).all()
-
-#     return events
-
-# def get_todays_recur_events():
-#     """Gets recurring events assigned to today."""
-
-#     todays_date = str(date.today())
-
-#     recur_events = RecurEvent.query.filter(RecurEvent.start_recur==todays_date).all()
-
-#     return recur_events
-
-
-# def get_todays_routines():
-#     """Gets routines assigned to today."""
-
-#     todays_date = str(date.today())
-
-#     routines = Routine.query.filter(Routine.start_recur.startswith(todays_date)).all()
-
-#     return routines
 
 
 def get_date_str(item_date, item_time):
