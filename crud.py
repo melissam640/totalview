@@ -1,7 +1,7 @@
 """CRUD operations."""
 
 from pandas import date_range
-from datetime import date
+from datetime import datetime, date
 
 from model import (db, User, Event, RecurEvent, Routine, Action, 
                    Tasklist, RecurTasklist, Task, RecurTask, connect_to_db)
@@ -465,6 +465,29 @@ def get_date_str(item_date, item_time):
     """Converts user date and time input into a parsable string."""
 
     return item_date + "T" + item_time
+
+
+def military_to_standard_time(time_str):
+    """Converts time strings from 24hr to standard time."""
+
+    standard = time_str.strftime("%I:%M %p")
+
+    return standard
+
+
+def find_time_difference(start_str, end_str):
+    """Finds the hours and minutes between two time strings."""
+
+    start_time = datetime.strptime(start_str, "%H:%M")
+    end_time = datetime.strptime(end_str, "%H:%M")
+    
+    delta = end_time - start_time
+
+    hours = int(delta.total_seconds() / 3600)
+
+    minutes = int((delta.total_seconds() - (2*3600)) / 60)
+
+    return f"{hours}h {minutes}m"
 
 
 def get_todays_events(user):
