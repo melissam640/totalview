@@ -470,7 +470,9 @@ def get_date_str(item_date, item_time):
 def military_to_standard_time(time_str):
     """Converts time strings from 24hr to standard time."""
 
-    standard = time_str.strftime("%I:%M %p")
+    time = datetime.strptime(time_str, "%H:%M")
+
+    standard = time.strftime("%I:%M %p")
 
     return standard
 
@@ -557,14 +559,22 @@ def create_dashboard_event_objects(user):
     for event in events:
         if event.all_day:
             start_time = ""
+            end_time = None
+            start_str = None
+            end_str = None
         else:
             start_time = event.start[11:]
+            end_time = event.end[11:]
+            start_str = military_to_standard_time(start_time)
+            end_str = military_to_standard_time(end_time)
         
         event_objects.append({
             "type": "event",
             "id": event.event_id,
-            "all_day": event.all_day, # True or False
-            "start_time": start_time, # Takes the time part from date string
+            "all_day": event.all_day,
+            "start_time": start_time,
+            "start_str": start_str,
+            "end_str": end_str,
             "title": event.title,
             "url": event.url
             # Add more info after this starts working
@@ -591,6 +601,8 @@ def create_dashboard_recur_event_objects(user):
             "id": recur_event.recur_event_id,
             "all_day": recur_event.all_day, # True or False
             "start_time": start_time,
+            "start_str": None,
+            "end_str": None,
             "title": recur_event.title,
             "url": recur_event.url
             # Add more info after this starts working
