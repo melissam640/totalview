@@ -70,6 +70,10 @@
               </div>
             </div>
           </div>
+          {% if item["time_dif"] %}
+          <br>
+          <p>{{ item["time_dif"] }}</p>
+          {% endif %}
           {% endif %}
         {% endif %}
       {% endfor %}

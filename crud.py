@@ -477,7 +477,7 @@ def military_to_standard_time(time_str):
     return standard
 
 
-def find_time_difference(start_str, end_str):
+def find_time_differences(start_str, end_str):
     """Finds the hours and minutes between two time strings."""
 
     start_time = datetime.strptime(start_str, "%H:%M")
@@ -486,8 +486,13 @@ def find_time_difference(start_str, end_str):
     delta = end_time - start_time
 
     hours = int(delta.total_seconds() / 3600)
+    if hours < 1:
+        minutes = int((delta.total_seconds()) / 60)
+        return f"{minutes}m"
 
-    minutes = int((delta.total_seconds() - (2*3600)) / 60)
+    minutes = int((delta.total_seconds() - (hours * 3600)) / 60)
+    if minutes < 1:
+        return f"{hours}h"
 
     return f"{hours}h {minutes}m"
 
@@ -573,8 +578,10 @@ def create_dashboard_event_objects(user):
             "id": event.event_id,
             "all_day": event.all_day,
             "start_time": start_time,
+            "end_time": end_time,
             "start_str": start_str,
             "end_str": end_str,
+            "time_dif": None,
             "title": event.title,
             "url": event.url
             # Add more info after this starts working
