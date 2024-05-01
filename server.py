@@ -253,6 +253,7 @@ def create_new_routine():
     
     # Get user input for routine
     title = request.args.get("routine-title")
+    color = request.args.get("routine-color")
     start_time = request.args.get("routine-start-time")
     end_time = request.args.get("routine-end-time")
     repeat = request.args.get("routine-repeat-option")
@@ -263,8 +264,8 @@ def create_new_routine():
     # Initalize user and default display settings
     url = "/edit-routine"
     display = "auto"
-    background_color = "blue"
-    border_color = "black"
+    background_color = color
+    border_color = color
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])
@@ -306,6 +307,7 @@ def create_new_tasklist():
     
     # Get user input for tasklist
     title = request.args.get("tasklist-title")
+    color = request.args.get("tasklist-color")
     date = request.args.get("tasklist-date")
     repeat = request.args.get("repeat-option")
     days_of_week = request.args.getlist("days-of-week")
@@ -315,8 +317,8 @@ def create_new_tasklist():
     all_day = True
     url = "/delete"
     display = "auto"
-    background_color = "blue"
-    border_color = "black"
+    background_color = color
+    border_color = color
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])
