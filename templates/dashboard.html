@@ -4,7 +4,7 @@
 {% block body %}
   <div class="col">
     <div class="card" style="height: 100%;">
-    <h4 class="card-header">Today</h4>
+    <h4 class="card-header">Schedule</h4>
       {% for item in todays_events_routines %}
         {% if item["all_day"] %}
           <div class="accordion" id="eventAccordion">
