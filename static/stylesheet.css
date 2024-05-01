@@ -2,3 +2,8 @@
     border-style: solid;
     border-color: grey;
 }
+
+.btn-red {
+    background-color: red !important;
+    color: red !important;
+}

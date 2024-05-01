@@ -20,7 +20,7 @@ model.db.session.add(user)
 # Test events
 
 # One-time set time event
-event1 = crud.create_event("Event 1", False, "2024-04-15T14:30:00", 
+event1 = crud.create_event("Event 1", False, "2024-04-15T14:30", 
                            "2024-04-15T15:30:00", "April 15th 2024 2:30PM", "April 15th 2024 3:30PM", "/edit/1", "auto",
                            "green", "green", "black", None, None, False, user)
 model.db.session.add(event1)

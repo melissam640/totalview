@@ -187,6 +187,7 @@ def create_new_event():
     
     # Get user input for event
     title = request.args.get("event-title")
+    color = request.args.get("event-color")
     start_date = request.args.get("start-date")
     start_time = request.args.get("start-time")
     end_date = request.args.get("end-date")
@@ -200,8 +201,8 @@ def create_new_event():
     # Initalize user and default display settings
     url = "/edit"
     display = "auto"
-    background_color = "blue"
-    border_color = "black"
+    background_color = color
+    border_color = color
     text_color = "black"
     completed = False
     user=crud.get_user_by_id(session["user_id"])

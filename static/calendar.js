@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
       start: 'prev next today',
       center: 'title',
       end: 'dayGridMonth dayGridWeek dayGridDay'
-    }
+    },
+    navLinks: true
     })
     // Add user events to calendar
     fetch('/api/add-event')
