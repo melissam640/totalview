@@ -2,39 +2,30 @@
 {% block title %}Dashboard{% endblock %}
 {% block head %}{% endblock %}
 {% block body %}
+<!-- <div class="col">
+  <div class="row">
+    <div class="p-3">
+      <h4>Dashboard</h4>
+    </div>
+  </div>
+  <div class="row"> -->
   <div class="col">
     <div class="card" style="height: 100%;">
     <h4 class="card-header">Schedule</h4>
       {% for item in todays_events_routines %}
         {% if item["all_day"] %}
-          <div class="accordion" id="eventAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
-                  {{ item["title"] }}
-                  All Day
-                </button>
-              </h2>
-              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
-                <div class="accordion-body">
-                  <a href="{{ item["url"] }}">Edit</a>
-                  Info
-                </div>
-              </div>
-            </div>
+          <div class="p-3 border border-subtle rounded-3" id="all-day-dashboard-event">
+            <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
+            {{ item["title"] }} All Day
+            <a href="{{ item["url"] }}">Edit</a>
           </div>
         {% else %}
           {% if item["type"]=="routine" %}
-          <div class="accordion" id="eventAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
-                  {{ item["title"] }}
-                  {{ item["start_time"] }}
-                </button>
-              </h2>
-              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
-                <div class="accordion-body">
+          <div class="p-3 border border-subtle rounded-3" id="dashboard-routine">
+            <i class="bi bi-arrow-repeat" style="color: {{ item["color"] }};"></i>
+            {{ item["title"] }}
+            {{ item["start_time"] }}
+            <a href="{{ item["url"] }}">Edit</a>
                   {% for action in item["actions"] %}
                   <div class="form-check">
                       {% if action.completed %}
@@ -50,25 +41,13 @@
                       {% endif %}
                     </div>
                     {% endfor %}
-                </div>
-              </div>
-            </div>
           </div>
           {% else %}
-          <div class="accordion" id="eventAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ item["type"] }}{{ item["id"] }}" aria-expanded="true" aria-controls="collapse-item">
-                  {{ item["title"] }}
-                  {{ item["start_str"] }} - {{ item["end_str"] }}
-                </button>
-              </h2>
-              <div id="collapse-{{ item["type"] }}{{ item["id"] }}" class="accordion-collapse collapse" data-bs-parent="#itemAccordion">
-                <div class="accordion-body">
-                  Info
-                </div>
-              </div>
-            </div>
+          <div class="p-3 border border-subtle rounded-3" id="scheduled-dashboard-event">
+            <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
+            {{ item["title"] }}
+            {{ item["start_str"] }} - {{ item["end_str"] }}
+                  <a href="{{ item["url"] }}">Edit</a>
           </div>
           {% if item["time_dif"] %}
           <br>
@@ -84,15 +63,10 @@
         <div class="card" style="height: 100%;">
           <h4 class="card-header">Tasks</h4>
         {% for tasklist in todays_tasklists %}
-          <div class="accordion" id="tasklistAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-task{{ tasklist.tasklist_id }}" aria-expanded="true" aria-controls="collapse-task{{ tasklist.tasklist_id }}">
+        <div class="p-3 border border-subtle rounded-3" id="dashboard-tasklist">
+                  <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>        
                   {{ tasklist.title }}
-                </button>
-              </h2>
-              <div id="collapse-task{{ tasklist.tasklist_id }}" class="accordion-collapse collapse" data-bs-parent="#tasklistAccordion">
-                <div class="accordion-body">
+                  <a href="{{ tasklist.url }}">Edit</a>
                   {% for task in tasklist.tasks %}
                   <div class="form-check">
                     {% if task.completed %}
@@ -109,10 +83,9 @@
                   </div>
                   {% endfor %}
                 </div>
-              </div>
-            </div>
-          </div>
         {% endfor %}
       </div>
       </div>
+    <!-- </div>
+  </div> -->
 {% endblock %}

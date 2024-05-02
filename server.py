@@ -57,15 +57,13 @@ def show_user_dashboard():
     
     user = crud.get_user_by_id(session["user_id"])
     todays_events_routines = crud.sort_dashboard_objects(user)
-    todays_tasklists = crud.get_todays_tasklists()
+    todays_tasklists = crud.get_todays_tasklists(user)
 
     for i, item in enumerate(todays_events_routines):
-        if todays_events_routines[i] != todays_events_routines[-1]:
+        if item["all_day"] is False and todays_events_routines[i] != todays_events_routines[-1]:
             next_item = todays_events_routines[i+1]
-            if item["type"] == "event" and item["all_day"] is False:
-                if next_item["type"] == "event" and next_item["all_day"] is False:
-                    item["time_dif"] = crud.find_time_differences(item["end_time"], next_item["start_time"])
-                    print("*******", item["time_dif"])
+            if next_item["all_day"] is False:
+                item["time_dif"] = crud.find_time_differences(item["end_time"], next_item["start_time"])
     
     return render_template("dashboard.html", username=user.username,
                            todays_events_routines=todays_events_routines,

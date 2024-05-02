@@ -441,24 +441,36 @@ def delete_event(event_title):
     db.session.commit()
 
 
-def get_todays_tasklists():
+def get_todays_tasklists(user):
     """Gets tasklists assigned to today."""
 
     todays_date = str(date.today())
+    
+    todays_tasklists = Tasklist.query.filter_by(start=todays_date).all()
 
-    tasklists = Tasklist.query.filter(Tasklist.start==todays_date).all()
-
-    return tasklists
+    return todays_tasklists
 
 
-def get_todays_recur_tasklists():
+def get_todays_recur_tasklists(user):
     """Gets recurring tasklists assigned to today."""
 
     todays_date = str(date.today())
+    day_of_week = str(date.today().isoweekday() % 7)
+    todays_recur_tasklists = []
 
-    recur_tasklists = RecurTasklist.query.filter(RecurTasklist.start==todays_date).all()
+    for recur_tasklist in RecurTasklist.query.filter_by(user=user).all():
 
-    return recur_tasklists
+        recur_tasklist_range = date_range(recur_tasklist.start_recur, recur_tasklist.end_recur)
+
+        if todays_date in recur_tasklist_range:
+            
+            if recur_tasklist.days_of_week is None:
+                todays_recur_tasklists.append(recur_tasklist)
+            
+            elif recur_tasklist.days_of_week is not None and day_of_week in recur_tasklist.days_of_week:
+                todays_recur_tasklists.append(recur_tasklist)
+
+    return todays_recur_tasklists
 
 
 def get_date_str(item_date, item_time):
@@ -583,7 +595,8 @@ def create_dashboard_event_objects(user):
             "end_str": end_str,
             "time_dif": None,
             "title": event.title,
-            "url": event.url
+            "url": event.url,
+            "color": event.background_color
             # Add more info after this starts working
         })
     
@@ -600,18 +613,27 @@ def create_dashboard_recur_event_objects(user):
     for recur_event in recur_events:
         if recur_event.all_day:
             start_time = ""
+            end_time = None
+            start_str = None
+            end_str = None
         else:
             start_time = recur_event.start
+            end_time = recur_event.end
+            start_str = military_to_standard_time(start_time)
+            end_str = military_to_standard_time(end_time)
         
         recur_event_objects.append({
             "type": "recur_event",
             "id": recur_event.recur_event_id,
             "all_day": recur_event.all_day, # True or False
             "start_time": start_time,
-            "start_str": None,
-            "end_str": None,
+            "end_time": end_time,
+            "start_str": start_str,
+            "end_str": end_str,
+            "time_dif": None,
             "title": recur_event.title,
-            "url": recur_event.url
+            "url": recur_event.url,
+            "color": recur_event.background_color
             # Add more info after this starts working
         })
     
@@ -630,9 +652,14 @@ def create_dashboard_routine_objects(user):
             "id": routine.routine_id,
             "all_day": False,
             "start_time": routine.start,
+            "end_time": routine.end,
+            "start_str": military_to_standard_time(routine.start),
+            "end_str": military_to_standard_time(routine.end),
+            "time_dif": None,
             "title": routine.title,
             "actions": routine.actions,
-            "url": routine.url
+            "url": routine.url,
+            "color": routine.background_color
             # Add more info after this starts working
         })
     
