@@ -1,7 +1,7 @@
 // Renders the calendar
 document.addEventListener('DOMContentLoaded', function() {
-  const calendarEl = document.getElementById('calendar');
-  const calendar = new FullCalendar.Calendar(calendarEl, {
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     themeSystem: 'bootstrap5',
     headerToolbar: {
@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
       center: 'title',
       end: 'dayGridMonth dayGridWeek dayGridDay'
     },
-    navLinks: true
-    })
+    navLinks: true,
+    dayMaxEvents: true
+    });
     // Add user events to calendar
     fetch('/api/add-event')
       .then((response) => response.json())
@@ -18,8 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const data of responseData) {
             calendar.addEvent(data);
         }
-      })
+      });
     calendar.render();
+});
+
+// Change from light to dark mode
+document.querySelector('#theme-mode-toggle').addEventListener('change', () => {
+  
+  fetch('/change-theme')
+    .then((response) => response.json())
+    .then((theme) => {
+      document.documentElement.setAttribute('data-bs-theme', theme);
+    });
 });
 
 // Adds additional text boxes to enter the title of actions for a new routine
@@ -27,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.querySelector('#add-action').addEventListener('click', () => {
   document.querySelector('#routine-create-button').insertAdjacentHTML('beforebegin',
     `<div class="mb-3">
-    <input type="text" class="form-control" id="action-title" placeholder="New Action">
+    <input type="text" class="form-control" name="action-title" id="action-title" placeholder="New Action">
     </div>`
   );
 });
@@ -37,7 +48,7 @@ document.querySelector('#add-action').addEventListener('click', () => {
 document.querySelector('#add-task').addEventListener('click', () => {
   document.querySelector('#tasklist-create-button').insertAdjacentHTML('beforebegin',
     `<div class="mb-3">
-    <input type="text" class="form-control" id="task-title" placeholder="New Task">
+    <input type="text" class="form-control" name="task-title" id="task-title" placeholder="New Task">
     </div>`
   );
 });

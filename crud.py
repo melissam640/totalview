@@ -1,7 +1,7 @@
 """CRUD operations."""
 
 from pandas import date_range
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 from model import (db, User, Event, RecurEvent, Routine, Action, 
                    Tasklist, RecurTasklist, Task, RecurTask, connect_to_db)
@@ -445,8 +445,12 @@ def get_todays_tasklists(user):
     """Gets tasklists assigned to today."""
 
     todays_date = str(date.today())
+    todays_tasklists = []
     
-    todays_tasklists = Tasklist.query.filter_by(start=todays_date).all()
+    for tasklist in Tasklist.query.filter_by(user=user).all():
+
+        if tasklist.start == todays_date:
+            todays_tasklists.append(tasklist)
 
     return todays_tasklists
 
@@ -477,6 +481,16 @@ def get_date_str(item_date, item_time):
     """Converts user date and time input into a parsable string."""
 
     return item_date + "T" + item_time
+
+
+def add_day_to_date(date_str):
+    """Adds one day to dates that are not inclusive in FullCalendar."""
+
+    inital_date = datetime.strptime(date_str, "%Y-%m-%d")
+
+    end_date = inital_date + timedelta(days=1)
+
+    return end_date
 
 
 def military_to_standard_time(time_str):

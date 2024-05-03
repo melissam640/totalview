@@ -67,7 +67,8 @@ def show_user_dashboard():
     
     return render_template("dashboard.html", username=user.username,
                            todays_events_routines=todays_events_routines,
-                           todays_tasklists=todays_tasklists)
+                           todays_tasklists=todays_tasklists,
+                           theme=user.theme)
 
 @app.route("/month")
 def show_monthly_schedule():
@@ -75,7 +76,8 @@ def show_monthly_schedule():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return render_template("month.html", username=user.username)
+    return render_template("month.html", username=user.username,
+                           theme=user.theme)
 
 @app.route("/account")
 def show_user_account():
@@ -83,7 +85,8 @@ def show_user_account():
 
     user = crud.get_user_by_id(session["user_id"])
 
-    return render_template("account.html", username=user.username)
+    return render_template("account.html", username=user.username,
+                           theme=user.theme)
 
 @app.route("/api/add-event")
 def add_event():
@@ -126,6 +129,9 @@ def create_new_event():
         all_day = True
     else:
         all_day = False
+
+    if end_recur:
+        end_recur = crud.add_day_to_date(end_recur)
     
     if repeat == "none": # Create a one-time event
 
@@ -337,7 +343,8 @@ def show_event_details(event_id):
     user = crud.get_user_by_id(session["user_id"])
     event = crud.get_event_by_id(event_id)
     
-    return render_template("edit.html", event=event, username=user.username)
+    return render_template("edit.html", event=event, username=user.username,
+                           theme=user.theme)
 
 
 @app.route("/edit/<event_id>/edit-event-title", methods = ["POST"])
@@ -405,7 +412,8 @@ def show_recur_event_details(recur_event_id):
     user = crud.get_user_by_id(session["user_id"])
     recur_event = crud.get_recur_event_by_id(recur_event_id)
     
-    return render_template("edit-recur-event.html", recur_event=recur_event, username=user.username)
+    return render_template("edit-recur-event.html", recur_event=recur_event,
+                           username=user.username, theme=user.theme)
 
 
 @app.route("/edit-recur-event/<recur_event_id>/edit-recur-event-title", methods = ["POST"])
@@ -489,7 +497,8 @@ def show_routine_details(routine_id):
     user = crud.get_user_by_id(session["user_id"])
     routine = crud.get_routine_by_id(routine_id)
     
-    return render_template("edit-routine.html", routine=routine, username=user.username)
+    return render_template("edit-routine.html", routine=routine,
+                           username=user.username, theme=user.theme)
 
 
 @app.route("/edit-routine/<routine_id>/edit-routine-title", methods = ["POST"])
@@ -595,7 +604,8 @@ def show_tasklist_details(tasklist_id):
     user = crud.get_user_by_id(session["user_id"])
     tasklist = crud.get_tasklist_by_id(tasklist_id)
     
-    return render_template("edit-tasklist.html", tasklist=tasklist, username=user.username)
+    return render_template("edit-tasklist.html", tasklist=tasklist,
+                           username=user.username, theme=user.theme)
 
 
 @app.route("/edit-tasklist/<tasklist_id>/edit-tasklist-title", methods = ["POST"])
@@ -671,7 +681,9 @@ def show_recur_tasklist_details(recur_tasklist_id):
     user = crud.get_user_by_id(session["user_id"])
     recur_tasklist = crud.get_recur_tasklist_by_id(recur_tasklist_id)
     
-    return render_template("edit-recur-tasklist.html", recur_tasklist=recur_tasklist, username=user.username)
+    return render_template("edit-recur-tasklist.html",
+                           recur_tasklist=recur_tasklist,
+                           username=user.username, theme=user.theme)
 
 
 @app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-title", methods = ["POST"])
@@ -763,6 +775,22 @@ def delete_recur_task(recur_tasklist_id, recur_task_id):
     db.session.commit()
     
     return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
+
+
+@app.route("/change-theme")
+def change_user_theme():
+    """Changes the theme for a user to either light or dark mode."""
+    
+    user = crud.get_user_by_id(session["user_id"])
+    
+    if user.theme == "light":
+        user.theme = "dark"
+        db.session.commit()
+        return jsonify("dark")
+    
+    user.theme = "light"
+    db.session.commit()
+    return jsonify("light")
 
 
 @app.route("/complete-action", methods = ["POST"])
