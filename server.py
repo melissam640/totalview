@@ -81,6 +81,16 @@ def show_monthly_schedule():
                            theme=user.theme,
                            accent=user.accent_color)
 
+@app.route("/settings")
+def show_user_settings():
+    """Creates page with user theme and accent color options."""
+
+    user = crud.get_user_by_id(session["user_id"])
+
+    return render_template("settings.html", username=user.username,
+                           theme=user.theme,
+                           accent=user.accent_color)
+
 @app.route("/account")
 def show_user_account():
     """Creates page with user account infomation."""
