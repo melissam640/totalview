@@ -17,7 +17,7 @@
           <div class="p-3 border border-subtle rounded-3" id="all-day-dashboard-event">
             <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
             {{ item["title"] }} All Day
-            <a href="{{ item["url"] }}">Edit</a>
+            <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
           </div>
         {% else %}
           {% if item["type"]=="routine" %}
@@ -25,7 +25,7 @@
             <i class="bi bi-arrow-repeat" style="color: {{ item["color"] }};"></i>
             {{ item["title"] }}
             {{ item["start_time"] }}
-            <a href="{{ item["url"] }}">Edit</a>
+            <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
                   {% for action in item["actions"] %}
                   <div class="form-check">
                       {% if action.completed %}
@@ -47,7 +47,7 @@
             <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
             {{ item["title"] }}
             {{ item["start_str"] }} - {{ item["end_str"] }}
-                  <a href="{{ item["url"] }}">Edit</a>
+                  <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
           </div>
           {% if item["time_dif"] %}
           <br>
@@ -66,7 +66,7 @@
         <div class="p-3 border border-subtle rounded-3" id="dashboard-tasklist">
                   <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>        
                   {{ tasklist.title }}
-                  <a href="{{ tasklist.url }}">Edit</a>
+                  <a href="{{ tasklist.url }}" style="color: {{accent}};">Edit</a>
                   {% for task in tasklist.tasks %}
                   <div class="form-check">
                     {% if task.completed %}
