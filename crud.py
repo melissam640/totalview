@@ -6,10 +6,11 @@ from datetime import datetime, date, timedelta
 from model import (db, User, Event, RecurEvent, Routine, Action, 
                    Tasklist, RecurTasklist, Task, RecurTask, connect_to_db)
 
-def create_user(email, password, username, theme):
+def create_user(email, password, username):
     """Create and return a new user."""
 
-    user = User(email=email, password=password, username=username, theme=theme)
+    user = User(email=email, password=password, username=username,
+                theme="light", accent_color="#818387")
 
     return user
 

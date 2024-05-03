@@ -3,22 +3,22 @@
 {% block body %}
   <div class="col">
     <h2 style="display: inline">{{ routine.title }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
       EDIT
     </button>
     <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" method="POST" style="display: inline">
-      <input type="submit" class="btn btn-primary" value="Delete">
+      <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
     </form>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
       EDIT
     </button>
     <br>
       <p> Routine Start Time: {{ routine.start }} </p>
       <p> Routine End Time: {{ routine.end }} </p>
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
       EDIT
     </button>
     <br>
@@ -32,14 +32,14 @@
       <p> Every Day </p>
     {% endif %}
     <h3 style="display: inline">Actions</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-action">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
       ADD
     </button>
     <br><br>
     {% for action in routine.actions %}
       <p style="display: inline"> {{ action.title }} </p>
       <form action="/edit-routine/{{ routine.routine_id }}/{{ action.action_id }}/delete-action" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" value="Delete">
+        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
       </form>
       <br><br>
     {% endfor %}

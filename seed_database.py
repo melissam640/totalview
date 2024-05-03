@@ -14,7 +14,7 @@ model.db.create_all()
 # Test user 1
 
 # Account
-user = crud.create_user("testuser1@test.com", "testpassword1", "test_user_1", "light")
+user = crud.create_user("testuser1@test.com", "testpassword1", "test_user_1")
 model.db.session.add(user)
 
 # Test events

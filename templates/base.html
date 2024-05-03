@@ -17,36 +17,43 @@
       <div class="row">
       <nav class="navbar bg-body-tertiary border bg-border-color">
         <div class="container-fluid">
-          <a class="navbar-brand">App Name</a>
-          <div class="form-check form-switch">
-            <label for="theme-mode-toggle">
-              <i class="bi bi-moon-stars-fill"></i>
-            </label>
-            <input class="form-check-input" type="checkbox" role="switch" id="theme-mode-toggle" name="theme-mode-toggle" value="dark">
-          </div>
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <h4 class="navbar-brand">App Name</h4>
+          <button class="btn btn-basic dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-person-fill"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/account/logout">Log Out</a></li>
+            <li>
+              <a class="dropdown-item" href="/account">Account</a>
+            </li>
+            <li>
+              <form action="/account/logout" method="POST">
+                <input type="submit" class="btn btn-basic" value="Log Out">
+              </form>
+            </li>
           </ul>
         </div>
       </nav>
       </div>
       <div class="row vh-100">
-        <div class="col-2 border bg-border-color" id="sidebar">
-          <i class="bi bi-person-circle" style="font-size: 6rem; color: cornflowerblue;"></i>
-          <br>
-          {{ username }}
-          <br><br>
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-item-modal">
-              <i class="bi bi-calendar2-plus"></i>
-              Create New
-            </button><br>
-          </li>
-          <li class="nav-item">
+        <div class="col-2 bg-body-tertiary border bg-border-color" id="sidebar">
+          <div class="row" style="text-align: center;" id="user-profile">
+            <i class="bi bi-person-circle" style="font-size: 6rem; color: grey; align: center;"></i>
+            <br>
+            <h6>{{ username }}</h6>
+          </div>
+          <hr>
+          <ul class="nav flex-column">
+          <div class="row">
+            <li class="nav-item">
+              <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#new-item-modal">
+                <i class="bi bi-calendar2-plus"></i>
+                Create New
+              </button><br>
+            </li>
+          </div>
+          <hr>
+          <div class="row">
+            <li class="nav-item">
             <a class="nav-link" href="/dashboard">
               <i class="bi bi-layout-text-window-reverse"></i>
               Dashboard
@@ -61,6 +68,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/account">Account or Settings</a>
           </li>
+          </div>
         </ul>
         </div>
         {% block body %}{% endblock %}
@@ -75,9 +83,9 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <button class="btn btn-primary" data-bs-target="#new-event-modal" data-bs-toggle="modal">Event</button>
-          <button class="btn btn-primary" data-bs-target="#new-routine-modal" data-bs-toggle="modal">Routine</button>
-          <button class="btn btn-primary" data-bs-target="#new-tasklist-modal" data-bs-toggle="modal">Tasklist</button>
+          <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-event-modal" data-bs-toggle="modal">Event</button>
+          <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-routine-modal" data-bs-toggle="modal">Routine</button>
+          <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-tasklist-modal" data-bs-toggle="modal">Tasklist</button>
         </div>
       </div>
     </div>
@@ -153,13 +161,13 @@
               <div class="row">
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
                   <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-none" autocomplete="off" value="none" checked>
-                  <label class="btn btn-outline-primary" for="repeat-none">None</label>
+                  <label class="btn btn-outline-secondary" for="repeat-none">None</label>
 
                   <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-day" autocomplete="off" value="day">
-                  <label class="btn btn-outline-primary" for="repeat-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="repeat-day">Day</label>
 
                   <input type="radio" class="btn-check" name="event-repeat-option" id="repeat-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="repeat-week">Week</label>
+                  <label class="btn btn-outline-secondary" for="repeat-week">Week</label>
                 </div>
               </div><br>
 
@@ -187,30 +195,30 @@
               <div class="row d-none" id="event-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="saturday">Sat</label>
                 </div>
               </div><br>
               
               <div class="row">
-                <input type="submit" value="Create">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Create">  
               </div>
             </form>
           </div>

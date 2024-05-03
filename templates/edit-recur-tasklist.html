@@ -3,12 +3,12 @@
 {% block body %}
   <div class="col">
     <h2 style="display: inline">{{ recur_tasklist.title }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
       EDIT
     </button>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-time">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-time">
       EDIT
     </button>
     <br>
@@ -17,7 +17,7 @@
       <input type="submit" value="Delete">
     </form>
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
       EDIT
     </button>
     <br>
@@ -31,14 +31,14 @@
       <p> Every Day </p>
     {% endif %}
     <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
       ADD
     </button>
     <br><br>
     {% for recur_task in recur_tasklist.recur_tasks %}
       <p style="display: inline"> {{ recur_task.title }} </p>
       <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/{{ recur_task.recur_task_id }}/delete-recur-task" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" value="Delete">
+        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
       </form>
       <br><br>
     {% endfor %}

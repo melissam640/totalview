@@ -3,30 +3,37 @@
 {% block body %}
   <div class="col">
   <h1>Account for {{ username }}</h1>
-  <h2 style="display: inline">Email</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
+    
+    <div class="form-check form-switch">
+      <label for="theme-mode-toggle">
+        <i class="bi bi-moon-stars-fill"></i>
+      </label>
+      <input class="form-check-input" type="checkbox" role="switch" id="theme-mode-toggle" name="theme-mode-toggle" value="dark">
+    </div>
+    <br>
+
+    <label for="accent-color" class="form-label">Accent Color</label>
+    <input type="color" name="accent-color" id="accent-color" value={{accent}}>
+    <br>
+    
+    <h2 style="display: inline">Email</h2>
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
       UPDATE
     </button>
     <br><br>
 
     <h2 style="display: inline">Password</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-password-modal">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-password-modal">
       UPDATE
     </button>
     <br><br>
 
-    <!-- <h2 style="display: inline">Night Mode</h2>
-    <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
-    </div>
-    <br><br> -->
-
     <form action="/account/logout" method="POST">
-      <input type="submit" class="btn btn-primary" value="LOG OUT">
+      <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="LOG OUT">
     </form>
     <br>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete-account-modal">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#delete-account-modal">
       DELETE ACCOUNT
     </button>
   </div>

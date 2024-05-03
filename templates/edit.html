@@ -3,12 +3,12 @@
 {% block body %}
   <div class="col">
     <h2 style="display: inline">{{ event.title }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-event-title">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
       EDIT
     </button>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-event-time">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-time">
       EDIT
     </button>
     <br>

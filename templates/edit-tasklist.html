@@ -3,12 +3,12 @@
 {% block body %}
   <div class="col">
     <h2 style="display: inline">{{ tasklist.title }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
       EDIT
     </button>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
       EDIT
     </button>
     <br>
@@ -17,14 +17,14 @@
       <input type="submit" value="Delete">
     </form>
     <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-new-task">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
       ADD
     </button>
     <br><br>
     {% for task in tasklist.tasks %}
       <p style="display: inline"> {{ task.title }} </p>
       <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" value="Delete">
+        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
       </form>
       <br><br>
     {% endfor %}

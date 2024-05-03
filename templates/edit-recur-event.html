@@ -3,12 +3,12 @@
 {% block body %}
   <div class="col">
     <h2 style="display: inline">{{ recur_event.title }}</h2>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
       EDIT
     </button>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
       EDIT
     </button>
     <br>
@@ -19,7 +19,7 @@
       <p> Event End Time: {{ recur_event.end }} </p>
     {% endif %}
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
       EDIT
     </button>
     <br>

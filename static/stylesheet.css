@@ -1,13 +1,20 @@
-/* .btn-primary {
-    background-color: #7272AB !important;
-    border-color: #7272AB !important;
+.fc-event {
+    color: #818387;
 }
 
-.btn-outline-primary {
-    border-color: #7272AB !important;
-    color-scheme: #7272AB !important;
-}
-
-a {
+.nav-link {
     color: #7272AB !important;
-} */
+}
+
+.form-switch .form-check-input:focus {
+    border-color: rgba(129, 125, 125, 0.775);
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(129, 125, 125, 0.775);
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(0,0,0,0.25)'/></svg>");
+}
+.form-switch .form-check-input:checked {
+    background-color: #818387;
+    border-color: #818387;
+    border: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+}
