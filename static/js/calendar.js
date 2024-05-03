@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then((responseData) => {
         for (const data of responseData) {
             calendar.addEvent(data);
+            console.log(data);
         }
       });
     calendar.render();

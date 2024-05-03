@@ -67,7 +67,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" style="color: {{accent}};" href="/settings">
-              <i class="bi bi-sliders"></i>
+              <i class="bi bi-palette"></i>
               Settings
             </a>
           </li>
@@ -283,7 +283,7 @@
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-day" autocomplete="off" value="day">
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-day" autocomplete="off" value="day" checked>
                   <label class="btn btn-outline-primary" for="rou-repeat-day">Day</label>
 
                   <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-week" autocomplete="off" value="week">
@@ -292,7 +292,7 @@
               </div><br>
 
               <!-- Specify repeat date range -->
-              <div class="row d-none" id="routine-repeat-date-range">
+              <div class="row" id="routine-repeat-date-range">
                 <div class="col">
                   <ul class="list-group">
                     <li class="list-group-item">Start</li>
@@ -402,13 +402,13 @@
               <div class="row">
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
-                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-none" autocomplete="off" value="none" checked>
+                  <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-none" autocomplete="off" value="none" checked>
                   <label class="btn btn-outline-primary" for="tasklist-none">None</label>
 
-                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-day" autocomplete="off" value="day">
+                  <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-day" autocomplete="off" value="day">
                   <label class="btn btn-outline-primary" for="tasklist-day">Day</label>
 
-                  <input type="radio" class="btn-check" name="repeat-option" id="tasklist-week" autocomplete="off" value="week">
+                  <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-week" autocomplete="off" value="week">
                   <label class="btn btn-outline-primary" for="tasklist-week">Week</label>
                 </div>
               </div><br>

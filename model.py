@@ -21,6 +21,7 @@ class User(db.Model):
     username = db.Column(db.String)
     theme = db.Column(db.String)
     accent_color = db.Column(db.String)
+    profile_pic = db.Column(db.String)
 
     events = db.relationship("Event", back_populates="user")
     recur_events = db.relationship("RecurEvent", back_populates="user")

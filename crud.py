@@ -293,6 +293,8 @@ def get_all_calendar_items(user):
             days_of_week = recur_event.days_of_week.split(" ")
         else:
             days_of_week = recur_event.days_of_week
+
+        end_recur = add_day_to_date(recur_event.end_recur)
         
         items.append({
             "title": recur_event.title,
@@ -306,7 +308,7 @@ def get_all_calendar_items(user):
             "textColor": recur_event.text_color,
             "daysOfWeek": days_of_week,
             "startRecur": recur_event.start_recur,
-            "endRecur": recur_event.end_recur
+            "endRecur": end_recur
         })
 
     for routine in Routine.query.filter_by(user=user).all():
@@ -316,6 +318,8 @@ def get_all_calendar_items(user):
             days_of_week = routine.days_of_week.split(" ")
         else:
             days_of_week = routine.days_of_week
+        
+        end_recur = add_day_to_date(routine.end_recur)
         
         items.append({
             "title": routine.title,
@@ -328,7 +332,7 @@ def get_all_calendar_items(user):
             "textColor": routine.text_color,
             "daysOfWeek": days_of_week,
             "startRecur": routine.start_recur,
-            "endRecur": routine.end_recur
+            "endRecur": end_recur
         })
 
     for tasklist in Tasklist.query.filter_by(user=user).all():
@@ -352,6 +356,8 @@ def get_all_calendar_items(user):
         else:
             days_of_week = recur_tasklist.days_of_week
         
+        end_recur = add_day_to_date(recur_tasklist.end_recur)
+        
         items.append({
             "title": recur_tasklist.title,
             "allDay": recur_tasklist.all_day,
@@ -363,7 +369,7 @@ def get_all_calendar_items(user):
             "textColor": recur_tasklist.text_color,
             "daysOfWeek": days_of_week,
             "startRecur": recur_tasklist.start_recur,
-            "endRecur": recur_tasklist.end_recur
+            "endRecur": end_recur
         })
 
     return items
@@ -489,7 +495,7 @@ def add_day_to_date(date_str):
 
     inital_date = datetime.strptime(date_str, "%Y-%m-%d")
 
-    end_date = inital_date + timedelta(days=1)
+    end_date = (inital_date + timedelta(days=1)).strftime("%Y-%m-%d")
 
     return end_date
 

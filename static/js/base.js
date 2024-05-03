@@ -37,12 +37,10 @@ document.querySelector('#add-action').addEventListener('click', () => {
   
   // Routine repeat options show/hide
   document.querySelector('#rou-repeat-day').addEventListener('click', () => {
-    document.querySelector('#routine-repeat-date-range').classList.remove('d-none');
     document.querySelector('#routine-repeat-days').classList.add('d-none');
   });
   
   document.querySelector('#rou-repeat-week').addEventListener('click', () => {
-    document.querySelector('#routine-repeat-date-range').classList.remove('d-none');
     document.querySelector('#routine-repeat-days').classList.remove('d-none');
   });
   

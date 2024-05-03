@@ -140,16 +140,14 @@ def create_new_event():
     
     if all_day == "true":
         all_day = True
+        start = start_date
+        end = end_date
     else:
         all_day = False
-
-    if end_recur:
-        end_recur = crud.add_day_to_date(end_recur)
-    
-    if repeat == "none": # Create a one-time event
-
         start = crud.get_date_str(start_date, start_time)
         end = crud.get_date_str(end_date, end_time)
+    
+    if repeat == "none": # Create a one-time event
         
         event = crud.create_event(title, all_day, start, end, "", "", url, display,
                  background_color, border_color, text_color, None, None,
@@ -243,10 +241,10 @@ def create_new_tasklist():
     title = request.args.get("tasklist-title")
     color = request.args.get("tasklist-color")
     date = request.args.get("tasklist-date")
-    repeat = request.args.get("repeat-option")
+    repeat = request.args.get("tasklist-repeat-option")
     days_of_week = request.args.getlist("days-of-week")
-    start_recur = request.args.get("event-repeat-start")
-    end_recur = request.args.get("event-repeat-end")
+    start_recur = request.args.get("tasklist-repeat-start")
+    end_recur = request.args.get("tasklist-repeat-end")
     
     all_day = True
     url = "/delete"
