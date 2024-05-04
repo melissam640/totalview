@@ -4,6 +4,12 @@
   <div class="col">
   <h1>Account for {{ username }}</h1>
     
+    <h2 style="display: inline">Profile Photo</h2>
+    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-profile-pic-modal">
+      UPDATE
+    </button>
+    <br><br>  
+    
     <h2 style="display: inline">Email</h2>
     <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
       UPDATE
@@ -24,6 +30,27 @@
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-account-modal">
       DELETE ACCOUNT
     </button>
+  </div>
+
+  <!-- Edit user profile photo -->
+  <div class="modal fade" id="edit-profile-pic-modal" aria-hidden="true" aria-labelledby="edit-profile-pic-modal-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-profile-pic-modal-label">Update Profile Photo</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+              <!-- Input for new profile photo -->
+              <form action="/account/upload-profile-pic" method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="Upload">
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Edit user email -->

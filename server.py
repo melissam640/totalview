@@ -1,15 +1,21 @@
 """Server for productivity app."""
 
+import os
 from flask import (Flask, render_template, jsonify, request, flash, session,
-                   redirect)
+                   redirect, url_for)
+from werkzeug.utils import secure_filename
 from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, Event, RecurEvent, Routine, Tasklist, RecurTasklist
 import crud
 
+UPLOAD_FOLDER = "./static/profile-pics"
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def show_homepage():
@@ -68,8 +74,8 @@ def show_user_dashboard():
     return render_template("dashboard.html", username=user.username,
                            todays_events_routines=todays_events_routines,
                            todays_tasklists=todays_tasklists,
-                           theme=user.theme,
-                           accent=user.accent_color)
+                           theme=user.theme, accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 @app.route("/month")
 def show_monthly_schedule():
@@ -78,8 +84,8 @@ def show_monthly_schedule():
     user = crud.get_user_by_id(session["user_id"])
 
     return render_template("month.html", username=user.username,
-                           theme=user.theme,
-                           accent=user.accent_color)
+                           theme=user.theme, accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 @app.route("/settings")
 def show_user_settings():
@@ -88,8 +94,8 @@ def show_user_settings():
     user = crud.get_user_by_id(session["user_id"])
 
     return render_template("settings.html", username=user.username,
-                           theme=user.theme,
-                           accent=user.accent_color)
+                           theme=user.theme, accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 @app.route("/account")
 def show_user_account():
@@ -98,8 +104,8 @@ def show_user_account():
     user = crud.get_user_by_id(session["user_id"])
 
     return render_template("account.html", username=user.username,
-                           theme=user.theme,
-                           accent=user.accent_color)
+                           theme=user.theme, accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 @app.route("/api/add-event")
 def add_event():
@@ -296,6 +302,33 @@ def create_new_tasklist():
             crud.create_recur_task(task_title, "", "", "", "", None, None, False, recur_tasklist)
 
     return redirect("/dashboard")
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/account/upload-profile-pic", methods=["GET", "POST"])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
+            user = crud.get_user_by_id(session["user_id"])
+            user.profile_pic = f"/static/profile-pics/{filename}"
+            db.session.commit()
+            
+            return redirect("/account")
+    
+    return redirect("/account")
 
 
 @app.route("/account/edit-email", methods = ["POST"])

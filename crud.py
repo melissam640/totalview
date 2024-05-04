@@ -10,7 +10,8 @@ def create_user(email, password, username):
     """Create and return a new user."""
 
     user = User(email=email, password=password, username=username,
-                theme="light", accent_color="#818387")
+                theme="light", accent_color="#818387",
+                profile_pic="/static/profile-pics/default.png")
 
     return user
 
