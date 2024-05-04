@@ -2,31 +2,51 @@
 {% block title %}Edit Item{% endblock %}
 {% block body %}
   <div class="col">
+    <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>
     <h2 style="display: inline">{{ tasklist.title }}</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
+      <i class="bi bi-pencil"></i>
     </button>
+    <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/delete-tasklist" style="display: inline;" method="POST">
+      <button type="submit" class="btn btn-link" style="color: {{accent}};">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </form>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
-      <p> Tasklist Start Date: {{ tasklist.start }}</p>
-    <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/delete-tasklist" method="POST">
-      <input type="submit" value="Delete">
-    </form>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ tasklist.start }}
+    </p> 
     <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
-      ADD
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
+      <i class="bi bi-plus-lg"></i>
     </button>
     <br><br>
     {% for task in tasklist.tasks %}
-      <p style="display: inline"> {{ task.title }} </p>
-      <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
+      <div class="form-check">
+        {% if task.completed %}
+        <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
+        <label class="form-check-label" for="task-flex-check">
+          {{ task.title }}
+        </label>
+        {% else %}
+        <input class="form-check-input task-unchecked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
+        <label class="form-check-label" for="task-flex-check">
+          {{ task.title }}
+        </label>
+        {% endif %}
+      <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" style="display: inline;" method="POST">
+        <button type="submit" class="btn btn-link" style="color: {{accent}};">
+          <i class="bi bi-trash3"></i>
+        </button>
       </form>
-      <br><br>
+    </div>
+    <br>
     {% endfor %}
   </div>
 
@@ -41,13 +61,18 @@
         <div class="modal-body">
           <div class="row">
             <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/edit-tasklist-title" method="POST">
-              <!-- Input for tasklist title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-tasklist-title" name="edit-tasklist-title">
-                <label for="edit-tasklist-title">New Title</label>
+              <!-- Input for event title -->
+              <div class="mb-3">
+                <label for="edit-tasklist-title" class="form-label">Tasklist Title</label>
+                <input type="text" class="form-control" name="edit-tasklist-title" id="edit-tasklist-title" placeholder="New Title">
               </div>
+              
+              <!-- Input for event color -->
+              <label for="edit-tasklist-color" class="form-label">Color</label>
+              <input type="color" name="edit-tasklist-color" id="edit-tasklist-color" value={{ tasklist.background_color }}>
+              <br><br>
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -71,13 +96,17 @@
               <!-- Input for tasklist date -->
               <div class="row">
                 <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="tasklist-start-date" name="start-date">
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="edit-tasklist-start-time" name="start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
               </div>
             </form>
           </div>
@@ -98,12 +127,12 @@
           <div class="row">
             <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/add-task" method="POST">
               <!-- Input for task title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="add-task-title" name="add-task-title">
-                <label for="add-task-title">New Task</label>
+              <div class="mb-3">
+                <label for="edit-task-title" class="form-label">Task Title</label>
+                <input type="text" class="form-control" name="edit-task-title" id="edit-task-title" placeholder="New Title">
               </div>
               <div class="row">
-                <input type="submit" value="Add">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
               </div>
             </form>
           </div>
@@ -111,4 +140,7 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block script %}
+  <script src="/static/js/edit-tasklist.js"></script>
 {% endblock %}

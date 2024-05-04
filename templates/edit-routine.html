@@ -2,46 +2,69 @@
 {% block title %}Edit Item{% endblock %}
 {% block body %}
   <div class="col">
+    <i class="bi bi-arrow-repeat" style="color: {{ routine.background_color }};"></i>
     <h2 style="display: inline">{{ routine.title }}</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
+      <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" method="POST" style="display: inline">
-      <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
+    <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" style="display: inline;" method="POST">
+      <button type="submit" class="btn btn-link" style="color: {{accent}};">
+        <i class="bi bi-trash3"></i>
+      </button>
     </form>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
-      <p> Routine Start Time: {{ routine.start }} </p>
-      <p> Routine End Time: {{ routine.end }} </p>
+    <p>
+      <i class="bi bi-clock"></i>
+      {{ routine.start_str }} - {{ routine.end_str }}
+    </p>
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
     {% if routine.days_of_week %}
-      <p> From: {{ routine.start_recur }}</p>
-      <p> To: {{ routine.end_recur }}</p>
-      <p> On: {{ routine.days_of_week }} </p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ routine.start_recur }} - {{ routine.end_recur }}
+    </p>  
+    <p> Weekly On: {{ routine.days_of_week }} </p>
     {% else %}
-      <p> From: {{ routine.start_recur }}</p>
-      <p> To: {{ routine.end_recur }}</p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ routine.start_recur }} - {{ routine.end_recur }}
+    </p>
       <p> Every Day </p>
     {% endif %}
     <h3 style="display: inline">Actions</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
-      ADD
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
+      <i class="bi bi-plus-lg"></i>
     </button>
     <br><br>
     {% for action in routine.actions %}
-      <p style="display: inline"> {{ action.title }} </p>
-      <form action="/edit-routine/{{ routine.routine_id }}/{{ action.action_id }}/delete-action" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
-      </form>
-      <br><br>
+      <div class="form-check">
+        {% if action.completed %}
+        <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-flex-check" checked>
+        <label class="form-check-label" for="action-flex-check">
+            {{ action.title }}
+        </label>
+        {% else %}
+        <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-flex-check">
+        <label class="form-check-label" for="action-flex-check">
+            {{ action.title }}
+        </label>
+        {% endif %}
+        <form action="/edit-routine/{{ routine.routine_id }}/{{ action.action_id }}/delete-action" method="POST" style="display: inline">
+          <button type="submit" class="btn btn-link" style="color: {{accent}};">
+            <i class="bi bi-trash3"></i>
+          </button>
+        </form>
+      </div>
+      <br>
     {% endfor %}
   </div>
 
@@ -56,13 +79,19 @@
         <div class="modal-body">
           <div class="row">
             <form action="/edit-routine/{{ routine.routine_id }}/edit-routine-title" method="POST">
-              <!-- Input for routine title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-routine-title" name="edit-routine-title">
-                <label for="edit-routine-title">New Title</label>
+              <!-- Input for event title -->
+              <div class="mb-3">
+                <label for="edit-routine-title" class="form-label">Routine Title</label>
+                <input type="text" class="form-control" name="edit-routine-title" id="edit-routine-title" placeholder="New Title">
               </div>
+              
+              <!-- Input for event color -->
+              <label for="edit-routine-color" class="form-label">Color</label>
+              <input type="color" name="edit-routine-color" id="edit-routine-color" value={{ routine.background_color }}>
+              <br><br>
+
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -82,21 +111,40 @@
         <div class="modal-body">
           <div class="row">
             <form action="/edit-routine/{{ routine.routine_id }}/edit-routine-time" method="POST">
-              
-              <!-- Input for routine time -->
+
+              <!-- Input for event start and end date/time -->
+              <div class="row">
+                <div class="col-auto">
+                  <p>Time</p>
+                </div>
+                <div class="col-auto offset-7">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
+                    <label class="form-check-label" for="all-day-switch">All Day</label>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col">
-                  <label for="start-time">Start:</label><br>
-                  <input type="time" id="edit-routine-start-time" name="start-time">
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="edit-routine-start-time" name="start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-time">End:</label><br>
-                  <input type="time" id="edit-routine-end-time" name="end-time">
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="edit-routine-end-time" name="end-time" aria-label="End time">
+                    </li>
+                  </ul>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -121,51 +169,60 @@
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat-day-or-week">
                   <input type="radio" class="btn-check" name="routine-repeat-option" id="edit-routine-repeat-day" autocomplete="off" value="day">
-                  <label class="btn btn-outline-primary" for="edit-routine-repeat-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-repeat-day">Day</label>
 
-                  <input type="radio" class="btn-check" name="event-repeat-option" id="edit-routine-repeat-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="edit-routine-repeat-week">Week</label>
+                  <input type="radio" class="btn-check" name="routine-repeat-option" id="edit-routine-repeat-week" autocomplete="off" value="week">
+                  <label class="btn btn-outline-secondary" for="edit-routine-repeat-week">Week</label>
                 </div>
               </div><br>
 
+              <!-- Specify repeat date range -->
               <div class="row">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="edit-routine-start" name="routine-repeat-start"><br>  
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-routine-start" name="routine-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="edit-routine-end" name="routine-repeat-end"><br>    
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-routine-end" name="routine-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
 
-              <div class="row">
+              <div class="row d-none" id="edit-routine-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="edit-routine-sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="edit-routine-monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="edit-routine-tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="edit-routine-wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="edit-routine-thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="edit-routine-friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="edit-routine-saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-routine-saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="edit-routine-saturday">Sat</label>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -186,12 +243,12 @@
           <div class="row">
             <form action="/edit-routine/{{ routine.routine_id }}/add-action" method="POST">
               <!-- Input for action title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="add-action-title" name="add-action-title">
-                <label for="add-action-title">New Action</label>
+              <div class="mb-3">
+                <label for="edit-action-title" class="form-label">Action Title</label>
+                <input type="text" class="form-control" name="edit-action-title" id="edit-action-title" placeholder="New Title">
               </div>
               <div class="row">
-                <input type="submit" value="Add">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
               </div>
             </form>
           </div>
@@ -200,4 +257,7 @@
     </div>
   </div>
   
+{% endblock %}
+{% block script %}
+  <script src="/static/js/edit-routine.js"></script>
 {% endblock %}

@@ -485,6 +485,59 @@ def get_todays_recur_tasklists(user):
     return todays_recur_tasklists
 
 
+def create_dashboard_tasklist_objects(user):
+    """Creates a dictionary of tasklist information for /dashboard."""
+
+    tasklists = get_todays_tasklists(user)
+    tasklist_objects = []
+    
+    for tasklist in tasklists: 
+        tasklist_objects.append({
+            "type": "tasklist",
+            "id": tasklist.tasklist_id,
+            "title": tasklist.title,
+            "url": tasklist.url,
+            "tasks": tasklist.tasks,
+            "color": tasklist.background_color
+            # Add more info after this starts working
+        })
+    
+    return tasklist_objects
+
+
+def create_dashboard_recur_tasklist_objects(user):
+    """Creates a dictionary of recurring tasklist information for /dashboard."""
+
+    recur_tasklists = get_todays_recur_tasklists(user)
+    recur_tasklist_objects = []
+    
+    for recur_tasklist in recur_tasklists: 
+        recur_tasklist_objects.append({
+            "type": "recur_tasklist",
+            "id": recur_tasklist.recur_tasklist_id,
+            "title": recur_tasklist.title,
+            "url": recur_tasklist.url,
+            "tasks": recur_tasklist.recur_tasks,
+            "color": recur_tasklist.background_color,
+            # Add more info after this starts working
+        })
+    
+    return recur_tasklist_objects
+
+
+def sort_dashboard_tasklist_objects(user):
+    """Combines and sorts tasklist items to be displayed on /dashboard."""
+
+    tasklist_objects = create_dashboard_tasklist_objects(user)
+    recur_tasklist_objects = create_dashboard_recur_tasklist_objects(user)
+
+    dashboard_objects = []
+    dashboard_objects.extend(tasklist_objects)
+    dashboard_objects.extend(recur_tasklist_objects)
+
+    return dashboard_objects
+
+
 def get_date_str(item_date, item_time):
     """Converts user date and time input into a parsable string."""
 
@@ -522,13 +575,29 @@ def find_time_differences(start_str, end_str):
     hours = int(delta.total_seconds() / 3600)
     if hours < 1:
         minutes = int((delta.total_seconds()) / 60)
+        if minutes < 0:
+            return None
         return f"{minutes}m"
+
 
     minutes = int((delta.total_seconds() - (hours * 3600)) / 60)
     if minutes < 1:
         return f"{hours}h"
 
     return f"{hours}h {minutes}m"
+
+
+def find_time_between_items(dashboard_items):
+    """Finds the time between events and routines if any."""
+
+    for i, item in enumerate(dashboard_items):
+        if item["all_day"] is False and dashboard_items[i] != dashboard_items[-1]:
+            next_item = dashboard_items[i+1]
+            
+            if next_item["all_day"] is False:
+                item["time_dif"] = find_time_differences(item["end_time"], next_item["start_time"])
+    
+    return dashboard_items
 
 
 def get_todays_events(user):
@@ -539,8 +608,8 @@ def get_todays_events(user):
     
     for event in Event.query.filter_by(user=user).all():
         
-        event_range = date_range(event.start, event.end)
-        
+        event_range = date_range(event.start[:10], event.end[:10])
+
         if todays_date in event_range:
             todays_events.append(event)
 
@@ -599,13 +668,9 @@ def create_dashboard_event_objects(user):
         if event.all_day:
             start_time = ""
             end_time = None
-            start_str = None
-            end_str = None
         else:
             start_time = event.start[11:]
             end_time = event.end[11:]
-            start_str = military_to_standard_time(start_time)
-            end_str = military_to_standard_time(end_time)
         
         event_objects.append({
             "type": "event",
@@ -613,8 +678,8 @@ def create_dashboard_event_objects(user):
             "all_day": event.all_day,
             "start_time": start_time,
             "end_time": end_time,
-            "start_str": start_str,
-            "end_str": end_str,
+            "start_str": event.start_str,
+            "end_str": event.end_str,
             "time_dif": None,
             "title": event.title,
             "url": event.url,
@@ -636,13 +701,9 @@ def create_dashboard_recur_event_objects(user):
         if recur_event.all_day:
             start_time = ""
             end_time = None
-            start_str = None
-            end_str = None
         else:
             start_time = recur_event.start
             end_time = recur_event.end
-            start_str = military_to_standard_time(start_time)
-            end_str = military_to_standard_time(end_time)
         
         recur_event_objects.append({
             "type": "recur_event",
@@ -650,8 +711,8 @@ def create_dashboard_recur_event_objects(user):
             "all_day": recur_event.all_day, # True or False
             "start_time": start_time,
             "end_time": end_time,
-            "start_str": start_str,
-            "end_str": end_str,
+            "start_str": recur_event.start_str,
+            "end_str": recur_event.end_str,
             "time_dif": None,
             "title": recur_event.title,
             "url": recur_event.url,
@@ -688,7 +749,7 @@ def create_dashboard_routine_objects(user):
     return routine_objects
 
 
-def sort_dashboard_objects(user):
+def sort_dashboard_event_routine_objects(user):
     """Combines and sorts calendar items to be displayed on /dashboard."""
 
     event_objects = create_dashboard_event_objects(user)

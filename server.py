@@ -62,14 +62,10 @@ def show_user_dashboard():
     """Create user dashboard."""
     
     user = crud.get_user_by_id(session["user_id"])
-    todays_events_routines = crud.sort_dashboard_objects(user)
-    todays_tasklists = crud.get_todays_tasklists(user)
+    todays_events_routines = crud.sort_dashboard_event_routine_objects(user)
+    todays_tasklists = crud.sort_dashboard_tasklist_objects(user)
 
-    for i, item in enumerate(todays_events_routines):
-        if item["all_day"] is False and todays_events_routines[i] != todays_events_routines[-1]:
-            next_item = todays_events_routines[i+1]
-            if next_item["all_day"] is False:
-                item["time_dif"] = crud.find_time_differences(item["end_time"], next_item["start_time"])
+    todays_events_routines = crud.find_time_between_items(todays_events_routines)
     
     return render_template("dashboard.html", username=user.username,
                            todays_events_routines=todays_events_routines,
@@ -148,14 +144,18 @@ def create_new_event():
         all_day = True
         start = start_date
         end = end_date
+        start_str = None
+        end_str = None
     else:
         all_day = False
         start = crud.get_date_str(start_date, start_time)
         end = crud.get_date_str(end_date, end_time)
+        start_str = crud.military_to_standard_time(start_time)
+        end_str = crud.military_to_standard_time(end_time)
     
     if repeat == "none": # Create a one-time event
         
-        event = crud.create_event(title, all_day, start, end, "", "", url, display,
+        event = crud.create_event(title, all_day, start, end, start_str, end_str, url, display,
                  background_color, border_color, text_color, None, None,
                  completed, user)
         
@@ -164,7 +164,7 @@ def create_new_event():
     
     elif repeat == "day": # Create a recurring event with days_of_week set to None
 
-        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
+        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, start_str, end_str, url, display,
                  background_color, border_color, text_color, None, start_recur, end_recur, None, None,
                  completed, user)
         
@@ -175,7 +175,7 @@ def create_new_event():
 
         days_of_week = " ".join(days_of_week)
         
-        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, "", "", url, display,
+        recur_event = crud.create_recur_event(title, all_day, start_time, end_time, start_str, end_str, url, display,
                  background_color, border_color, text_color, days_of_week, start_recur, end_recur, None, None,
                  completed, user)
         
@@ -200,6 +200,8 @@ def create_new_routine():
     end_recur = request.args.get("routine-repeat-end")
 
     # Initalize user and default display settings
+    start_str = crud.military_to_standard_time(start_time)
+    end_str = crud.military_to_standard_time(end_time)
     url = "/edit-routine"
     display = "auto"
     background_color = color
@@ -209,7 +211,7 @@ def create_new_routine():
     user=crud.get_user_by_id(session["user_id"])
     
     if repeat == "day":
-        routine = crud.create_routine(title, start_time, end_time, "", "", url, display,
+        routine = crud.create_routine(title, start_time, end_time, start_str, end_str, url, display,
                         background_color, border_color, text_color,
                         None, start_recur, end_recur, None, None,
                         completed, user)
@@ -220,7 +222,7 @@ def create_new_routine():
     else:
         days_of_week = " ".join(days_of_week)
             
-        routine = crud.create_routine(title, start_time, end_time, "", "", url, display,
+        routine = crud.create_routine(title, start_time, end_time, start_str, end_str, url, display,
                             background_color, border_color, text_color,
                             days_of_week, start_recur, end_recur, None, None,
                             completed, user)
@@ -388,7 +390,8 @@ def show_event_details(event_id):
     event = crud.get_event_by_id(event_id)
     
     return render_template("edit.html", event=event, username=user.username,
-                           theme=user.theme, accent=user.accent_color)
+                           theme=user.theme, accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 
 @app.route("/edit/<event_id>/edit-event-title", methods = ["POST"])
@@ -396,11 +399,14 @@ def update_event_title(event_id):
     """Updates the title of a given event."""
 
     title = request.form.get("edit-event-title")
+    color = request.form.get("edit-event-color")
 
     event_id_int = int(event_id)
     event = crud.get_event_by_id(event_id_int)
 
     event.title = title
+    event.background_color = color
+    event.border_color = color
     db.session.commit()
     
     return redirect(f"/edit/{event_id}")
@@ -458,7 +464,8 @@ def show_recur_event_details(recur_event_id):
     
     return render_template("edit-recur-event.html", recur_event=recur_event,
                            username=user.username, theme=user.theme,
-                           accent=user.accent_color)
+                           accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 
 @app.route("/edit-recur-event/<recur_event_id>/edit-recur-event-title", methods = ["POST"])
@@ -466,10 +473,13 @@ def update_recur_event_title(recur_event_id):
     """Updates the title of a given recurring event."""
 
     title = request.form.get("edit-recur-event-title")
+    color = request.form.get("edit-recur-event-color")
 
     recur_event = crud.get_recur_event_by_id(int(recur_event_id))
 
     recur_event.title = title
+    recur_event.background_color = color
+    recur_event.border_color = color
     db.session.commit()
     
     return redirect(f"/edit-recur-event/{recur_event_id}")
@@ -544,7 +554,8 @@ def show_routine_details(routine_id):
     
     return render_template("edit-routine.html", routine=routine,
                            username=user.username, theme=user.theme,
-                           accent=user.accent_color)
+                           accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 
 @app.route("/edit-routine/<routine_id>/edit-routine-title", methods = ["POST"])
@@ -552,10 +563,13 @@ def update_routine_title(routine_id):
     """Updates the title of a given routine."""
 
     title = request.form.get("edit-routine-title")
+    color = request.form.get("edit-routine-color")
 
     routine = crud.get_routine_by_id(int(routine_id))
 
     routine.title = title
+    routine.background_color = color
+    routine.border_color = color
     db.session.commit()
     
     return redirect(f"/edit-routine/{routine_id}")
@@ -652,7 +666,8 @@ def show_tasklist_details(tasklist_id):
     
     return render_template("edit-tasklist.html", tasklist=tasklist,
                            username=user.username, theme=user.theme,
-                           accent=user.accent_color)
+                           accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 
 @app.route("/edit-tasklist/<tasklist_id>/edit-tasklist-title", methods = ["POST"])
@@ -660,10 +675,13 @@ def update_tasklist_title(tasklist_id):
     """Updates the title of a given tasklist."""
 
     title = request.form.get("edit-tasklist-title")
+    color = request.form.get("edit-tasklist-color")
 
     tasklist = crud.get_tasklist_by_id(int(tasklist_id))
 
     tasklist.title = title
+    tasklist.background_color = color
+    tasklist.border_color = color
     db.session.commit()
     
     return redirect(f"/edit-tasklist/{tasklist_id}")
@@ -731,7 +749,8 @@ def show_recur_tasklist_details(recur_tasklist_id):
     return render_template("edit-recur-tasklist.html",
                            recur_tasklist=recur_tasklist,
                            username=user.username, theme=user.theme,
-                           accent=user.accent_color)
+                           accent=user.accent_color,
+                           profile_pic=user.profile_pic)
 
 
 @app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-title", methods = ["POST"])
@@ -739,10 +758,13 @@ def update_recur_tasklist_title(recur_tasklist_id):
     """Updates the title of a given recurring tasklist."""
 
     title = request.form.get("edit-recur-tasklist-title")
+    color = request.form.get("edit-recur-tasklist-color")
 
     recur_tasklist = crud.get_recur_tasklist_by_id(int(recur_tasklist_id))
 
     recur_tasklist.title = title
+    recur_tasklist.background_color = color
+    recur_tasklist.border_color = color
     db.session.commit()
     
     return redirect(f"/edit-recur-tasklist/{recur_tasklist_id}")
@@ -847,7 +869,6 @@ def change_user_accent_color():
     
     user = crud.get_user_by_id(session["user_id"])
     accent = request.json.get("accent")
-    print("*******", accent)
     
     user.accent_color = accent
     db.session.commit()
@@ -905,6 +926,34 @@ def mark_task_incomplete():
     task = crud.get_task_by_id(int(task_id))
 
     task.completed = False
+    db.session.commit()
+
+    return jsonify("task marked incomplete")
+
+
+@app.route("/complete-recur-task", methods = ["POST"])
+def mark_recur_task_complete():
+    """Changes the completed status of a recurring task to True."""
+    
+    recur_task_id = request.json.get("taskId")
+    
+    recur_task = crud.get_recur_task_by_id(int(recur_task_id))
+
+    recur_task.completed = True
+    db.session.commit()
+
+    return jsonify("task marked complete")
+
+
+@app.route("/undo-complete-recur-task", methods = ["POST"])
+def mark_recur_task_incomplete():
+    """Changes the completed status of a recurring task to False."""
+    
+    recur_task_id = request.json.get("taskId")
+    
+    recur_task = crud.get_recur_task_by_id(int(recur_task_id))
+
+    recur_task.completed = False
     db.session.commit()
 
     return jsonify("task marked incomplete")

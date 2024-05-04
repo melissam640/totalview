@@ -24,7 +24,7 @@
           <div class="p-3 border border-subtle rounded-3" id="dashboard-routine">
             <i class="bi bi-arrow-repeat" style="color: {{ item["color"] }};"></i>
             {{ item["title"] }}
-            {{ item["start_time"] }}
+            {{ item["start_str"] }} - {{ item["end_str"] }}
             <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
                   {% for action in item["actions"] %}
                   <div class="form-check">
@@ -64,10 +64,11 @@
           <h4 class="card-header">Tasks</h4>
         {% for tasklist in todays_tasklists %}
         <div class="p-3 border border-subtle rounded-3" id="dashboard-tasklist">
-                  <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>        
-                  {{ tasklist.title }}
-                  <a href="{{ tasklist.url }}" style="color: {{accent}};">Edit</a>
-                  {% for task in tasklist.tasks %}
+                  <i class="bi bi-list-check" style="color: {{ tasklist["color"] }};"></i>        
+                  {{ tasklist["title"] }}
+                  <a href="{{ tasklist["url"] }}" style="color: {{accent}};">Edit</a>
+                  {% if tasklist["type"] == "tasklist" %}
+                  {% for task in tasklist["tasks"] %}
                   <div class="form-check">
                     {% if task.completed %}
                     <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
@@ -82,6 +83,23 @@
                     {% endif %}
                   </div>
                   {% endfor %}
+                  {% else %}
+                  {% for task in tasklist["tasks"] %}
+                  <div class="form-check">
+                    {% if task.completed %}
+                    <input class="form-check-input recur-task-checked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check" checked>
+                    <label class="form-check-label" for="task-flex-check">
+                        {{ task.title }}
+                    </label>
+                    {% else %}
+                    <input class="form-check-input recur-task-unchecked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check">
+                    <label class="form-check-label" for="task-flex-check">
+                        {{ task.title }}
+                    </label>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
+                  {% endif %}
                 </div>
         {% endfor %}
       </div>

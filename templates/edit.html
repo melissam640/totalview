@@ -2,29 +2,38 @@
 {% block title %}Edit Item{% endblock %}
 {% block body %}
   <div class="col">
+    <i class="bi bi-calendar4-event" style="color: {{ event.background_color }};"></i>
     <h2 style="display: inline">{{ event.title }}</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
+      <i class="bi bi-pencil"></i>
     </button>
+    <form action="/edit/{{ event.event_id }}/delete-event" style="display: inline;" method="POST">
+      <button type="submit" class="btn btn-link" style="color: {{accent}};">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </form>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-time">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-time">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
     {% if event.all_day %}
-      <p> Is All Day </p>
-      <p> Event Start Date: {{ event.start }}</p>
-      <p> Event End Date: {{ event.end }}</p>
+      <p>
+        <i class="bi bi-calendar"></i>
+        {{ event.start }} - {{ event.end }}
+      </p>
+      <p> All Day </p>
     {% else %}
-      <p> Event Start Date: {{ event.start[:10] }} </p>
-      <p> Event Start Time: {{ event.start[11:] }} </p>
-      <p> Event End Date: {{ event.end[:10] }} </p>
-      <p> Event End Time: {{ event.end[11:] }} </p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ event.start[:10] }} - {{ event.end[:10] }}
+    </p>
+    <p>
+      <i class="bi bi-clock"></i>
+      {{ event.start_str }} - {{ event.end_str }}
+    </p>
     {% endif %}
-    <form action="/edit/{{ event.event_id }}/delete-event" method="POST">
-      <input type="submit" value="Delete">
-    </form>
   </div>
   
   <!-- Edit event title modal -->
@@ -39,12 +48,17 @@
           <div class="row">
             <form action="/edit/{{ event.event_id }}/edit-event-title" method="POST">
               <!-- Input for event title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-event-title" name="edit-event-title">
-                <label for="edit-event-title">New Title</label>
+              <div class="mb-3">
+                <label for="event-title" class="form-label">Event Title</label>
+                <input type="text" class="form-control" name="edit-event-title" id="edit-event-title" placeholder="New Event">
               </div>
+              
+              <!-- Input for event color -->
+              <label for="event-color" class="form-label">Color</label>
+              <input type="color" name="edit-event-color" id="edit-event-color" value={{ event.background_color }}>
+              <br><br>
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -65,31 +79,46 @@
           <!-- action="/edit-event-time" -->
           <div class="row">
             <form action="/edit/{{ event.event_id }}/edit-event-time" method="POST">
-              
-              <!-- Input for event date and time -->
+
+              <!-- Input for event start and end date/time -->
+              <div class="row">
+                <div class="col-auto">
+                  <p>Date & Time</p>
+                </div>
+                <div class="col-auto offset-6">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
+                    <label class="form-check-label" for="all-day-switch">All Day</label>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="event-start-date" name="start-date"><br>
-                  <input type="time" id="event-start-time" name="start-time">
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-start-date" name="start-date" aria-label="Start date">
+                    </li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="event-start-time" name="start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label><br>
-                  <input type="date" id="event-end-date" name="end-date"><br>
-                  <input type="time" id="event-end-time" name="end-time">
-                </div>
-              </div><br>
-              
-              <!-- Toggle all day option -->
-              <div class="row">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
-                  <label class="form-check-label" for="all-day-switch">All Day</label>
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="event-end-date" name="end-date" aria-label="End date">
+                    </li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="event-end-time" name="end-time" aria-label="End time">
+                    </li>
+                  </ul>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
               </div>
             </form>
           </div>

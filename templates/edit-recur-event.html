@@ -2,39 +2,48 @@
 {% block title %}Edit Item{% endblock %}
 {% block body %}
   <div class="col">
+    <i class="bi bi-calendar4-event" style="color: {{ recur_event.background_color }};"></i>
     <h2 style="display: inline">{{ recur_event.title }}</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
+      <i class="bi bi-pencil"></i>
     </button>
+    <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/delete-recur-event" style="display: inline;" method="POST">
+      <button type="submit" class="btn btn-link" style="color: {{accent}};">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </form>
     <br><br>
     <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
     {% if recur_event.all_day %}
-      <p> Is All Day </p>
+    <p> All Day </p>
     {% else %}
-      <p> Event Start Time: {{ recur_event.start }} </p>
-      <p> Event End Time: {{ recur_event.end }} </p>
+      <p>
+        <i class="bi bi-clock"></i>
+        {{ recur_event.start_str }} - {{ recur_event.end_str }}
+      </p>
     {% endif %}
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
     {% if recur_event.days_of_week %}
-      <p> From: {{ recur_event.start_recur }}</p>
-      <p> To: {{ recur_event.end_recur }}</p>
-      <p> On: {{ recur_event.days_of_week }} </p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ recur_event.start_recur }} - {{ recur_event.end_recur }}
+    </p>  
+    <p> Weekly On: {{ recur_event.days_of_week }} </p>
     {% else %}
-      <p> From: {{ recur_event.start_recur }}</p>
-      <p> To: {{ recur_event.end_recur }}</p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ recur_event.start_recur }} - {{ recur_event.end_recur }}
+    </p>
       <p> Every Day </p>
     {% endif %}
-    <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/delete-recur-event" method="POST">
-      <input type="submit" value="Delete">
-    </form>
   </div>
   
   <!-- Edit event title modal -->
@@ -49,12 +58,17 @@
           <div class="row">
             <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/edit-recur-event-title" method="POST">
               <!-- Input for event title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-recur-event-title" name="edit-recur-event-title">
-                <label for="edit-recur-event-title">New Title</label>
+              <div class="mb-3">
+                <label for="event-title" class="form-label">Event Title</label>
+                <input type="text" class="form-control" name="edit-recur-event-title" id="edit-recur-event-title" placeholder="New Title">
               </div>
+              
+              <!-- Input for event color -->
+              <label for="edit-recur-event-color" class="form-label">Color</label>
+              <input type="color" name="edit-recur-event-color" id="edit-recur-event-color" value={{ recur_event.background_color }}>
+              <br><br>
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -74,29 +88,40 @@
         <div class="modal-body">
           <div class="row">
             <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/edit-recur-event-time" method="POST">
-              
-              <!-- Input for recurring event time -->
+
+              <!-- Input for event start and end date/time -->
+              <div class="row">
+                <div class="col-auto">
+                  <p>Time</p>
+                </div>
+                <div class="col-auto offset-7">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
+                    <label class="form-check-label" for="all-day-switch">All Day</label>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col">
-                  <label for="start-time">Start:</label><br>
-                  <input type="time" id="edit-recur-event-start-time" name="start-time">
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="edit-recur-event-start-time" name="start-time" aria-label="Start time">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-time">End:</label><br>
-                  <input type="time" id="edit-recur-event-end-time" name="end-time">
-                </div>
-              </div><br>
-              
-              <!-- Toggle all day option -->
-              <div class="row">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" role="switch" id="all-day-switch" name="all-day" value="true">
-                  <label class="form-check-label" for="all-day-switch">All Day</label>
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="time" class="form-control" id="edit-recur-event-end-time" name="end-time" aria-label="End time">
+                    </li>
+                  </ul>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -120,51 +145,60 @@
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat-day-or-week">
                   <input type="radio" class="btn-check" name="event-repeat-option" id="edit-recur-event-repeat-day" autocomplete="off" value="day">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-repeat-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-repeat-day">Day</label>
 
                   <input type="radio" class="btn-check" name="event-repeat-option" id="edit-recur-event-repeat-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-repeat-week">Week</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-repeat-week">Week</label>
                 </div>
               </div><br>
 
+              <!-- Specify repeat date range -->
               <div class="row">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="edit-event-repeat-start" name="event-repeat-start"><br>  
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-event-repeat-start" name="event-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="edit-event-repeat-end" name="event-repeat-end"><br>    
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-event-repeat-end" name="event-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
 
-              <div class="row">
+              <div class="row d-none" id="edit-recur-event-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="edit-recur-event-sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-event-monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-event-tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="edit-recur-event-wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-event-thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-event-friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="edit-recur-event-saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-event-saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-event-saturday">Sat</label>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -172,4 +206,7 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block script %}
+  <script src="/static/js/edit-recur-event.js"></script>
 {% endblock %}

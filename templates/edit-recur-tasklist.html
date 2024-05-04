@@ -2,45 +2,69 @@
 {% block title %}Edit Item{% endblock %}
 {% block body %}
   <div class="col">
+    <i class="bi bi-list-check" style="color: {{ recur_tasklist.background_color }};"></i>
     <h2 style="display: inline">{{ recur_tasklist.title }}</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
+      <i class="bi bi-pencil"></i>
     </button>
-    <br><br>
-    <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-time">
-      EDIT
+    <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/delete-recur-tasklist" style="display: inline;" method="POST">
+      <button type="submit" class="btn btn-link" style="color: {{accent}};">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </form>
+    <br>
+    <!-- <h3 style="display: inline">Scheduled Time</h3>
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-time">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
-      <p> Tasklist Start Date: {{ recur_tasklist.start }}</p>
-    <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/delete-recur-tasklist" method="POST">
-      <input type="submit" value="Delete">
-    </form>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ recur_tasklist.start_recur }}
+    </p>  -->
     <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
-      EDIT
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
+      <i class="bi bi-pencil"></i>
     </button>
     <br>
     {% if recur_tasklist.days_of_week %}
-      <p> From: {{ recur_tasklist.start_recur }}</p>
-      <p> To: {{ recur_tasklist.end_recur }}</p>
-      <p> On: {{ recur_tasklist.days_of_week }} </p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ recur_tasklist.start_recur }} - {{ recur_tasklist.end_recur }}
+    </p>  
+    <p> Weekly On: {{ recur_tasklist.days_of_week }} </p>
     {% else %}
-      <p> From: {{ recur_tasklist.start_recur }}</p>
-      <p> To: {{ recur_tasklist.end_recur }}</p>
+    <p>
+      <i class="bi bi-calendar"></i>
+      {{ recur_tasklist.start_recur }} - {{ recur_tasklist.end_recur }}
+    </p>
       <p> Every Day </p>
     {% endif %}
     <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
-      ADD
+    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
+      <i class="bi bi-plus-lg"></i>
     </button>
     <br><br>
     {% for recur_task in recur_tasklist.recur_tasks %}
-      <p style="display: inline"> {{ recur_task.title }} </p>
-      <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/{{ recur_task.recur_task_id }}/delete-recur-task" method="POST" style="display: inline">
-        <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Delete">
-      </form>
-      <br><br>
+      <div class="form-check">
+        {% if recur_task.completed %}
+        <input class="form-check-input recur-task-checked" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check" checked>
+        <label class="form-check-label" for="recur-task-flex-check">
+            {{ recur_task.title }}
+        </label>
+        {% else %}
+        <input class="form-check-input recur-task-unchecked" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check">
+        <label class="form-check-label" for="recur-task-flex-check">
+            {{ recur_task.title }}
+        </label>
+        {% endif %}
+        <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/{{ recur_task.recur_task_id }}/delete-recur-task" method="POST" style="display: inline">
+          <button type="submit" class="btn btn-link" style="color: {{accent}};">
+            <i class="bi bi-trash3"></i>
+          </button>
+        </form>
+      </div>
+      <br>
     {% endfor %}
   </div>
 
@@ -55,43 +79,19 @@
         <div class="modal-body">
           <div class="row">
             <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/edit-recur-tasklist-title" method="POST">
-              <!-- Input for tasklist title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-recur-tasklist-title" name="edit-recur-tasklist-title">
-                <label for="edit-recur-tasklist-title">New Title</label>
+              <!-- Input for event title -->
+              <div class="mb-3">
+                <label for="edit-recur-tasklist-title" class="form-label">Tasklist Title</label>
+                <input type="text" class="form-control" name="edit-recur-tasklist-title" id="edit-recur-tasklist-title" placeholder="New Title">
               </div>
-              <div class="row">
-                <input type="submit" value="Update">  
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Edit tasklist date modal -->
-  <div class="modal fade" id="edit-recur-tasklist-time" aria-hidden="true" aria-labelledby="edit-recur-tasklist-label" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="edit-recur-tasklist-label">Edit Tasklist Date</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/edit-recur-tasklist-time" method="POST">
               
-              <!-- Input for tasklist date -->
+              <!-- Input for event color -->
+              <label for="edit-recur-tasklist-color" class="form-label">Color</label>
+              <input type="color" name="edit-recur-tasklist-color" id="edit-recur-tasklist-color" value={{ recur_tasklist.background_color }}>
+              <br><br>
+
               <div class="row">
-                <div class="col">
-                  <label for="start-date">Start:</label><br>
-                  <input type="date" id="recur-tasklist-start-date" name="start-date">
-                </div>
-              </div><br>
-  
-              <div class="row">
-                <input type="submit" value="Update">
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -101,7 +101,7 @@
   </div>
 
   <!-- Edit routine recurrence -->
-  <div class="modal fade" id="edit-recur-tasklist-recurrence" aria-hidden="true" aria-labelledby="edit-recur-tasklist-label" tabindex="-1">
+  <div class="modal fade" id="edit-tasklist-recurrence" aria-hidden="true" aria-labelledby="edit-recur-tasklist-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -116,51 +116,60 @@
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat-day-or-week">
                   <input type="radio" class="btn-check" name="tasklist-repeat-option" id="edit-tasklist-repeat-day" autocomplete="off" value="day">
-                  <label class="btn btn-outline-primary" for="edit-tasklist-repeat-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="edit-tasklist-repeat-day">Day</label>
 
                   <input type="radio" class="btn-check" name="tasklist-repeat-option" id="edit-tasklist-repeat-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="edit-tasklist-repeat-week">Week</label>
+                  <label class="btn btn-outline-secondary" for="edit-tasklist-repeat-week">Week</label>
                 </div>
               </div><br>
 
+              <!-- Specify repeat date range -->
               <div class="row">
                 <div class="col">
-                  <label for="start-date">Start:</label>
-                  <input type="date" id="edit-recur-tasklist-start" name="recur-tasklist-repeat-start"><br>  
+                  <ul class="list-group">
+                    <li class="list-group-item">Start</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-recur-tasklist-start" name="recur-tasklist-repeat-start" aria-label="Start date">
+                    </li>
+                  </ul>
                 </div>
                 <div class="col">
-                  <label for="end-date">End:</label>
-                  <input type="date" id="edit-recur-tasklist-end" name="recur-tasklist-repeat-end"><br>    
+                  <ul class="list-group">
+                    <li class="list-group-item">End</li>
+                    <li class="list-group-item">
+                      <input type="date" class="form-control" id="edit-recur-tasklist-end" name="recur-tasklist-repeat-end" aria-label="End date">
+                    </li>
+                  </ul>   
                 </div>
               </div><br>
 
-              <div class="row">
+              <div class="row d-none" id="edit-tasklist-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="edit-recur-tasklist-saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="edit-recur-tasklist-saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="edit-recur-tasklist-saturday">Sat</label>
                 </div>
               </div><br>
   
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -181,12 +190,12 @@
           <div class="row">
             <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/add-recur-task" method="POST">
               <!-- Input for task title -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="add-recur-task-title" name="add-recur-task-title">
-                <label for="add-recur-task-title">New Task</label>
+              <div class="mb-3">
+                <label for="edit-recur-task-title" class="form-label">Task Title</label>
+                <input type="text" class="form-control" name="edit-recur-task-title" id="edit-recur-task-title" placeholder="New Title">
               </div>
               <div class="row">
-                <input type="submit" value="Add">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
               </div>
             </form>
           </div>
@@ -194,4 +203,7 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block script %}
+  <script src="/static/js/edit-recur-tasklist.js"></script>
 {% endblock %}

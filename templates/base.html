@@ -228,7 +228,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-outline-secondary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
@@ -256,7 +256,7 @@
 
               <!-- Input for routine color -->
               <label for="routine-color" class="form-label">Color</label>
-              <input type="color" name="routine-color" id="routine-color" value="#ff0000">
+              <input type="color" name="routine-color" id="routine-color" value={{accent}}>
               <br>
 
               <!-- Input for routine start and end date -->
@@ -285,10 +285,10 @@
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
                   <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-day" autocomplete="off" value="day" checked>
-                  <label class="btn btn-outline-primary" for="rou-repeat-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="rou-repeat-day">Day</label>
 
                   <input type="radio" class="btn-check" name="routine-repeat-option" id="rou-repeat-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="rou-repeat-week">Week</label>
+                  <label class="btn btn-outline-secondary" for="rou-repeat-week">Week</label>
                 </div>
               </div><br>
 
@@ -316,25 +316,25 @@
               <div class="row d-none" id="routine-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="rou-sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="rou-sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="rou-monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="rou-monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="rou-tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="rou-tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="rou-wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="rou-wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="rou-thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="rou-thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="rou-friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="rou-friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="rou-saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="rou-saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="rou-saturday">Sat</label>
                 </div>
               </div><br>
 
@@ -342,20 +342,20 @@
               <div class="row" id="add-action-section">
                 <div class="col">
                   <label for="add-action">Actions</label>
-                  <button class="btn btn-primary" type="button" id="add-action" name="add-action">
+                  <button class="btn btn-secondary" type="button" id="add-action" name="add-action">
                     <i class="bi bi-plus-lg"></i>
                   </button>  
                 </div>
               </div><br>
 
               <div class="row" id="routine-create-button">
-                <input type="submit" value="Create">  
+                <input class="btn btn-primary" type="submit" style="background-color: {{accent}}; border-color: {{accent}};" value="Create">  
               </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-outline-secondary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
@@ -383,7 +383,7 @@
 
               <!-- Input for tasklist color -->
               <label for="tasklist-color" class="form-label">Color</label>
-              <input type="color" name="tasklist-color" id="tasklist-color" value="#ff0000">
+              <input type="color" name="tasklist-color" id="tasklist-color" value={{accent}}>
               <br>
 
               <!-- Input for tasklist date -->
@@ -404,13 +404,13 @@
                 <p>Repeats</p>
                 <div class="btn-group" role="group" aria-label="repeat none day or week">
                   <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-none" autocomplete="off" value="none" checked>
-                  <label class="btn btn-outline-primary" for="tasklist-none">None</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-none">None</label>
 
                   <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-day" autocomplete="off" value="day">
-                  <label class="btn btn-outline-primary" for="tasklist-day">Day</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-day">Day</label>
 
                   <input type="radio" class="btn-check" name="tasklist-repeat-option" id="tasklist-week" autocomplete="off" value="week">
-                  <label class="btn btn-outline-primary" for="tasklist-week">Week</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-week">Week</label>
                 </div>
               </div><br>
 
@@ -438,25 +438,25 @@
               <div class="row d-none" id="tasklist-repeat-days">
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                   <input type="checkbox" class="btn-check" id="tasklist-sunday" autocomplete="off" value="0" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-sunday">Sun</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-sunday">Sun</label>
             
                   <input type="checkbox" class="btn-check" id="tasklist-monday" autocomplete="off" value="1" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-monday">Mon</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-monday">Mon</label>
             
                   <input type="checkbox" class="btn-check" id="tasklist-tuesday" autocomplete="off" value="2" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-tuesday">Tue</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-tuesday">Tue</label>
 
                   <input type="checkbox" class="btn-check" id="tasklist-wednesday" autocomplete="off" value="3" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-wednesday">Wed</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-wednesday">Wed</label>
             
                   <input type="checkbox" class="btn-check" id="tasklist-thursday" autocomplete="off" value="4" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-thursday">Thu</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-thursday">Thu</label>
             
                   <input type="checkbox" class="btn-check" id="tasklist-friday" autocomplete="off" value="5" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-friday">Fri</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-friday">Fri</label>
 
                   <input type="checkbox" class="btn-check" id="tasklist-saturday" autocomplete="off" value="6" name="days-of-week">
-                  <label class="btn btn-outline-primary" for="tasklist-saturday">Sat</label>
+                  <label class="btn btn-outline-secondary" for="tasklist-saturday">Sat</label>
                 </div>
               </div><br>
             
@@ -464,20 +464,20 @@
               <div class="row" id="add-task-section">
                 <div class="col">
                   <label for="add-task">Tasks</label>
-                  <button class="btn btn-primary" type="button" id="add-task" name="add-task">
+                  <button class="btn btn-secondary" type="button" id="add-task" name="add-task">
                     <i class="bi bi-plus-lg"></i>
                   </button>  
                 </div>
               </div><br>
             
               <div class="row" id="tasklist-create-button">
-                <input type="submit" value="Create">  
+                <input class="btn btn-primary" type="submit" style="background-color: {{accent}}; border-color: {{accent}};" value="Create">  
               </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
+          <button class="btn btn-outline-secondary" data-bs-target="#new-item-modal" data-bs-toggle="modal">Back</button>
         </div>
       </div>
     </div>
