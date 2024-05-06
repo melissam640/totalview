@@ -1,11 +1,14 @@
+
+/* #homepage {
+    background-image: ;
+} */
+
+/* FullCalendar event link color */
 .fc-event {
     color: #818387;
 }
 
-/* .nav-link {
-    color: #7272AB !important;
-} */
-
+/* Toggle switch */
 .form-switch .form-check-input:focus {
     border-color: rgba(129, 125, 125, 0.775);
     outline: 0;

@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit/{{ event.event_id }}/delete-event" style="display: inline;" method="POST">
+    <form action="/edit-event/{{ event.event_id }}/delete-event" style="display: inline;" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
@@ -46,7 +46,7 @@
         </div>
         <div class="modal-body">
           <div class="row">
-            <form action="/edit/{{ event.event_id }}/edit-event-title" method="POST">
+            <form action="/edit-event/{{ event.event_id }}/edit-event-title" method="POST">
               <!-- Input for event title -->
               <div class="mb-3">
                 <label for="event-title" class="form-label">Event Title</label>
@@ -78,7 +78,7 @@
         <div class="modal-body">
           <!-- action="/edit-event-time" -->
           <div class="row">
-            <form action="/edit/{{ event.event_id }}/edit-event-time" method="POST">
+            <form action="/edit-event/{{ event.event_id }}/edit-event-time" method="POST">
 
               <!-- Input for event start and end date/time -->
               <div class="row">

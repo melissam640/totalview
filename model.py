@@ -51,14 +51,8 @@ class Event(db.Model):
     start_str = db.Column(db.String)
     end_str = db.Column(db.String)
     url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
-    completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="events")
 
@@ -84,17 +78,11 @@ class RecurEvent(db.Model):
     start_str = db.Column(db.String)
     end_str = db.Column(db.String)
     url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
     days_of_week = db.Column(db.String)
     start_recur = db.Column(db.String)
     end_recur = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
-    completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="recur_events")
 
@@ -119,17 +107,11 @@ class Routine(db.Model):
     start_str = db.Column(db.String)
     end_str = db.Column(db.String)
     url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
     days_of_week = db.Column(db.String)
     start_recur = db.Column(db.String)
     end_recur = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
-    completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="routines")
     actions = db.relationship("Action", back_populates="routine")
@@ -150,18 +132,8 @@ class Action(db.Model):
                         db.ForeignKey("routines.routine_id"))
     # Data for FullCalendar API
     title = db.Column(db.String)
-    start = db.Column(db.String)
-    end = db.Column(db.String)
-    start_str = db.Column(db.String)
-    end_str = db.Column(db.String)
-    url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
     routine = db.relationship("Routine", back_populates="actions")
@@ -185,14 +157,8 @@ class Tasklist(db.Model):
     all_day = db.Column(db.Boolean)
     start = db.Column(db.String)
     url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
-    completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="tasklists")
     tasks = db.relationship("Task", back_populates="tasklist")
@@ -214,19 +180,12 @@ class RecurTasklist(db.Model):
     # Data for FullCalendar API
     title = db.Column(db.String)
     all_day = db.Column(db.Boolean)
-    start = db.Column(db.String)
     url = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
     days_of_week = db.Column(db.String)
     start_recur = db.Column(db.String)
     end_recur = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
-    completed = db.Column(db.Boolean)
 
     user = db.relationship("User", back_populates="recur_tasklists")
     recur_tasks = db.relationship("RecurTask", back_populates="recur_tasklist")
@@ -247,13 +206,8 @@ class Task(db.Model):
                         db.ForeignKey("tasklists.tasklist_id"))
     # Data for FullCalendar API
     title = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
     tasklist = db.relationship("Tasklist", back_populates="tasks")
@@ -274,13 +228,8 @@ class RecurTask(db.Model):
                         db.ForeignKey("recur_tasklists.recur_tasklist_id"))
     # Data for FullCalendar API
     title = db.Column(db.String)
-    display = db.Column(db.String)
     background_color = db.Column(db.String)
     border_color = db.Column(db.String)
-    text_color = db.Column(db.String)
-    # Data for additional formatting
-    icon = db.Column(db.String)
-    icon_color = db.Column(db.String)
     completed = db.Column(db.Boolean)
 
     recur_tasklist = db.relationship("RecurTasklist", back_populates="recur_tasks")
