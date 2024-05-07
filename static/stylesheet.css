@@ -1,14 +1,24 @@
+#homepage-container {
+    background-image: url("/static/background-pic/homepage-background.jpg");
+    background-size: cover;
+    height: 100vh;
+}
 
-/* #homepage {
-    background-image: ;
-} */
+#homepage-title {
+    text-align: center;
+    font-size: 400%;
+}
+
+.modal-content {
+    background-color: #F8F9FA;
+}
 
 /* FullCalendar event link color */
 .fc-event {
     color: #818387;
 }
 
-/* Toggle switch */
+/* Toggle switches */
 .form-switch .form-check-input:focus {
     border-color: rgba(129, 125, 125, 0.775);
     outline: 0;

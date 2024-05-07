@@ -25,7 +25,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def show_homepage():
     """Create the homepage."""
 
-    return render_template("homepage.html")
+    if not session["flash_style"]:
+        flash_style = "text-bg-light"
+    else:
+        flash_style = session["flash_style"]
+
+    return render_template("homepage.html", flash_style=flash_style)
 
 
 @app.route("/create-account", methods=["POST"])
@@ -39,10 +44,12 @@ def create_account():
 
     if email_exists:
         flash("Account with this email already exists.")
+        session["flash_style"] = "text-bg-danger"
         return redirect("/")
     else:
         crud.create_user(email, password, username)
         flash("Account created! Please login.")
+        session["flash_style"] = "text-bg-success"
         return redirect("/")
 
 
@@ -59,6 +66,7 @@ def log_in():
         return redirect("/dashboard")
     
     flash("Email or password incorrect, please try again.")
+    session["flash_style"] = "text-bg-danger"
     return redirect("/")
 
 
