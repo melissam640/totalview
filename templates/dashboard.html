@@ -2,110 +2,119 @@
 {% block title %}Dashboard{% endblock %}
 {% block head %}{% endblock %}
 {% block body %}
-<!-- <div class="col">
-  <div class="row">
-    <div class="p-3">
-      <h4>Dashboard</h4>
-    </div>
-  </div>
-  <div class="row"> -->
   <div class="col">
-    <div class="card" style="height: 100%;">
-    <h4 class="card-header">Today</h4>
+    <!-- Today's Schedule Section -->
+    <div class="card mt-2" style="height: 100%;">
+      <h4 class="card-header">Today</h4>
       {% for item in todays_events_routines %}
+        
+        <!-- All Day Events at Top -->
         {% if item["all_day"] %}
-          <div class="p-3 border border-subtle rounded-3" id="all-day-dashboard-event">
-            <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
-            {{ item["title"] }} All Day
-            <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
+          <div class="p-3 m-2 border border-subtle rounded-3" id="all-day-dashboard-event">
+                <i class="bi bi-calendar4-event align-middle dashboard-icon" style="color: {{ item["color"] }};"></i>
+                <a href="{{ item["url"] }}" class="text-reset align-middle link-underline link-underline-opacity-0">
+                  {{ item["title"] }} | All Day
+                </a>
           </div>
+        
+        <!-- Routines -->
+        {% elif item["type"]=="routine" %}
+          <div class="p-3 m-2 border border-subtle rounded-3" id="dashboard-routine">
+            <i class="bi bi-arrow-repeat align-middle dashboard-icon" style="color: {{ item["color"] }};"></i>
+            <a href="{{ item["url"] }}" class="text-reset align-middle link-underline link-underline-opacity-0">
+              {{ item["title"] }} | {{ item["start_str"] }} - {{ item["end_str"] }}
+            </a>
+            <!-- List of Actions for Routine -->
+            {% for action in item["actions"] %}
+              <div class="form-check">
+                {% if action.completed %}
+                  <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-check-checked" checked>
+                  <label class="form-check-label" for="action-check-checked">
+                    {{ action.title }}
+                  </label>
+                {% else %}
+                  <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-check" >
+                  <label class="form-check-label" for="action-check">
+                    {{ action.title }}
+                  </label>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        
+        <!-- Set Time Events -->
         {% else %}
-          {% if item["type"]=="routine" %}
-          <div class="p-3 border border-subtle rounded-3" id="dashboard-routine">
-            <i class="bi bi-arrow-repeat" style="color: {{ item["color"] }};"></i>
-            {{ item["title"] }}
-            {{ item["start_str"] }} - {{ item["end_str"] }}
-            <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
-                  {% for action in item["actions"] %}
-                  <div class="form-check">
-                      {% if action.completed %}
-                      <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-check-checked" checked>
-                      <label class="form-check-label" for="action-check-checked">
-                          {{ action.title }}
-                      </label>
-                      {% else %}
-                      <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-check" >
-                      <label class="form-check-label" for="action-check">
-                          {{ action.title }}
-                      </label>
-                      {% endif %}
-                    </div>
-                    {% endfor %}
+          <div class="p-3 m-2 border border-subtle rounded-3" id="scheduled-dashboard-event">
+            <i class="bi bi-calendar4-event align-middle dashboard-icon" style="color: {{ item["color"] }};"></i>
+            <a href="{{ item["url"] }}" class="text-reset align-middle link-underline link-underline-opacity-0">
+              {{ item["title"] }} | {{ item["start_str"] }} - {{ item["end_str"] }}
+            </a>
           </div>
-          {% else %}
-          <div class="p-3 border border-subtle rounded-3" id="scheduled-dashboard-event">
-            <i class="bi bi-calendar4-event" style="color: {{ item["color"] }};"></i>
-            {{ item["title"] }}
-            {{ item["start_str"] }} - {{ item["end_str"] }}
-                  <a href="{{ item["url"] }}" style="color: {{accent}};">Edit</a>
-          </div>
-          {% endif %}
-          {% if item["time_dif"] %}
+        {% endif %}
+      
+        <!-- Add Time Between Items if Any -->
+        {% if item["time_dif"] %}
           <br>
-          <p>{{ item["time_dif"] }}</p>
-          {% endif %}
+          <p id="time-difference">{{ item["time_dif"] }}</p>
         {% endif %}
       {% endfor %}
     </div>
   </div>
       
-      <div class="col">
-        <div class="card" style="height: 100%;">
-          <h4 class="card-header">Tasks</h4>
-        {% for tasklist in todays_tasklists %}
-        <div class="p-3 border border-subtle rounded-3" id="dashboard-tasklist">
-                  <i class="bi bi-list-check" style="color: {{ tasklist["color"] }};"></i>        
-                  {{ tasklist["title"] }}
-                  <a href="{{ tasklist["url"] }}" style="color: {{accent}};">Edit</a>
-                  {% if tasklist["type"] == "tasklist" %}
-                  {% for task in tasklist["tasks"] %}
-                  <div class="form-check">
-                    {% if task.completed %}
-                    <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
-                    <label class="form-check-label" for="task-flex-check">
-                        {{ task.title }}
-                    </label>
-                    {% else %}
-                    <input class="form-check-input task-unchecked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
-                    <label class="form-check-label" for="task-flex-check">
-                        {{ task.title }}
-                    </label>
-                    {% endif %}
-                  </div>
-                  {% endfor %}
-                  {% else %}
-                  {% for task in tasklist["tasks"] %}
-                  <div class="form-check">
-                    {% if task.completed %}
-                    <input class="form-check-input recur-task-checked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check" checked>
-                    <label class="form-check-label" for="task-flex-check">
-                        {{ task.title }}
-                    </label>
-                    {% else %}
-                    <input class="form-check-input recur-task-unchecked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check">
-                    <label class="form-check-label" for="task-flex-check">
-                        {{ task.title }}
-                    </label>
-                    {% endif %}
-                  </div>
-                  {% endfor %}
-                  {% endif %}
-                </div>
-        {% endfor %}
-      </div>
-      </div>
-    <!-- </div>
-  </div> -->
+  <div class="col">
+    <!-- Today's Tasks Section -->
+    <div class="card mt-2" style="height: 100%;">
+      <h4 class="card-header">Tasks</h4>
+      
+      <!-- Tasklists -->
+      {% for tasklist in todays_tasklists %}
+        <div class="p-3 m-2 border border-subtle rounded-3" id="dashboard-tasklist">
+          <i class="bi bi-list-check align-middle dashboard-icon" style="color: {{ tasklist["color"] }};"></i>
+          <a href="{{ tasklist["url"] }}" class="text-reset align-middle link-underline link-underline-opacity-0">
+            {{ tasklist["title"] }}
+          </a>
+          {% if tasklist["type"] == "tasklist" %}
+            
+            <!-- Tasks for One-Time Tasklists -->
+            {% for task in tasklist["tasks"] %}
+            <div class="form-check">
+              {% if task.completed %}
+              <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
+              <label class="form-check-label" for="task-flex-check">
+                {{ task.title }}
+              </label>
+              {% else %}
+              <input class="form-check-input task-unchecked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
+              <label class="form-check-label" for="task-flex-check">
+                {{ task.title }}
+              </label>
+              {% endif %}
+            </div>
+            {% endfor %}
+          {% else %}
+            
+            <!-- Tasks for Recurring Tasklists -->
+            {% for task in tasklist["tasks"] %}
+            <div class="form-check">
+              {% if task.completed %}
+              <input class="form-check-input recur-task-checked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check" checked>
+              <label class="form-check-label" for="task-flex-check">
+                {{ task.title }}
+              </label>
+              {% else %}
+              <input class="form-check-input recur-task-unchecked" type="checkbox" value="{{ task.recur_task_id }}" id="task-flex-check">
+              <label class="form-check-label" for="task-flex-check">
+                {{ task.title }}
+              </label>
+              {% endif %}
+            </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
 {% endblock %}
 {% block script %}
   <script src="/static/js/dashboard.js"></script>

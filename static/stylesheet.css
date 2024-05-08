@@ -7,10 +7,45 @@
 #homepage-title {
     text-align: center;
     font-size: 400%;
+    font: Verdana;
 }
 
-.modal-content {
-    background-color: #F8F9FA;
+#user-profile-pic {
+    text-align: center;
+    border-radius: 50%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    max-width: 100%;
+    display: block;
+}
+
+#displayed-username {
+    text-align: center;
+}
+
+#schedule-new-item {
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.dashboard-icon {
+    font-size: 1.5rem;
+}
+
+#time-difference {
+    margin-left: 2%;
+}
+
+/* Checkboxes */
+.form-check-input:focus {
+    border-color: rgba(129, 125, 125, 0.775);
+    outline: 0;
+    box-shadow: 0 0 0 0 rgba(129, 125, 125, 0.775);
+}
+.form-check-input:checked {
+    background-color: #818387;
+    border-color: #818387;
+    border: none;
 }
 
 /* FullCalendar event link color */
@@ -30,4 +65,8 @@
     border-color: #818387;
     border: none;
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(255,255,255,1.0)'/></svg>");
+}
+
+.account-info {
+    display: inline;
 }

@@ -1,20 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
+  <div class="col p-4">
+    <h4>
+      <i class="bi bi-palette"></i>      
+      Settings
+    </h4>
+    <br>
+    
+    <p>Toggle Dark Mode</p>
     <div class="form-check form-switch">
-        <label for="theme-mode-toggle">
-          <i class="bi bi-moon-stars-fill"></i>
-        </label>
-        <input class="form-check-input" type="checkbox" role="switch" id="theme-mode-toggle" name="theme-mode-toggle" value="dark">
-      </div>
-      <br>
+      <label for="theme-mode-toggle">
+        <i class="bi bi-moon-stars-fill"></i>
+      </label>
+      <input class="form-check-input" type="checkbox" role="switch" id="theme-mode-toggle" name="theme-mode-toggle" value="dark">
+    </div>
+    <br>
   
-      <label for="accent-color" class="form-label">Accent Color</label>
-      <input type="color" name="accent-color" id="accent-color" value={{accent}}>
-      <br>
+    <label for="accent-color" class="form-label mb-3">Accent Color</label>
+    <input type="color" class="form-control form-control-color" name="accent-color" id="accent-color" value={{accent}}>
+    <br>
   </div>
-  {% endblock %}
-  {% block script %}
+{% endblock %}
+{% block script %}
   <script src="/static/js/settings.js"></script>
 {% endblock %}

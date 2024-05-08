@@ -709,7 +709,7 @@ def find_time_differences(start_str, end_str):
     hours = int(delta.total_seconds() / 3600)
     if hours < 1:
         minutes = int((delta.total_seconds()) / 60)
-        if minutes < 0:
+        if minutes <= 0:
             return None
         return f"{minutes}m"
 

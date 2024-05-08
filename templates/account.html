@@ -1,34 +1,46 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-  <h1>Account for {{ username }}</h1>
-    
-    <h2 style="display: inline">Profile Photo</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-profile-pic-modal">
-      UPDATE
+  <div class="col p-4">
+    <h4>
+      <i class="bi bi-person-fill"></i>     
+      Account
+    </h4>
+    <br>
+
+    <p class="align-middle account-info">Profile Photo</p>
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-profile-pic-modal">
+      <i class="bi bi-pencil"></i>
     </button>
-    <br><br>  
+    <br>
     
-    <h2 style="display: inline">Email</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
-      UPDATE
+    <p class="align-middle account-info">Username</p>
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-username-modal">
+      <i class="bi bi-pencil"></i>
+    </button>
+    <br>
+    
+    <p class="align-middle account-info">Email</p>
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-email-modal">
+      <i class="bi bi-pencil"></i>
+    </button>
+    <br>
+
+    <p class="align-middle account-info">Password</p>
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-password-modal">
+      <i class="bi bi-pencil"></i>
     </button>
     <br><br>
 
-    <h2 style="display: inline">Password</h2>
-    <button type="button" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-password-modal">
-      UPDATE
-    </button>
-    <br><br>
+    <hr>
 
     <form action="/account/logout" method="POST">
-      <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="LOG OUT">
+      <input type="submit" class="btn btn-secondary" value="Log Out">
     </form>
     <br>
 
     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-account-modal">
-      DELETE ACCOUNT
+      Delete Account
     </button>
   </div>
 
@@ -45,7 +57,7 @@
               <!-- Input for new profile photo -->
               <form action="/account/upload-profile-pic" method="post" enctype="multipart/form-data">
                 <input type="file" name="file">
-                <input type="submit" value="Upload">
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Upload">
               </form>
           </div>
         </div>
@@ -53,6 +65,32 @@
     </div>
   </div>
 
+  <!-- Edit username -->
+  <div class="modal fade" id="edit-username-modal" aria-hidden="true" aria-labelledby="edit-username-modal-label" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="edit-username-modal-label">Update Username</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <form action="/account/edit-username" method="POST">
+              <!-- Input for new username -->
+              <div class="mb-3">
+                <label for="edit-username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="edit-username" placeholder="New Username">
+              </div>
+              <div class="row">
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Edit user email -->
   <div class="modal fade" id="edit-email-modal" aria-hidden="true" aria-labelledby="edit-email-modal-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -65,12 +103,12 @@
           <div class="row">
             <form action="/account/edit-email" method="POST">
               <!-- Input for new email -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-email" name="email">
-                <label for="edit-email">New Email</label>
+              <div class="mb-3">
+                <label for="edit-email" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" id="edit-email" placeholder="New Email">
               </div>
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -91,12 +129,12 @@
           <div class="row">
             <form action="/account/edit-password" method="POST">
               <!-- Input for new password -->
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="edit-password" name="password">
-                <label for="edit-password">New Password</label>
+              <div class="mb-3">
+                <label for="edit-password" class="form-label">Password</label>
+                <input type="text" class="form-control" name="password" id="edit-password" placeholder="New Password">
               </div>
               <div class="row">
-                <input type="submit" value="Update">  
+                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
             </form>
           </div>
@@ -110,15 +148,17 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="delete-account-modal-label">Delete Account</h1>
+          <h1 class="modal-title fs-5" id="delete-account-modal-label">
+            Are you sure you want to delete your account?
+          </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
-            <h2>Are you sure you want to delete your account?</h2>
+            <p>All information for this account will be deleted.</p>
             <form action="/account/delete-account" method="POST">
               <div class="row">
-                <input type="submit" value="Delete Account">  
+                <input type="submit" class="btn btn-danger" value="Delete Account">  
               </div>
             </form>
           </div>
