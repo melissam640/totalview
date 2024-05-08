@@ -394,7 +394,6 @@ def get_all_calendar_items(user):
         items.append({
             "title": recur_tasklist.title,
             "allDay": recur_tasklist.all_day,
-            "start": recur_tasklist.start,
             "url": recur_tasklist.url,
             "display": "auto",
             "backgroundColor": recur_tasklist.background_color,

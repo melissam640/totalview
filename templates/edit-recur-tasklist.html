@@ -1,32 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-    <i class="bi bi-list-check" style="color: {{ recur_tasklist.background_color }};"></i>
-    <h2 style="display: inline">{{ recur_tasklist.title }}</h2>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
+  <div class="col p-4">
+    <!-- Recurring Tasklist Title and Color -->
+    <h4 class="align-middle d-inline">
+      <i class="bi bi-list-check edit-page-icon" style="color: {{ recur_tasklist.background_color }};"></i>
+      {{ recur_tasklist.title }}
+    </h4>
+    <!-- Edit Title and Color -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/delete-recur-tasklist" style="display: inline;" method="POST">
+    <!-- Delete Recurring Tasklist -->
+    <form action="/edit-recur-tasklist/{{ recur_tasklist.recur_tasklist_id }}/delete-recur-tasklist" class="align-middle d-inline" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
     </form>
-    <br>
-    <!-- <h3 style="display: inline">Scheduled Time</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-tasklist-time">
+    <br><br>
+
+    <!-- Recurrance for Tasklist -->
+    <p class="align-middle d-inline">Recurrence</p>
+    <!-- Edit Recurrance -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
-    <p>
-      <i class="bi bi-calendar"></i>
-      {{ recur_tasklist.start_recur }}
-    </p>  -->
-    <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
-      <i class="bi bi-pencil"></i>
-    </button>
-    <br>
+    <!-- View Current Recurrance Settings -->
     {% if recur_tasklist.days_of_week %}
     <p>
       <i class="bi bi-calendar"></i>
@@ -40,20 +40,25 @@
     </p>
       <p> Every Day </p>
     {% endif %}
-    <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
+    <br>
+    
+    <!-- Tasks for Recurring Tasklist -->
+    <p class="align-middle d-inline">Tasks</p>
+    <!-- Add Another Task -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br><br>
+    <br>
+    <!-- List of All Tasks -->
     {% for recur_task in recur_tasklist.recur_tasks %}
       <div class="form-check">
         {% if recur_task.completed %}
-        <input class="form-check-input recur-task-checked" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check" checked>
+        <input class="form-check-input recur-task-checked mt-2" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check" checked>
         <label class="form-check-label" for="recur-task-flex-check">
             {{ recur_task.title }}
         </label>
         {% else %}
-        <input class="form-check-input recur-task-unchecked" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check">
+        <input class="form-check-input recur-task-unchecked mt-2" type="checkbox" value="{{ recur_task.recur_task_id }}" id="recur-task-flex-check">
         <label class="form-check-label" for="recur-task-flex-check">
             {{ recur_task.title }}
         </label>
@@ -64,7 +69,6 @@
           </button>
         </form>
       </div>
-      <br>
     {% endfor %}
   </div>
 
@@ -86,10 +90,11 @@
               </div>
               
               <!-- Input for event color -->
-              <label for="edit-recur-tasklist-color" class="form-label">Color</label>
-              <input type="color" name="edit-recur-tasklist-color" id="edit-recur-tasklist-color" value={{ recur_tasklist.background_color }}>
-              <br><br>
-
+              <div class="input group mb-3">
+                <label for="edit-recur-tasklist-color" class="align-middle form-label">Color</label>
+                <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-recur-tasklist-color" id="edit-recur-tasklist-color" value={{ recur_tasklist.background_color }}>
+              </div>
+              <br>
               <div class="row">
                 <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>

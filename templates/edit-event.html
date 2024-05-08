@@ -1,18 +1,25 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-    <i class="bi bi-calendar4-event" style="color: {{ event.background_color }};"></i>
-    <h2 style="display: inline">{{ event.title }}</h2>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
+  <div class="col p-4">
+    <!-- Event Title and Color -->
+    <h4 class="align-middle d-inline">
+      <i class="bi bi-calendar4-event" style="color: {{ event.background_color }};"></i>
+      {{ event.title }}
+    </h4>
+    <!-- Edit Title and Color -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-event/{{ event.event_id }}/delete-event" style="display: inline;" method="POST">
+    <!-- Delete Event -->
+    <form action="/edit-event/{{ event.event_id }}/delete-event" class="align-middle d-inline" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
     </form>
     <br><br>
+    
+    <!-- Event Time -->
     <h3 style="display: inline">Scheduled Time</h3>
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-time">
       <i class="bi bi-pencil"></i>
@@ -54,9 +61,11 @@
               </div>
               
               <!-- Input for event color -->
-              <label for="event-color" class="form-label">Color</label>
-              <input type="color" name="edit-event-color" id="edit-event-color" value={{ event.background_color }}>
-              <br><br>
+              <div class="input group mb-3">
+                <label for="event-color" class="align-middle form-label">Color</label>
+                <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-event-color" id="edit-event-color" value={{ event.background_color }}>
+              </div>
+              <br>
               <div class="row">
                 <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
@@ -126,4 +135,5 @@
       </div>
     </div>
   </div>
+
 {% endblock %}

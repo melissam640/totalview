@@ -5,6 +5,7 @@ document.querySelector('#theme-mode-toggle').addEventListener('change', () => {
       .then((response) => response.json())
       .then((theme) => {
         document.documentElement.setAttribute('data-bs-theme', theme);
+        document.querySelector('#logo').setAttribute('src', `/static/background-pic/logo-${theme}.png`);
       });
   });
   
@@ -29,6 +30,10 @@ document.querySelector('#theme-mode-toggle').addEventListener('change', () => {
       .then((accent) => {
         for ( el of document.querySelectorAll('.btn-primary')) {
           el.setAttribute('background-color', accent);
+          el.setAttribute('border-color', accent);
         }
+        for ( el of document.querySelectorAll('.nav-link')) {
+            el.setAttribute('color', accent);
+          }
       });
   });

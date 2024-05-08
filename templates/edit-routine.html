@@ -1,32 +1,46 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-    <i class="bi bi-arrow-repeat" style="color: {{ routine.background_color }};"></i>
-    <h2 style="display: inline">{{ routine.title }}</h2>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
+  <div class="col p-4">
+    <!-- Routine Title and Color -->
+    <h4 class="align-middle d-inline">
+      <i class="bi bi-arrow-repeat" style="color: {{ routine.background_color }};"></i>
+      {{ routine.title }}
+    </h4>
+    <!-- Edit Title and Color -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" style="display: inline;" method="POST">
+    <!-- Delete Routine -->
+    <form action="/edit-routine/{{ routine.routine_id }}/delete-routine" class="align-middle d-inline" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
     </form>
     <br><br>
-    <h3 style="display: inline">Scheduled Time</h3>
+
+    <!-- Routine Time -->
+    <p class="align-middle d-inline">Scheduled Time</p>
+    <!-- Edit Time -->
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
-    <p>
+    <!-- View Current Scheduled Time -->
+    <p class="align-middle">
       <i class="bi bi-clock"></i>
       {{ routine.start_str }} - {{ routine.end_str }}
     </p>
-    <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
+    <br>
+
+    <!-- Recurrance for Routine -->
+    <p class="align-middle d-inline">Recurrence</p>
+    <!-- Edit Recurrance -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
+    <!-- View Current Recurrance Settings -->
     {% if routine.days_of_week %}
     <p>
       <i class="bi bi-calendar"></i>
@@ -40,22 +54,27 @@
     </p>
       <p> Every Day </p>
     {% endif %}
-    <h3 style="display: inline">Actions</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
+    <br>
+    
+    <!-- Actions for Routines -->
+    <p class="align-middle d-inline">Actions</p>
+    <!-- Add Another Action -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br><br>
+    <br>
+    <!-- List of All Actions -->
     {% for action in routine.actions %}
       <div class="form-check">
         {% if action.completed %}
-        <input class="form-check-input action-checked" type="checkbox" value="{{ action.action_id }}" id="action-flex-check" checked>
+        <input class="form-check-input action-checked mt-2" type="checkbox" value="{{ action.action_id }}" id="action-flex-check" checked>
         <label class="form-check-label" for="action-flex-check">
-            {{ action.title }}
+          {{ action.title }}
         </label>
         {% else %}
-        <input class="form-check-input action-unchecked" type="checkbox" value="{{ action.action_id }}" id="action-flex-check">
+        <input class="form-check-input action-unchecked mt-2" type="checkbox" value="{{ action.action_id }}" id="action-flex-check">
         <label class="form-check-label" for="action-flex-check">
-            {{ action.title }}
+          {{ action.title }}
         </label>
         {% endif %}
         <form action="/edit-routine/{{ routine.routine_id }}/{{ action.action_id }}/delete-action" method="POST" style="display: inline">
@@ -64,7 +83,6 @@
           </button>
         </form>
       </div>
-      <br>
     {% endfor %}
   </div>
 
@@ -86,10 +104,11 @@
               </div>
               
               <!-- Input for event color -->
-              <label for="edit-routine-color" class="form-label">Color</label>
-              <input type="color" name="edit-routine-color" id="edit-routine-color" value={{ routine.background_color }}>
-              <br><br>
-
+              <div class="input group mb-3">
+                <label for="edit-routine-color" class="align-middle form-label">Color</label>
+                <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-routine-color" id="edit-routine-color" value={{ routine.background_color }}>
+              </div>
+              <br>
               <div class="row">
                 <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>

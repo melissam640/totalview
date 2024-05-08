@@ -1,52 +1,65 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-    <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>
-    <h2 style="display: inline">{{ tasklist.title }}</h2>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
+  <div class="col p-4">
+    <!-- Tasklist Title and Color -->
+    <h4 class="align-middle d-inline">
+      <i class="bi bi-list-check" style="color: {{ tasklist.background_color }};"></i>
+      {{ tasklist.title }}
+    </h4>
+    <!-- Edit Title and Color -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/delete-tasklist" style="display: inline;" method="POST">
+    <!-- Delete Tasklist -->
+    <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/delete-tasklist" class="align-middle d-inline" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
     </form>
     <br><br>
-    <h3 style="display: inline">Scheduled Time</h3>
+    
+    <!-- Tasklist Time -->
+    <p class="align-middle d-inline">Scheduled Time</p>
+    <!-- Edit Time -->
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
-    <p>
+    <!-- View Current Scheduled Time -->
+    <p class="align-middle">
       <i class="bi bi-calendar"></i>
       {{ tasklist.start }}
     </p> 
-    <h3 style="display: inline">Tasks</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
+    <br>
+
+    <!-- Tasks for Tasklist -->
+    <p class="align-middle d-inline">Tasks</p>
+    <!-- Add Another Task -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br><br>
+    <br>
+    <!-- List of All Tasks -->
     {% for task in tasklist.tasks %}
       <div class="form-check">
         {% if task.completed %}
-        <input class="form-check-input task-checked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
+        <input class="form-check-input task-checked mt-2" type="checkbox" value="{{ task.task_id }}" id="task-flex-check" checked>
         <label class="form-check-label" for="task-flex-check">
           {{ task.title }}
         </label>
         {% else %}
-        <input class="form-check-input task-unchecked" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
+        <input class="form-check-input task-unchecked mt-2" type="checkbox" value="{{ task.task_id }}" id="task-flex-check">
         <label class="form-check-label" for="task-flex-check">
           {{ task.title }}
         </label>
         {% endif %}
-      <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" style="display: inline;" method="POST">
+      <form action="/edit-tasklist/{{ tasklist.tasklist_id }}/{{ task.task_id }}/delete-task" class="d-inline" method="POST">
         <button type="submit" class="btn btn-link" style="color: {{accent}};">
           <i class="bi bi-trash3"></i>
         </button>
       </form>
     </div>
-    <br>
     {% endfor %}
   </div>
 
@@ -68,9 +81,11 @@
               </div>
               
               <!-- Input for event color -->
-              <label for="edit-tasklist-color" class="form-label">Color</label>
-              <input type="color" name="edit-tasklist-color" id="edit-tasklist-color" value={{ tasklist.background_color }}>
-              <br><br>
+              <div class="input group mb-3">
+                <label for="edit-tasklist-color" class="align-middle form-label">Color</label>
+                <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-tasklist-color" id="edit-tasklist-color" value={{ tasklist.background_color }}>
+              </div>
+              <br>
               <div class="row">
                 <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
@@ -140,6 +155,7 @@
       </div>
     </div>
   </div>
+
 {% endblock %}
 {% block script %}
   <script src="/static/js/edit-tasklist.js"></script>

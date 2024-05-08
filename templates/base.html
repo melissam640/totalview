@@ -19,10 +19,11 @@
       <div class="row">
         <nav class="navbar bg-body-tertiary border bg-border-color">
           <div class="container-fluid">
-            <!-- App Title -->
-            <h4 class="navbar-brand">
-              TotalView
-            </h4>
+            <!-- App Logo -->
+            <div class="nav-header">
+              <img src="/static/background-pic/logo-{{ theme }}.png" id="logo">
+              <h4 class="d-inline">TotalView</h4>
+            </div>
             <!-- Drop Down Menu for Account Settings and Logout -->
             <button class="btn btn-basic dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person-fill"></i>
@@ -93,10 +94,10 @@
             <h1 class="modal-title fs-5" id="new-item-modal-label">Schedule New Item</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-event-modal" data-bs-toggle="modal">Event</button>
-            <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-routine-modal" data-bs-toggle="modal">Routine</button>
-            <button class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-tasklist-modal" data-bs-toggle="modal">Tasklist</button>
+          <div class="modal-body text-center">
+            <button class="btn btn-primary mx-2" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-event-modal" data-bs-toggle="modal">Event</button>
+            <button class="btn btn-primary mx-2" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-routine-modal" data-bs-toggle="modal">Routine</button>
+            <button class="btn btn-primary mx-2" style="background-color: {{accent}}; border-color: {{accent}};" data-bs-target="#new-tasklist-modal" data-bs-toggle="modal">Tasklist</button>
           </div>
         </div>
       </div>
@@ -263,9 +264,10 @@
                 </div>
 
                 <!-- Input for routine color -->
-                <label for="routine-color" class="form-label">Color</label>
-                <input type="color" name="routine-color" id="routine-color" value={{accent}}>
-                <br>
+                <div class="input group mb-3">
+                  <label for="routine-color" class="align-middle form-label">Color</label>
+                <input type="color" class="d-inline ms-2 form-control form-control-color" name="routine-color" id="routine-color" value={{accent}}>
+                </div>
 
                 <!-- Input for routine start and end date -->
                 <div class="row">
@@ -390,9 +392,10 @@
                 </div>
 
                 <!-- Input for tasklist color -->
-                <label for="tasklist-color" class="form-label">Color</label>
-                <input type="color" name="tasklist-color" id="tasklist-color" value={{accent}}>
-                <br>
+                <div class="input group mb-3">
+                  <label for="tasklist-color" class="align-middle form-label">Color</label>
+                  <input type="color" class="d-inline ms-2 form-control form-control-color" name="tasklist-color" id="tasklist-color" value={{accent}}>
+                </div>
 
                 <!-- Input for tasklist date -->
                 <div class="row">

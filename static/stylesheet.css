@@ -10,6 +10,10 @@
     font: Verdana;
 }
 
+#logo {
+    max-width: 5%;
+}
+
 #user-profile-pic {
     text-align: center;
     border-radius: 50%;
@@ -34,6 +38,10 @@
 
 #time-difference {
     margin-left: 2%;
+}
+
+.edit-page-icon {
+    font-size: 2rem;
 }
 
 /* Checkboxes */

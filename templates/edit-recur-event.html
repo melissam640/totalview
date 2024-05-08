@@ -1,23 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Edit Item{% endblock %}
 {% block body %}
-  <div class="col">
-    <i class="bi bi-calendar4-event" style="color: {{ recur_event.background_color }};"></i>
-    <h2 style="display: inline">{{ recur_event.title }}</h2>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
+  <div class="col p-4">
+    <!-- Recurring Event Title and Color -->
+    <h4 class="align-middle d-inline">
+      <i class="bi bi-calendar4-event" style="color: {{ recur_event.background_color }};"></i>
+      {{ recur_event.title }}
+    </h4>
+    <!-- Edit Title and Color -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-title">
       <i class="bi bi-pencil"></i>
     </button>
-    <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/delete-recur-event" style="display: inline;" method="POST">
+    <!-- Delete Recurring Event -->
+    <form action="/edit-recur-event/{{ recur_event.recur_event_id }}/delete-recur-event" class="align-middle d-inline" method="POST">
       <button type="submit" class="btn btn-link" style="color: {{accent}};">
         <i class="bi bi-trash3"></i>
       </button>
     </form>
     <br><br>
-    <h3 style="display: inline">Scheduled Time</h3>
+
+    <!-- Recurring Event Time -->
+    <p class="align-middle d-inline">Scheduled Time</p>
+    <!-- Edit Time -->
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-recur-event-time">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
+    <!-- View Current Scheduled Time -->
     {% if recur_event.all_day %}
     <p> All Day </p>
     {% else %}
@@ -26,11 +35,15 @@
         {{ recur_event.start_str }} - {{ recur_event.end_str }}
       </p>
     {% endif %}
-    <h3 style="display: inline">Recurrence</h3>
-    <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
+    
+    <!-- Recurrance for Event -->
+    <p class="align-middle d-inline">Recurrence</p>
+    <!-- Edit Recurrance -->
+    <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-recurrence">
       <i class="bi bi-pencil"></i>
     </button>
     <br>
+    <!-- View Current Recurrance Settings -->
     {% if recur_event.days_of_week %}
     <p>
       <i class="bi bi-calendar"></i>
@@ -64,9 +77,10 @@
               </div>
               
               <!-- Input for event color -->
-              <label for="edit-recur-event-color" class="form-label">Color</label>
-              <input type="color" name="edit-recur-event-color" id="edit-recur-event-color" value={{ recur_event.background_color }}>
-              <br><br>
+              <div class="input group mb-3">
+                <label for="edit-recur-event-color" class="align-middle form-label">Color</label>
+              <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-recur-event-color" id="edit-recur-event-color" value={{ recur_event.background_color }}>
+              <br>
               <div class="row">
                 <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
               </div>
@@ -130,6 +144,7 @@
     </div>
   </div>
 
+  <!-- Edit event recurrance -->
   <div class="modal fade" id="edit-event-recurrence" aria-hidden="true" aria-labelledby="edit-event-recurrence-label" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -206,7 +221,8 @@
       </div>
     </div>
   </div>
-{% endblock %}
+
+  {% endblock %}
 {% block script %}
   <script src="/static/js/edit-recur-event.js"></script>
 {% endblock %}

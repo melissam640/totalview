@@ -336,6 +336,9 @@ def create_new_tasklist():
     return redirect("/dashboard")
 
 
+### Change account info routes ###
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -360,6 +363,20 @@ def upload_file():
             
             return redirect("/account")
     
+    return redirect("/account")
+
+
+@app.route("/account/edit-username", methods = ["POST"])
+def update_username():
+    """Updates the user's username."""
+
+    new_username = request.form.get("username")
+    
+    user = crud.get_user_by_id(session["user_id"])
+
+    user.username = new_username
+    db.session.commit()
+
     return redirect("/account")
 
 
@@ -433,6 +450,10 @@ def delete_account():
     return redirect("/")
 
 
+### Edit calendar items ###
+
+
+## Edit one-time event page
 @app.route("/edit-event/<event_id>")
 def show_event_details(event_id):
     """Shows the details for a selected event."""
@@ -506,6 +527,7 @@ def delete_event(event_id):
     return redirect("/dashboard")
 
 
+## Edit recurring event page
 @app.route("/edit-recur-event/<recur_event_id>")
 def show_recur_event_details(recur_event_id):
     """Shows the details for a selected recurring event."""
@@ -596,6 +618,7 @@ def delete_recur_event(recur_event_id):
     return redirect("/dashboard")
 
 
+## Edit routine page
 @app.route("/edit-routine/<routine_id>")
 def show_routine_details(routine_id):
     """Shows the details for a selected routine."""
@@ -709,6 +732,7 @@ def delete_action(routine_id, action_id):
     return redirect(f"/edit-routine/{routine_id}")
 
 
+## Edit one-time tasklist page
 @app.route("/edit-tasklist/<tasklist_id>")
 def show_tasklist_details(tasklist_id):
     """Shows the details for a selected tasklist."""
@@ -793,6 +817,7 @@ def delete_task(tasklist_id, task_id):
     return redirect(f"/edit-tasklist/{tasklist_id}")
 
 
+## Edit recurring tasklist page
 @app.route("/edit-recur-tasklist/<recur_tasklist_id>")
 def show_recur_tasklist_details(recur_tasklist_id):
     """Shows the details for a selected recurring tasklist."""
@@ -903,6 +928,9 @@ def delete_recur_task(recur_tasklist_id, recur_task_id):
     return redirect(f"/edit-recur_tasklist/{recur_tasklist_id}")
 
 
+### Theme settings routes ###
+
+
 @app.route("/change-theme")
 def change_user_theme():
     """Changes the theme for a user to either light or dark mode."""
@@ -929,6 +957,9 @@ def change_user_accent_color():
     user.accent_color = accent
     db.session.commit()
     return jsonify(accent)
+
+
+### Mark actions and tasks as complete / incomplete ###
 
 
 @app.route("/complete-action", methods = ["POST"])
