@@ -25,14 +25,17 @@
     <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-recurrence">
       <i class="bi bi-pencil"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- View Current Recurrance Settings -->
     {% if recur_tasklist.days_of_week %}
     <p>
       <i class="bi bi-calendar"></i>
       {{ recur_tasklist.start_recur }} - {{ recur_tasklist.end_recur }}
     </p>  
-    <p> Weekly On: {{ recur_tasklist.days_of_week }} </p>
+    <p class="d-inline"> Weekly On: </p>
+      {% for day in recur_tasklist.days_of_week.split(" ") %}
+        <p class="d-inline">{{ days[day] }} </p>
+      {% endfor %}
     {% else %}
     <p>
       <i class="bi bi-calendar"></i>
@@ -40,7 +43,7 @@
     </p>
       <p> Every Day </p>
     {% endif %}
-    <br>
+    <br><br>
     
     <!-- Tasks for Recurring Tasklist -->
     <p class="align-middle d-inline">Tasks</p>
@@ -48,7 +51,7 @@
     <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-recur-task">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- List of All Tasks -->
     {% for recur_task in recur_tasklist.recur_tasks %}
       <div class="form-check">
@@ -95,9 +98,7 @@
                 <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-recur-tasklist-color" id="edit-recur-tasklist-color" value={{ recur_tasklist.background_color }}>
               </div>
               <br>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -173,9 +174,7 @@
                 </div>
               </div><br>
   
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -199,15 +198,14 @@
                 <label for="edit-recur-task-title" class="form-label">Task Title</label>
                 <input type="text" class="form-control" name="edit-recur-task-title" id="edit-recur-task-title" placeholder="New Title">
               </div>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 {% endblock %}
 {% block script %}
   <script src="/static/js/edit-recur-tasklist.js"></script>

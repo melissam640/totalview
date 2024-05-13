@@ -25,7 +25,7 @@
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-time">
       <i class="bi bi-pencil"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- View Current Scheduled Time -->
     <p class="align-middle">
       <i class="bi bi-clock"></i>
@@ -39,14 +39,17 @@
     <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-routine-recurrence">
       <i class="bi bi-pencil"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- View Current Recurrance Settings -->
     {% if routine.days_of_week %}
     <p>
       <i class="bi bi-calendar"></i>
       {{ routine.start_recur }} - {{ routine.end_recur }}
     </p>  
-    <p> Weekly On: {{ routine.days_of_week }} </p>
+    <p class="d-inline"> Weekly On: </p>
+      {% for day in routine.days_of_week.split(" ") %}
+        <p class="d-inline">{{ days[day] }} </p>
+      {% endfor %}
     {% else %}
     <p>
       <i class="bi bi-calendar"></i>
@@ -54,7 +57,7 @@
     </p>
       <p> Every Day </p>
     {% endif %}
-    <br>
+    <br><br>
     
     <!-- Actions for Routines -->
     <p class="align-middle d-inline">Actions</p>
@@ -62,7 +65,7 @@
     <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-action">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- List of All Actions -->
     {% for action in routine.actions %}
       <div class="form-check">
@@ -109,9 +112,7 @@
                 <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-routine-color" id="edit-routine-color" value={{ routine.background_color }}>
               </div>
               <br>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -162,9 +163,7 @@
                 </div>
               </div><br>
   
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -240,9 +239,7 @@
                 </div>
               </div><br>
   
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -266,9 +263,7 @@
                 <label for="edit-action-title" class="form-label">Action Title</label>
                 <input type="text" class="form-control" name="edit-action-title" id="edit-action-title" placeholder="New Title">
               </div>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
             </form>
           </div>
         </div>

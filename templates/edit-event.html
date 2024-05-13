@@ -20,11 +20,11 @@
     <br><br>
     
     <!-- Event Time -->
-    <h3 style="display: inline">Scheduled Time</h3>
+    <p class="align-middle d-inline">Scheduled Time</p>
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-event-time">
       <i class="bi bi-pencil"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     {% if event.all_day %}
       <p>
         <i class="bi bi-calendar"></i>
@@ -66,9 +66,7 @@
                 <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-event-color" id="edit-event-color" value={{ event.background_color }}>
               </div>
               <br>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -126,9 +124,7 @@
                 </div>
               </div><br>
   
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
             </form>
           </div>
         </div>

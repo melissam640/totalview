@@ -44,6 +44,11 @@
     font-size: 2rem;
 }
 
+.edit-page-rule {
+    max-width: 25%;
+    margin-top: 0;
+}
+
 /* Checkboxes */
 .form-check-input:focus {
     border-color: rgba(129, 125, 125, 0.775);

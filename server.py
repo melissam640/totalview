@@ -25,12 +25,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def show_homepage():
     """Create the homepage."""
 
-    if not session["flash_style"]:
-        flash_style = "text-bg-light"
-    else:
-        flash_style = session["flash_style"]
-
-    return render_template("homepage.html", flash_style=flash_style)
+    return render_template("homepage.html")
 
 
 @app.route("/create-account", methods=["POST"])
@@ -534,11 +529,13 @@ def show_recur_event_details(recur_event_id):
 
     user = crud.get_user_by_id(session["user_id"])
     recur_event = crud.get_recur_event_by_id(recur_event_id)
+
+    days = {"0": "Sun", "1": "Mon", "2": "Tue", "3": "Wed", "4": "Thu", "5": "Fri", "6": "Sat"}
     
     return render_template("edit-recur-event.html", recur_event=recur_event,
                            username=user.username, theme=user.theme,
                            accent=user.accent_color,
-                           profile_pic=user.profile_pic)
+                           profile_pic=user.profile_pic, days=days)
 
 
 @app.route("/edit-recur-event/<recur_event_id>/edit-recur-event-title", methods = ["POST"])
@@ -625,11 +622,13 @@ def show_routine_details(routine_id):
 
     user = crud.get_user_by_id(session["user_id"])
     routine = crud.get_routine_by_id(routine_id)
+
+    days = {"0": "Sun", "1": "Mon", "2": "Tue", "3": "Wed", "4": "Thu", "5": "Fri", "6": "Sat"}
     
     return render_template("edit-routine.html", routine=routine,
                            username=user.username, theme=user.theme,
                            accent=user.accent_color,
-                           profile_pic=user.profile_pic)
+                           profile_pic=user.profile_pic, days=days)
 
 
 @app.route("/edit-routine/<routine_id>/edit-routine-title", methods = ["POST"])
@@ -825,11 +824,13 @@ def show_recur_tasklist_details(recur_tasklist_id):
     user = crud.get_user_by_id(session["user_id"])
     recur_tasklist = crud.get_recur_tasklist_by_id(recur_tasklist_id)
     
+    days = {"0": "Sun", "1": "Mon", "2": "Tue", "3": "Wed", "4": "Thu", "5": "Fri", "6": "Sat"}
+    
     return render_template("edit-recur-tasklist.html",
                            recur_tasklist=recur_tasklist,
                            username=user.username, theme=user.theme,
                            accent=user.accent_color,
-                           profile_pic=user.profile_pic)
+                           profile_pic=user.profile_pic, days=days)
 
 
 @app.route("/edit-recur-tasklist/<recur_tasklist_id>/edit-recur-tasklist-title", methods = ["POST"])

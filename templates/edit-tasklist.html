@@ -25,7 +25,7 @@
     <button type="button" class="btn btn-link" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#edit-tasklist-time">
       <i class="bi bi-pencil"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- View Current Scheduled Time -->
     <p class="align-middle">
       <i class="bi bi-calendar"></i>
@@ -39,7 +39,7 @@
     <button type="button" class="btn btn-link align-middle" style="color: {{accent}};" data-bs-toggle="modal" data-bs-target="#add-new-task">
       <i class="bi bi-plus-lg"></i>
     </button>
-    <br>
+    <hr class="edit-page-rule">
     <!-- List of All Tasks -->
     {% for task in tasklist.tasks %}
       <div class="form-check">
@@ -86,9 +86,7 @@
                 <input type="color" class="d-inline ms-2 form-control form-control-color" name="edit-tasklist-color" id="edit-tasklist-color" value={{ tasklist.background_color }}>
               </div>
               <br>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">  
             </form>
           </div>
         </div>
@@ -119,10 +117,7 @@
                   </ul>
                 </div>
               </div><br>
-  
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Update">
             </form>
           </div>
         </div>
@@ -146,9 +141,7 @@
                 <label for="edit-task-title" class="form-label">Task Title</label>
                 <input type="text" class="form-control" name="edit-task-title" id="edit-task-title" placeholder="New Title">
               </div>
-              <div class="row">
-                <input type="submit" class="btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
-              </div>
+              <input type="submit" class="w-100 btn btn-primary" style="background-color: {{accent}}; border-color: {{accent}};" value="Add">  
             </form>
           </div>
         </div>
