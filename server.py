@@ -494,14 +494,24 @@ def update_event_time(event_id):
 
     if all_day == "true":
         all_day = True
+        start = start_date
+        end = end_date
+        start_str = None
+        end_str = None
     else:
         all_day = False
+        start = crud.get_date_str(start_date, start_time)
+        end = crud.get_date_str(end_date, end_time)
+        start_str = crud.military_to_standard_time(start_time)
+        end_str = crud.military_to_standard_time(end_time)
     
     event_id_int = int(event_id)
     event = crud.get_event_by_id(event_id_int)
 
     event.start = start
     event.end = end
+    event.start_str = start_str
+    event.end_str = end_str
     event.all_day = all_day
     db.session.commit()
     
@@ -562,6 +572,9 @@ def update_recur_event_time(recur_event_id):
     start_time = request.form.get("start-time")
     end_time = request.form.get("end-time")
     all_day = request.form.get("all-day")
+    
+    start_str = crud.military_to_standard_time(start_time)
+    end_str = crud.military_to_standard_time(end_time)
 
     if all_day == "true":
         all_day = True
@@ -572,6 +585,8 @@ def update_recur_event_time(recur_event_id):
 
     recur_event.start = start_time
     recur_event.end = end_time
+    recur_event.start_str = start_str
+    recur_event.end_str = end_str
     recur_event.all_day = all_day
     db.session.commit()
     
@@ -655,11 +670,16 @@ def update_routine_time(routine_id):
     start_time = request.form.get("start-time")
     end_time = request.form.get("end-time")
     all_day = request.form.get("all-day")
+
+    start_str = crud.military_to_standard_time(start_time)
+    end_str = crud.military_to_standard_time(end_time)
     
     routine = crud.get_routine_by_id(int(routine_id))
 
     routine.start = start_time
     routine.end = end_time
+    routine.start_str = start_str
+    routine.end_str = end_str
     routine.all_day = all_day
     db.session.commit()
     
@@ -766,7 +786,7 @@ def update_tasklist_title(tasklist_id):
 def update_tasklist_time(tasklist_id):
     """Updates the date of a given tasklist."""
 
-    start_date = request.form.get("start-date")
+    start_date = request.form.get("date")
     
     tasklist = crud.get_tasklist_by_id(int(tasklist_id))
 
