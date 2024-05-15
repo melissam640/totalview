@@ -18,15 +18,6 @@ TotalView is productivity app that allows a user to create traditional calendar 
 
 See the demo video for TotalView [here]()
 
-Create a Calendar Event:
-![](https://github.com/melissam640/totalview/static/gif1.gif)
-
-Change Theme:
-![](https://github.com/melissam640/totalview/static/gif2.gif)
-
-View Calendar:
-![](https://github.com/melissam640/totalview/static/gif3.gif)
-
 ## Tech Stack
 
 | Category | Tech |
