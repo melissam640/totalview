@@ -42,9 +42,14 @@ Download all requirements:
 ```sh
 pip3 install -r requirements.txt
 ```
-Create the database ([PostgreSQL](https://www.postgresql.org/) is needed for this):
+Create the database:
 ```sh
-
+createdb totalview
+python3 -i model.py
+```
+Create the tables:
+```sh
+db.create_all()
 ```
 Start the server for TotalView:
 ```sh
