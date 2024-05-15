@@ -16,7 +16,7 @@ TotalView is productivity app that allows a user to create traditional calendar 
 
 ## Demo
 
-See the demo video for TotalView [here]()
+See the demo video for TotalView [here](https://www.youtube.com/watch?v=cfkpgqYO2BU)
 
 ## Tech Stack
 
