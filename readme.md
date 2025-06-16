@@ -1,5 +1,4 @@
 # TotalView
-## _Hackbright Capstone Project_
 
 TotalView is productivity app that allows a user to create traditional calendar events, routines for forming habits, and task lists to organize to-dos.
 
@@ -18,6 +17,12 @@ TotalView is productivity app that allows a user to create traditional calendar 
 
 See the demo video for TotalView [here](https://www.youtube.com/watch?v=cfkpgqYO2BU)
 
+#### Creating a new event
+![TotalView gif 1](static/totalview1.gif)
+
+#### Viewing events on calendar
+![TotalView gif 2](static/totalview2.gif)
+
 ## Tech Stack
 
 | Category | Tech |
@@ -27,34 +32,6 @@ See the demo video for TotalView [here](https://www.youtube.com/watch?v=cfkpgqYO
 | API | FullCalendar |
 | Other | Jinja |
 
-## Installation
-
-Clone this repository:
-```sh
-git clone https://github.com/melissam640/totalview.git
-```
-Create a virtual environment:
-```sh
-virtualenv env
-source env/bin/activate
-```
-Download all requirements:
-```sh
-pip3 install -r requirements.txt
-```
-Create the database:
-```sh
-createdb totalview
-python3 -i model.py
-```
-Create the tables:
-```sh
-db.create_all()
-```
-Start the server for TotalView:
-```sh
-python3 server.py
-```
-
 ## Author
+
 Melissa McGrath | [GitHub](https://github.com/melissam640) | [Linkedin](www.linkedin.com/in/melissa-mcgrath)
